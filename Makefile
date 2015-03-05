@@ -7,12 +7,14 @@ IMAIN_SRC		= src/imain.c
 ASSEMBLER_SRC	= src/assembler/assembler.c
 ASMLOADER_SRC	= src/asmLoader/asmLoader.c
 ASMWRITER_SRC	= src/asmWriter/asmWriter.c
+INSTRUCTION_SRC	= src/instruction/instruction.c
 
 
 # Arquivos-cabeçalho
 ASSEMBLER_H		= src/assembler/assembler.h
 ASMLOADER_H		= src/asmLoader/asmLoader.h
 ASMWRITER_H		= src/asmWriter/asmWriter.h
+INSTRUCTION_H	= src/instruction/instruction.h
 
 
 # Arquivos-objeto
@@ -20,7 +22,7 @@ IMAIN_OBJ		= obj/imain.o
 ASSEMBLER_OBJ	= obj/assembler.o
 ASMLOADER_OBJ	= obj/asmLoader.o
 ASMWRITER_OBJ	= obj/asmWriter.o
-
+INSTRUCTION_OBJ	= obj/instruction.o
 
 # Símbolos de arquivos de saída
 OUTPUT_NAME_EXEC		= AssemblerM
@@ -33,9 +35,9 @@ COMPILER 		= gcc
 CFLAG 			= -c
 LFLAG 			= -o
 #LIBFLAG 		=
-SRC 			= $(IMAIN_SRC) $(ASSEMBLER_SRC) $(ASMLOADER_SRC) $(ASMWRITER_SRC)
+SRC 			= $(IMAIN_SRC) $(ASSEMBLER_SRC) $(ASMLOADER_SRC) $(ASMWRITER_SRC) $(INSTRUCTION_SRC)
 
-OBJ				= $(IMAIN_OBJ) $(ASSEMBLER_OBJ) $(ASMLOADER_OBJ) $(ASMWRITER_OBJ)
+OBJ				= $(IMAIN_OBJ) $(ASSEMBLER_OBJ) $(ASMLOADER_OBJ) $(ASMWRITER_OBJ) $(INSTRUCTION_OBJ)
 
 BIN				= $(OUTPUT_FULLPATH_EXEC)
 
@@ -53,6 +55,9 @@ $(ASMLOADER_OBJ): $(ASMLOADER_H) $(ASMLOADER_SRC)
 
 $(ASMWRITER_OBJ): $(ASMWRITER_H) $(ASMWRITER_SRC)
 	$(COMPILER) $(CFLAG) $(ASMWRITER_SRC) $(LFLAG) $(ASMWRITER_OBJ)
+
+$(INSTRUCTION_OBJ): $(INSTRUCTION_H) $(INSTRUCTION_SRC)
+	$(COMPILER) $(CFLAG) $(INSTRUCTION_SRC) $(LFLAG) $(INSTRUCTION_OBJ)
 
 $(BIN): $(OBJ)
 	$(COMPILER) $(LFLAG) $(BIN) $(OBJ) $(LIBFLAG)
