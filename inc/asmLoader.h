@@ -5,7 +5,6 @@
 #define ASMLOADER_HEADER
 
 #include <stdio.h>  /* para I/O */
-#include <stddef.h>
 
 typedef struct _asmLoader
 {

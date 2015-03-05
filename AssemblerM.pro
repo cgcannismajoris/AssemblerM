@@ -6,11 +6,13 @@ CONFIG -= qt
 SOURCES += \
     src/assembler.c \
     src/imain.c \
-    src/asmLoader.c
+    src/asmLoader.c \
+    src/asmWriter.c
 
 HEADERS += \
     inc/assembler.h \
-    inc/asmLoader.h
+    inc/asmLoader.h \
+    inc/asmWriter.h
 
 OTHER_FILES += \
     Makefile
