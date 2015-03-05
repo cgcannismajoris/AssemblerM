@@ -3,19 +3,18 @@
  */
 #include "../inc/asmWriter.h"
 
-ASMWRITER *     asmWriter_new(const char *filename)
+ASMWRITER *asmWriter_new(const char *filename)
 {
     return NULL;
 }
 
-void            asmWriter_free(ASMWRITER *asmWriter)
+void asmWriter_free(ASMWRITER *asmWriter)
 {
 
 }
 
-void            asmWriter_writeInst(ASMWRITER *asmWriter
+void asmWriter_writeInst(ASMWRITER *asmWriter
                                     /*, INSTRUCTION *instruction*/)
 {
-
 
 }

@@ -5,10 +5,12 @@
 #define ASSEMBLER_HEADER
 
 #include "asmLoader.h" /* incluir TAD ASMLOADER */
+#include "asmWriter.h" /* incluir TAD ASMWRITER */
 
 typedef struct _assembler
 {
     ASMLOADER *asmLoader;
+    ASMWRITER *asmWriter;
 } ASSEMBLER, ASM;
 
 ASSEMBLER * assembler_new(const char *input, char *output);
