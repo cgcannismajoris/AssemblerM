@@ -5,10 +5,12 @@ CONFIG -= qt
 
 SOURCES += \
     src/assembler.c \
-    src/imain.c
+    src/imain.c \
+    src/asmLoader.c
 
 HEADERS += \
-    inc/assembler.h
+    inc/assembler.h \
+    inc/asmLoader.h
 
 OTHER_FILES += \
     Makefile
