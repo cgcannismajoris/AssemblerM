@@ -37,7 +37,7 @@ OBJ				= $(IMAIN_OBJ) $(ASSEMBLER_OBJ) $(ASMLOADER_OBJ) $(ASMWRITER_OBJ)
 BIN				= $(OUTPUT_FULLPATH_EXEC)
 
 
-all: $(BIN)
+all: mk_dir $(BIN)
 
 $(IMAIN_OBJ): $(IMAIN_SRC)
 	$(COMPILER) $(CFLAG) $(IMAIN_SRC) $(LFLAG) $(IMAIN_OBJ)
@@ -59,6 +59,10 @@ $(BIN): $(OBJ)
 LN_SYMBOL:
 	rm -f $(OUTPUT_NAME_EXEC)
 	ln -s $(OUTPUT_FULLPATH_EXEC)
+	
+# CRIAÇÃO DE PASTAS
+mk_dir:
+	mkdir -p bin data obj
 
 clean:
 	rm -f $(OUTPUT_FULLPATH_EXEC) $(LN_SYMBOL) data/* *~ *.swp *.swo \
