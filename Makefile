@@ -4,9 +4,16 @@
 # DEFINIÇÕES DE ARQUIVOS #####################
 # Arquivos de código-fonte
 IMAIN_SRC		= src/imain.c
-ASSEMBLER_SRC	= src/assembler.c
-ASMLOADER_SRC	= src/asmLoader.c
-ASMWRITER_SRC	= src/asmWriter.c
+ASSEMBLER_SRC	= src/assembler/assembler.c
+ASMLOADER_SRC	= src/asmLoader/asmLoader.c
+ASMWRITER_SRC	= src/asmWriter/asmWriter.c
+
+
+# Arquivos-cabeçalho
+ASSEMBLER_H		= src/assembler/assembler.h
+ASMLOADER_H		= src/asmLoader/asmLoader.h
+ASMWRITER_H		= src/asmWriter/asmWriter.h
+
 
 # Arquivos-objeto
 IMAIN_OBJ		= obj/imain.o
@@ -14,10 +21,6 @@ ASSEMBLER_OBJ	= obj/assembler.o
 ASMLOADER_OBJ	= obj/asmLoader.o
 ASMWRITER_OBJ	= obj/asmWriter.o
 
-# Arquivos-cabeçalho
-ASSEMBLER_H		= inc/assembler.h
-ASMLOADER_H		= inc/asmLoader.h
-ASMWRITER_H		= inc/asmWriter.h
 
 # Símbolos de arquivos de saída
 OUTPUT_NAME_EXEC		= AssemblerM
@@ -60,7 +63,7 @@ LN_SYMBOL:
 	rm -f $(OUTPUT_NAME_EXEC)
 	ln -s $(OUTPUT_FULLPATH_EXEC)
 	
-# CRIAÇÃO DE PASTAS
+# CRIAÇÃO DE PASTAS #########################
 mk_dir:
 	mkdir -p bin data obj
 

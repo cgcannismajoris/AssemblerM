@@ -4,15 +4,15 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-    src/assembler.c \
+	src/assembler/assembler.c \
     src/imain.c \
-    src/asmLoader.c \
-    src/asmWriter.c
+	src/asmLoader/asmLoader.c \
+	src/asmWriter/asmWriter.c
 
 HEADERS += \
-    inc/assembler.h \
-    inc/asmLoader.h \
-    inc/asmWriter.h
+	src/assembler/assembler.h \
+	src/asmLoader/asmLoader.h \
+	src/asmWriter/asmWriter.h
 
 OTHER_FILES += \
     Makefile

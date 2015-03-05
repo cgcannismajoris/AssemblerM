@@ -2,4 +2,4 @@
  * Implementaçao do TAD principal.
  */
 
-#include "../inc/assembler.h"
+#include "assembler.h"

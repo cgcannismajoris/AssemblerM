@@ -1,7 +1,7 @@
 /* asmWriter.c
  * Implementaçao do TAD ASMWRITER.
  */
-#include "../inc/asmWriter.h"
+#include "asmWriter.h"
 
 ASMWRITER *asmWriter_new(const char *filename)
 {

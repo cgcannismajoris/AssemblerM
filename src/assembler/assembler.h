@@ -4,8 +4,8 @@
 #ifndef ASSEMBLER_HEADER
 #define ASSEMBLER_HEADER
 
-#include "asmLoader.h" /* incluir TAD ASMLOADER */
-#include "asmWriter.h" /* incluir TAD ASMWRITER */
+#include "../asmLoader/asmLoader.h" /* incluir TAD ASMLOADER */
+#include "../asmWriter/asmWriter.h" /* incluir TAD ASMWRITER */
 
 typedef struct _assembler
 {

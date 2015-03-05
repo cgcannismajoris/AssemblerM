@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../inc/assembler.h"   /* Inclua o TAD principal */
+#include "assembler/assembler.h"   /* Inclua o TAD principal */
 
 int main(int argc, char **argv)
 {

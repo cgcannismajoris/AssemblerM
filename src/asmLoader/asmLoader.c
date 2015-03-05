@@ -1,7 +1,7 @@
 /* asmLoader.c
  * Implementaçao do TAD ASMLOADER.
  */
-#include "../inc/asmLoader.h"
+#include "asmLoader.h"
 
 ASMLOADER *asmLoader_new(const char *filename)
 {
