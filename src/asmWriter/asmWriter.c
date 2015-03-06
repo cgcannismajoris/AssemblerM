@@ -3,7 +3,7 @@
  *
  * Nome do Arquivo:  asmWriter.c
  *
- *       Descricao:  Implementação do TAD asmWriter.
+ *       Descricao:  Implementação do TAD ASMWRITER.
  *
  *          Versao:  1.0
  *       Criado em:  05/03/2015 17:11:43

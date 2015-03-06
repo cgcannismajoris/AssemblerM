@@ -3,7 +3,7 @@
  *
  * Nome do Arquivo:  asmLoader.c
  *
- *       Descricao:  Implementação do TAD asmLoader.
+ *       Descricao:  Implementação do TAD ASMLOADER.
  *
  *          Versao:  1.0
  *       Criado em:  05/03/2015 16:57:11

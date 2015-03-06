@@ -6,6 +6,8 @@
 
 #include "../asmLoader/asmLoader.h" /* incluir TAD ASMLOADER */
 #include "../asmWriter/asmWriter.h" /* incluir TAD ASMWRITER */
+#include "../instruction/instruction.h" /* incluir o TAD INSTRUCTION */
+#include "../dictionary/dictionary.h" /* incluir o TAD DICTIONARY */
 
 typedef struct _assembler
 {
