@@ -22,10 +22,23 @@
 #define ASMLOADER_HEADER
 
 #include <stdio.h>  /* para I/O */
+#include <stdlib.h>
+#include <string.h>
+
+#define ASMLOADER_EALLOC        NULL    /* FALHA DE ALOCAÇÃO */
+#define ASMLOADER_EGETINST      NULL    /* Falha ao se obter nova instrução */
+
+#define ASMLOADER_EALLOC_MSG    "Falha na alocação da estrutura ASMLOADER."
+#define ASMLOADER_EGETINST_MSG  "Falha ao se obter nova instrução."
+
+#define ASMLOADER_FCOD_ASCII           1                            /* Codificação ASCII (1 byte/caractere) */
+#define ASMLOADER_INST_MAXCHARLENGTH   64 * (ASMLOADER_FCOD_ASCII)  /* Quantidade máxima de caracteres da instrução */
+
 
 typedef struct _asmLoader
 {
-    FILE *file; //Ponteiro para o arquivo a ser lido.
+    FILE *          file;       // Ponteiro para o arquivo a ser lido.
+    char *          inst_atual; // Instrução atual lida.
 } ASMLOADER;
 
 

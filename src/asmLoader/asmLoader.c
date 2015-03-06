@@ -22,16 +22,36 @@
 
 ASMLOADER *asmLoader_new(const char *filename)
 {
+    ASMLOADER *novo;
 
-    return NULL;
+    if ((novo = (ASMLOADER *)malloc(sizeof(ASMLOADER))) == ASMLOADER_EALLOC)
+        return ASMLOADER_EALLOC; /* stderr => ASMLOADER_EALLOC_MSG */
+
+    if ((novo->inst_atual = (char *)malloc(ASMLOADER_INST_MAXCHARLENGTH)) == NULL)
+    {
+        free(novo);
+        return ASMLOADER_EALLOC;
+    }
+
+    if ((novo->file = fopen(filename, "rb+")) == NULL)
+    {
+        free(novo->inst_atual);
+        free(novo);
+        return ASMLOADER_EALLOC;
+    }
+
+    return novo;
 }
 
 void asmLoader_free(ASMLOADER *asmLoader)
 {
-
+    fclose(asmLoader->file);
+    free(asmLoader);
 }
 
 char *asmLoader_getNextInst(ASMLOADER *asmLoader)
 {
+    fscanf(asmLoader->file, "%[^\n]\n", asmLoader->inst_atual);
 
+    return asmLoader->inst_atual;
 }
