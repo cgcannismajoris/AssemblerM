@@ -51,6 +51,9 @@ void asmLoader_free(ASMLOADER *asmLoader)
 
 char *asmLoader_getNextInst(ASMLOADER *asmLoader)
 {
+    if (feof(asmLoader->file))
+        return NULL;
+
     fscanf(asmLoader->file, "%[^\n]\n", asmLoader->inst_atual);
 
     return asmLoader->inst_atual;
