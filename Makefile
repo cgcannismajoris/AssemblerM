@@ -102,6 +102,6 @@ mk_dir:
 	mkdir -p bin data obj
 
 clean:
-	rm -f $(OUTPUT_FULLPATH_EXEC) $(LN_SYMBOL) data/* *~ *.swp *.swo \
+	rm -f $(OUTPUT_FULLPATH_EXEC) $(LN_SYMBOL) *~ *.swp *.swo \
 	$(OBJ)
 
