@@ -30,8 +30,7 @@ void asmWriter_free(ASMWRITER *asmWriter)
 
 }
 
-void asmWriter_writeInst(ASMWRITER *asmWriter
-                                    /*, INSTRUCTION *instruction*/)
+void asmWriter_writeInst(ASMWRITER *asmWriter)
 {
 
 }

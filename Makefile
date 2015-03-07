@@ -12,6 +12,10 @@ DICTIONARY_SRC	= src/dictionary/dictionary.c
 ENTRY_SRC		= src/dictionary/entry/entry.c
 DICWRITER_SRC	= src/dictionary/dicWriter/dicWriter.c
 DICLOADER_SRC	= src/dictionary/dicLoader/dicLoader.c
+LABEL_SRC		= src/assembler/label/label.c
+REG_SRC			= src/assembler/reg/reg.c
+TOKENS_SRC		= src/scanner/tokens/tokens.c
+SCANNER_SRC		= src/scanner/scanner.c
 
 
 # Arquivos-cabeçalho
@@ -23,6 +27,10 @@ DICTIONARY_H	= src/dictionary/dictionary.h
 ENTRY_H			= src/dictionary/entry/entry.h
 DICWRITER_H		= src/dictionary/dicWriter/dicWriter.h
 DICLOADER_H		= src/dictionary/dicLoader/dicLoader.h
+LABEL_H			= src/assembler/label/label.h
+REG_H			= src/assembler/reg/reg.h
+TOKENS_H		= src/scanner/tokens/tokens.h
+SCANNER_H		= src/scanner/scanner.h
 
 
 # Arquivos-objeto
@@ -35,6 +43,10 @@ DICTIONARY_OBJ	= obj/dictionary.o
 ENTRY_OBJ		= obj/entry.o
 DICWRITER_OBJ	= obj/dicWriter.o
 DICLOADER_OBJ	= obj/dicLoader.o
+LABEL_OBJ		= obj/label.o
+REG_OBJ			= obj/reg.o
+TOKENS_OBJ		= obj/tokens.o
+SCANNER_OBJ		= obj/scanner.o
 
 
 # Símbolos de arquivos de saída
@@ -50,11 +62,13 @@ LFLAG 			= -o
 #LIBFLAG 		=
 SRC 			= $(IMAIN_SRC) $(ASSEMBLER_SRC) $(ASMLOADER_SRC) \
 $(ASMWRITER_SRC) $(INSTRUCTION_SRC) $(DICTIONARY_SRC) $(ENTRY_SRC) \
-$(DICWRITER_SRC) $(DICLOADER_SRC)
+$(DICWRITER_SRC) $(DICLOADER_SRC) $(LABEL_SRC) $(REG_SRC) $(TOKENS_SRC) \
+$(SCANNER_SRC)
 
 OBJ				= $(IMAIN_OBJ) $(ASSEMBLER_OBJ) $(ASMLOADER_OBJ) \
 $(ASMWRITER_OBJ) $(INSTRUCTION_OBJ) $(DICTIONARY_OBJ) $(ENTRY_OBJ) \
-$(DICWRITER_OBJ) $(DICLOADER_OBJ)
+$(DICWRITER_OBJ) $(DICLOADER_OBJ) $(LABEL_OBJ) $(REG_OBJ) $(TOKENS_OBJ) \
+$(SCANNER_OBJ)
 
 BIN				= $(OUTPUT_FULLPATH_EXEC)
 
@@ -88,6 +102,18 @@ $(DICWRITER_OBJ): $(DICWRITER_H) $(DICWRITER_SRC)
 $(DICLOADER_OBJ): $(DICLOADER_H) $(DICLOADER_SRC)
 	$(COMPILER) $(CFLAG) $(DICLOADER_SRC) $(LFLAG) $(DICLOADER_OBJ)
 
+$(LABEL_OBJ): $(LABEL_H) $(LABEL_SRC)
+	$(COMPILER) $(CFLAG) $(LABEL_SRC) $(LFLAG) $(LABEL_OBJ)
+
+$(REG_OBJ): $(REG_H) $(REG_SRC)
+	$(COMPILER) $(CFLAG) $(REG_SRC) $(LFLAG) $(REG_OBJ)
+
+$(TOKENS_OBJ): $(TOKENS_H) $(TOKENS_SRC)
+	$(COMPILER) $(CFLAG) $(TOKENS_SRC) $(LFLAG) $(TOKENS_OBJ)
+
+$(SCANNER_OBJ): $(SCANNER_H) $(SCANNER_SRC)
+	$(COMPILER) $(CFLAG) $(SCANNER_SRC) $(LFLAG) $(SCANNER_OBJ)
+
 $(BIN): $(OBJ)
 	$(COMPILER) $(LFLAG) $(BIN) $(OBJ) $(LIBFLAG)
 
@@ -104,4 +130,3 @@ mk_dir:
 clean:
 	rm -f $(OUTPUT_FULLPATH_EXEC) $(LN_SYMBOL) *~ *.swp *.swo \
 	$(OBJ)
-

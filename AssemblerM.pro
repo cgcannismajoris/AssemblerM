@@ -12,7 +12,11 @@ SOURCES += \
     src/dictionary/entry/entry.c \
 	src/dictionary/dicWriter/dicWriter.c \
 	src/dictionary/dicLoader/dicLoader.c \
-	src/instruction/instruction.c
+	src/instruction/instruction.c \
+    src/assembler/label/label.c \
+    src/assembler/reg/reg.c \
+    src/scanner/tokens/tokens.c \
+    src/scanner/scanner.c
 
 HEADERS += \
 	src/assembler/assembler.h \
@@ -22,7 +26,11 @@ HEADERS += \
     src/dictionary/entry/entry.h \
 	src/dictionary/dicWriter/dicWriter.h \
 	src/dictionary/dicLoader/dicLoader.h \
-	src/instruction/instruction.h
+	src/instruction/instruction.h \
+    src/assembler/label/label.h \
+    src/assembler/reg/reg.h \
+    src/scanner/scanner.h \
+    src/scanner/tokens/tokens.h
 
 OTHER_FILES += \
     Makefile

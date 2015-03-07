@@ -8,11 +8,13 @@
 #include "../asmWriter/asmWriter.h" /* incluir TAD ASMWRITER */
 #include "../instruction/instruction.h" /* incluir o TAD INSTRUCTION */
 #include "../dictionary/dictionary.h" /* incluir o TAD DICTIONARY */
+#include "label/label.h" /* incluir o TAD LABEL */
 
 typedef struct _assembler
 {
     ASMLOADER *asmLoader;
     ASMWRITER *asmWriter;
+    /* Implementar LISTA ENCADEADA para LABEL */
 } ASSEMBLER, ASM;
 
 ASSEMBLER * assembler_new(const char *input, char *output);
