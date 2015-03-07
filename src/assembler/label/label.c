@@ -3,7 +3,7 @@
  */
 #include "label.h"
 
-LABEL *label_new(const char *name, uint32_t number)
+LABEL *label_new(const char *name, uint64_t num)
 {
     return NULL;
 }
@@ -18,7 +18,7 @@ char *label_getName(LABEL *label)
 
 }
 
-uint32_t label_getLine(LABEL *label)
+uint64_t label_getLineNum(LABEL *label)
 {
     return 0;
 }

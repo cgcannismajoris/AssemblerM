@@ -13,7 +13,7 @@ void dicLoader_free(DICLOADER *dicLoader)
 
 }
 
-uint32_t dicLoader_getQtdInst(DICLOADER *dicLoader)
+uint64_t dicLoader_getQtdInst(DICLOADER *dicLoader)
 {
     return 0;
 }

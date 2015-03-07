@@ -14,13 +14,15 @@
 typedef struct _dictionary
 {
     ENTRY *verbetes;
-    uint32_t qtdEntry;
+    uint64_t qtdEntry;
+	const char *filename;
 } DICTIONARY, DIC;
 
 DICTIONARY *    dic_new(const char *filename);
 void            dic_free(DICTIONARY *dic);
 
-int             dic_search(const char *rotulo);
-void            dic_create(const char *output);
+ENTRY *         dic_search(DICTIONARY *dic, const char *rotulo);
+int             dic_save(DICTIONARY *dic);
+int             dic_load(DICTIONARY *dic);
 
 #endif /* DICIONARY_HEADER */

@@ -18,13 +18,13 @@
 
 #include "entry.h"
 
-ENTRY *entry_new(char *rotulo, uint8_t opcode)
+ENTRY *entry_new(const char *pattern, uint8_t opcode)
 {
 	
 	ENTRY *new = NULL;
 	char *new_rot = NULL;
 
-	if(rotulo != NULL && strlen(rotulo) < ENTRY_ROT_MAXLENGTH){
+	if(pattern != NULL && strlen(pattern) < ENTRY_ROT_MAXLENGTH){
 
 		new = (ENTRY*)malloc(sizeof(ENTRY));
 
@@ -35,8 +35,8 @@ ENTRY *entry_new(char *rotulo, uint8_t opcode)
 	
 			if(new_rot != NULL)
 			{
-				new->rotulo = new_rot;	
-				strncpy(new->rotulo, rotulo, ENTRY_ROT_MAXLENGTH);
+				new->instructionPattern = new_rot;	
+				strncpy(new->instructionPattern, pattern, ENTRY_ROT_MAXLENGTH);
 				new->opcode = opcode;
 			}
 			else
@@ -53,16 +53,16 @@ ENTRY *entry_new(char *rotulo, uint8_t opcode)
 void entry_free(ENTRY *entry)
 {
 
-	free(entry->rotulo);
+	free(entry->instructionPattern);
 	free(entry);	
 
 }
 
-const char *entry_getRotulo(ENTRY *entry)
+const char *entry_getPattern(ENTRY *entry)
 {
 	if(entry != NULL)
 	{
-		return(entry->rotulo);
+		return(entry->instructionPattern);
 	}
 
 	return(NULL);

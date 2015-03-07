@@ -12,14 +12,14 @@
 typedef struct _reg
 {
     char *      regName;
-    u_int8_t    regNumber;
+    uint8_t     regNum;
 } REG;
 
 REG *       reg_new(const char *name, uint8_t num);
 void        reg_free(REG *reg);
 
 char *      reg_getName(REG *reg);
-u_int8_t    reg_getNum(REG *reg);
+uint8_t     reg_getNum(REG *reg);
 
 
 #endif /* REG_HEADER */

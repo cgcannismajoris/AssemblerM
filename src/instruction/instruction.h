@@ -49,7 +49,7 @@ typedef struct _instruction{
 } INSTRUCTION;
 
 
-/* -> INSTRUCTION * inst_newTypeR(uint32_t inst)
+/* -> INSTRUCTION * inst_new(uint32_t inst)
  * 
  * - DESCRIÇÃO: Instancia uma nova estrutura que armazena uma instrução
  *   binária.
@@ -61,7 +61,19 @@ typedef struct _instruction{
  *   	-> Se NULL    - Erro na operação.
  *   	-> Se != NULL - Sucesso na operação.
  */
-INSTRUCTION * inst_newTypeR(uint32_t inst);
+INSTRUCTION * inst_new(uint32_t inst);
+
+/* -> uint32_t inst_free(INSTRUCTION *inst)
+ *
+ * - DESCRIÇÃO: Destrói uma estrutura do tipo INSTRUCTION existente 
+ *   em memória.
+ *
+ * - PARÂMETROS: 
+ *      -> INSTRUCTION *inst: Estrutura a ser destruída.
+ *
+ * - RETORNO: void.
+ */
+void          inst_free(INSTRUCTION *instruction);
 
 
 /* -> uint32_t inst_getInst(INSTRUCTION *inst)
@@ -76,21 +88,20 @@ INSTRUCTION * inst_newTypeR(uint32_t inst);
  *   	-> Se 0       - Erro na operação.
  *   	-> Se != 0    - Sucesso na operação.
  */
-uint32_t      inst_getInst(INSTRUCTION *inst);
+uint32_t      inst_getInst(INSTRUCTION *instruction);
 
 
-/* -> uint32_t inst_free(INSTRUCTION *inst)
- *
- * - DESCRIÇÃO: Destrói uma estrutura do tipo INSTRUCTION existente 
+/* -> uint32_t inst_setInst(INSTRUCTION *inst)
+ * 
+ * - DESCRIÇÃO: Seta a instrução armazenada em uma estrutura pré-alocada
  *   em memória.
  *
  * - PARÂMETROS: 
- *      -> INSTRUCTION *inst: Estrutura a ser destruída.
+ *      -> INSTRUCTION *inst: Estrutura a ser utilizada na operação. 
  *
  * - RETORNO: void.
  */
-void          inst_free(INSTRUCTION *inst);
-
+void          inst_setInst(INSTRUCTION *instruction);
 
 #endif /* INSTRUCTION_HEADER */
 

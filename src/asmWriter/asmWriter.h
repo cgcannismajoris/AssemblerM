@@ -22,6 +22,7 @@
 #define ASMWRITER_HEADER
 
 #include <stdio.h>
+#include "../instruction/instruction.h"
 
 typedef struct _asmWriter
 {
@@ -68,6 +69,6 @@ void            asmWriter_free(ASMWRITER *asmWriter);
  * - RETORNO: void.
  */
 void            asmWriter_writeInst(ASMWRITER *asmWriter
-                                    /*, INSTRUCTION *instruction*/);
+                                    , INSTRUCTION *instruction);
 
 #endif /* ASMWRITER_HEADER */

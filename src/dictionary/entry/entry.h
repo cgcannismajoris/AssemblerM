@@ -38,7 +38,7 @@
 
 typedef struct _entry
 {
-    char *  rotulo;
+    char *  instructionPattern;
     uint8_t opcode;
 } ENTRY;
 
@@ -49,14 +49,14 @@ typedef struct _entry
  *              tradução dos identificadores em opcodes reconhecidos pela máquina.
  *   
  * - PARÂMETROS: 
- *      -> char *rotulo: Rótulo a ser inserido na estrutura.
+ *      -> char *pattern: Rótulo a ser inserido na estrutura.
  *      -> int opcode: Opcode correspondente ao rótulo recebido.
  *
  * - RETORNO: Estrutura do tipo ENTRY instanciada.
  *   	-> Se NULL    - Erro na operação.
  *   	-> Se != NULL - Sucesso na operação.
  */
-ENTRY *         entry_new(char *rotulo, uint8_t opcode);
+ENTRY *         entry_new(const char *pattern, uint8_t opcode);
 
 
 /* -> void entry_free(ENTRY *entry)
@@ -71,7 +71,7 @@ ENTRY *         entry_new(char *rotulo, uint8_t opcode);
 void            entry_free(ENTRY *entry);
 
 
-/* -> const char *entry_getRotulo(ENTRY *entry)
+/* -> const char *entry_getPattern(ENTRY *entry)
  * 
  * - DESCRIÇÃO: Retorna o rótulo armazenado na estrutura recebida.
  *
@@ -82,7 +82,7 @@ void            entry_free(ENTRY *entry);
  *   	-> Se NULL    - Erro na operação.
  *   	-> Se != NULL - Sucesso na operação. 
  */
-const char *    entry_getRotulo(ENTRY *entry);
+const char *    entry_getPattern(ENTRY *entry);
 
 
 /* -> uint8_t entry_getOpcode(ENTRY *entry)

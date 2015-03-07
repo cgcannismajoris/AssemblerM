@@ -19,6 +19,6 @@ typedef struct _assembler
 
 ASSEMBLER * assembler_new(const char *input, char *output);
 void        assembler_free(ASSEMBLER *assembler);
-int         assembler_assemble(const char *filename);
+int         assembler_assemble(ASSEMBLER *assembler, const char *src, const char *bin, const char *dicFile);
 
 #endif /* ASSEMBLER_HEADER */

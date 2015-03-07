@@ -18,7 +18,7 @@ char *reg_getName(REG *reg)
     return NULL;
 }
 
-u_int8_t reg_getNum(REG *reg)
+uint8_t reg_getNum(REG *reg)
 {
     return 0;
 }

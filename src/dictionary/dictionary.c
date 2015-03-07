@@ -13,12 +13,16 @@ void dic_free(DICTIONARY *dic)
 
 }
 
-int dic_search(const char *rotulo)
+ENTRY *dic_search(DICTIONARY *dic, const char *rotulo)
 {
-    return 0;
+	return (NULL);
 }
 
-void dic_create(const char *output)
+int dic_save(DICTIONARY *dic)
 {
-
+	return (-1);
+}
+int dic_load(DICTIONARY *dic)
+{
+	return (-1);
 }
