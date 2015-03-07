@@ -11,7 +11,7 @@
  *         Revisao:  none
  *      Compilador:  gcc
  *
- *           Autor:  Gustavo Freitas de Amorim (), gustavofreitasamorim@gmail.com
+ *           Autor:  Cristian Costa Mello, Gustavo Freitas de Amorim
  *     Organizacao:  VY Cannis Majoris
  *
  * ===========================================================================
@@ -28,7 +28,7 @@ typedef struct _asmWriter
     FILE *file;
 } ASMWRITER;
 
-
+ 
 /* -> ASMWRITER *     asmWriter_new(const char *filename)
  * 
  * - DESCRIÇÃO: Instancia um novo write do assembler que será utilizado na
