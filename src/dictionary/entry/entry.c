@@ -1,22 +1,38 @@
-/* entry.c
- * Implementaçao do TAD ENTRY.
+/*
+ * ==========================================================================
+ *
+ * Nome do Arquivo:  entry.c
+ *
+ *       Descricao:  Implementação do TAD ENTRY.
+ *
+ *          Versao:  1.0
+ *       Criado em:  06/03/2015 21:25:50
+ *         Revisao:  none
+ *      Compilador:  gcc
+ *
+ *           Autor:  Cristian Costa Mello, Gustavo Freitas de Amorim
+ *     Organizacao:  VY Cannis Majoris
+ *
+ * =========================================================================
  */
 
 #include "entry.h"
 
-ENTRY *entry_new(char *rotulo, int opcode)
+ENTRY *entry_new(char *rotulo, uint8_t opcode)
 {
 	
 	ENTRY *new = NULL;
 	char *new_rot = NULL;
 
-	if(rotulo != NULL && strlen(rotulo) <= 10){
+	if(rotulo != NULL && strlen(rotulo) < ENTRY_ROT_MAXLENGTH){
 
 		new = (ENTRY*)malloc(sizeof(ENTRY));
-		new_rot = (char*)malloc(ENTRY_ROT_MAXLENGTH);
 
 		if(new != NULL) 
 		{
+
+			new_rot = (char*)malloc(ENTRY_ROT_MAXLENGTH_BYTES);
+	
 			if(new_rot != NULL)
 			{
 				new->rotulo = new_rot;	
