@@ -16,7 +16,8 @@ SOURCES += \
     src/assembler/label/label.c \
     src/assembler/reg/reg.c \
     src/scanner/tokens/tokens.c \
-    src/scanner/scanner.c
+    src/scanner/scanner.c \
+    tools/dicwriter/main.c
 
 HEADERS += \
 	src/assembler/assembler.h \

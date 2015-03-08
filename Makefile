@@ -1,5 +1,16 @@
 # Makefile
 # Makefile do Projeto AssemblerM.
+#
+# ENTRADAS:
+#	1. make	all ou make:
+#	   compilação do projeto (não compila a ferramenta dicwriter);
+#
+#	2. make dicwriter : compilação somente da ferramenta dicwriter;
+#
+#	3. make clean : limpa o projeto (não limpa dicwriter);
+#
+#	4. make clean_dicwriter : limpa somente o dicwriter.
+
 
 # DEFINIÇÕES DE ARQUIVOS #####################
 # Arquivos de código-fonte
@@ -16,6 +27,7 @@ LABEL_SRC		= src/assembler/label/label.c
 REG_SRC			= src/assembler/reg/reg.c
 TOKENS_SRC		= src/scanner/tokens/tokens.c
 SCANNER_SRC		= src/scanner/scanner.c
+TOOL_DICWRITER_SRC = tools/dicwriter/main.c
 
 
 # Arquivos-cabeçalho
@@ -47,12 +59,18 @@ LABEL_OBJ		= obj/label.o
 REG_OBJ			= obj/reg.o
 TOKENS_OBJ		= obj/tokens.o
 SCANNER_OBJ		= obj/scanner.o
+TOOL_DICWRITER_OBJ	= tools/dicwriter/obj/tool_dicwriter.o
 
 
 # Símbolos de arquivos de saída
 OUTPUT_NAME_EXEC		= AssemblerM
 OUTPUT_FULLPATH_EXEC	= bin/$(OUTPUT_NAME_EXEC)
+
+OUTPUT_NAME_EXEC_DICWRITER = dicwriter
+OUTPUT_FULLPATH_EXEC_DICWRITER = tools/$(OUTPUT_NAME_EXEC_DICWRITER)/bin/$(OUTPUT_NAME_EXEC_DICWRITER)
+
 LN_SYMBOL				= $(OUTPUT_NAME_EXEC)
+LN_SYMBOL_TOOL_DICWRITER = $(OUTPUT_NAME_EXEC_DICWRITER)
 
 
 # DEFINIÇÕES PARA COMPILAÇÃO #################
@@ -65,12 +83,15 @@ $(ASMWRITER_SRC) $(INSTRUCTION_SRC) $(DICTIONARY_SRC) $(ENTRY_SRC) \
 $(DICWRITER_SRC) $(DICLOADER_SRC) $(LABEL_SRC) $(REG_SRC) $(TOKENS_SRC) \
 $(SCANNER_SRC)
 
+
 OBJ				= $(IMAIN_OBJ) $(ASSEMBLER_OBJ) $(ASMLOADER_OBJ) \
 $(ASMWRITER_OBJ) $(INSTRUCTION_OBJ) $(DICTIONARY_OBJ) $(ENTRY_OBJ) \
 $(DICWRITER_OBJ) $(DICLOADER_OBJ) $(LABEL_OBJ) $(REG_OBJ) $(TOKENS_OBJ) \
 $(SCANNER_OBJ)
 
+
 BIN				= $(OUTPUT_FULLPATH_EXEC)
+BIN_TOOL_DICWRITER = $(OUTPUT_FULLPATH_EXEC_DICWRITER)
 
 
 all: mk_dir $(BIN)
@@ -114,19 +135,41 @@ $(TOKENS_OBJ): $(TOKENS_H) $(TOKENS_SRC)
 $(SCANNER_OBJ): $(SCANNER_H) $(SCANNER_SRC)
 	$(COMPILER) $(CFLAG) $(SCANNER_SRC) $(LFLAG) $(SCANNER_OBJ)
 
+# Regra de compilação da ferramenta dicwriter
+$(TOOL_DICWRITER_OBJ): $(DICWRITER_H) $(TOOL_DICWRITER_SRC)
+	$(COMPILER) $(CFLAG) $(TOOL_DICWRITER_SRC) $(LFLAG) $(TOOL_DICWRITER_OBJ)
+
 $(BIN): $(OBJ)
 	$(COMPILER) $(LFLAG) $(BIN) $(OBJ) $(LIBFLAG)
 
+# GERAÇÃO DA FERRAMENTA DICWRITER
+dicwriter_bin: mk_dir_dicwriter $(TOOL_DICWRITER_OBJ)
+	$(COMPILER) $(LFLAG) $(BIN_TOOL_DICWRITER) $(TOOL_DICWRITER_OBJ) $(LIBFLAG)
+
+dicwriter: dicwriter_bin LN_SYMBOL_TOOL_DICWRITER
 
 # GERAÇÃO DO LINK SIMBÓLICO #################
 LN_SYMBOL:
 	rm -f $(OUTPUT_NAME_EXEC)
 	ln -s $(OUTPUT_FULLPATH_EXEC)
-	
+
+LN_SYMBOL_TOOL_DICWRITER:
+	rm -f bin/$(OUTPUT_NAME_EXEC_DICWRITER)
+	cd bin && ln -s ../$(OUTPUT_FULLPATH_EXEC_DICWRITER)
+	cd ..
+
 # CRIAÇÃO DE PASTAS #########################
 mk_dir:
 	mkdir -p bin data obj
 
+mk_dir_dicwriter:
+	mkdir -p tools/$(OUTPUT_NAME_EXEC_DICWRITER)/bin
+	mkdir -p tools/$(OUTPUT_NAME_EXEC_DICWRITER)/obj
+
 clean:
 	rm -f $(OUTPUT_FULLPATH_EXEC) $(LN_SYMBOL) *~ *.swp *.swo \
-	$(OBJ)
+	$(OBJ) $(TOOL_DICWRITER_OBJ)
+
+clean_dicwriter:
+	rm -f $(OUTPUT_FULLPATH_EXEC_DICWRITER) bin/$(LN_SYMBOL_TOOL_DICWRITER) \
+	$(TOOL_DICWRITER_OBJ)
