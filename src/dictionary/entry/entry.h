@@ -31,15 +31,15 @@
 #define ENTRY_EALLOC_MSG 	"Falha na alocação da estrutura ENTRY."
 
 
-#define ENTRY_ROTCOD_ASCII 				1
-#define ENTRY_ROT_MAXLENGTH				11
-#define ENTRY_ROT_MAXLENGTH_BYTES		(11 * ENTRY_ROTCOD_ASCII)
+#define ENTRY_STRCOD_ASCII 				1
+#define ENTRY_STR_MAXLENGTH				11
+#define ENTRY_STR_MAXLENGTH_BYTES		(11 * ENTRY_STRCOD_ASCII)
 
 
 typedef struct _entry
 {
-    char *  instructionPattern;
-    uint8_t opcode;
+    char *  instPattern;
+	char *	instTranslation;
 } ENTRY;
 
 
@@ -56,7 +56,7 @@ typedef struct _entry
  *   	-> Se NULL    - Erro na operação.
  *   	-> Se != NULL - Sucesso na operação.
  */
-ENTRY *         entry_new(const char *pattern, uint8_t opcode);
+ENTRY *         entry_new(const char *instPattern, const char *instTranslation);
 
 
 /* -> void entry_free(ENTRY *entry)
@@ -73,12 +73,12 @@ void            entry_free(ENTRY *entry);
 
 /* -> const char *entry_getPattern(ENTRY *entry)
  * 
- * - DESCRIÇÃO: Retorna o rótulo armazenado na estrutura recebida.
+ * - DESCRIÇÃO: Retorna o padrão armazenado na estrutura recebida.
  *
  * - PARÂMETROS: 
  *      -> ENTRY *entry: Estrutura a ser utilizada na operação.
  *
- * - RETORNO: Ponteiro para o rótulo armazenado.
+ * - RETORNO: Ponteiro para o padrão armazenado.
  *   	-> Se NULL    - Erro na operação.
  *   	-> Se != NULL - Sucesso na operação. 
  */
@@ -87,15 +87,15 @@ const char *    entry_getPattern(ENTRY *entry);
 
 /* -> uint8_t entry_getOpcode(ENTRY *entry)
  * 
- * - DESCRIÇÃO: Retorna o opcode armazenado na estrutura recebida.
+ * - DESCRIÇÃO: Retorna a tradução armazenada na estrutura recebida.
  *
  * - PARÂMETROS: 
  *      -> ENTRY *entry: Estrutura a ser utilizada na operação.
  *
- * - RETORNO: Ponteiro para o rótulo armazenado.
+ * - RETORNO: Ponteiro para a tradução armazenada.
  *   	-> Se 0	      - Erro na operação.
  *   	-> Se != 0    - Sucesso na operação. 
  */
-uint8_t         entry_getOpcode(ENTRY *entry);
+char *          entry_getTranslation(ENTRY *entry);
 
 #endif /* ENTRY_HEADER */

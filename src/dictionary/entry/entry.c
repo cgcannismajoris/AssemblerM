@@ -18,32 +18,39 @@
 
 #include "entry.h"
 
-ENTRY *entry_new(const char *pattern, uint8_t opcode)
+ENTRY *entry_new(const char *instPattern, const char *instTranslation)
 {
 	
 	ENTRY *new = NULL;
-	char *new_rot = NULL;
-
-	if(pattern != NULL && strlen(pattern) < ENTRY_ROT_MAXLENGTH){
-
-		new = (ENTRY*)malloc(sizeof(ENTRY));
-
-		if(new != NULL) 
-		{
-
-			new_rot = (char*)malloc(ENTRY_ROT_MAXLENGTH_BYTES);
+	char *new_pat = NULL;
+	char *new_tra = NULL;
 	
-			if(new_rot != NULL)
-			{
-				new->instructionPattern = new_rot;	
-				strncpy(new->instructionPattern, pattern, ENTRY_ROT_MAXLENGTH);
-				new->opcode = opcode;
-			}
-			else
-			{ //new foi alocado mas o rótulo não
-				free(new);
-				new = ENTRY_EALLOC;
-			}
+	if(instPattern == NULL || instTranslation == NULL ||
+					strlen(instPattern) < ENTRY_STR_MAXLENGTH){
+		return (new);
+	}
+
+	new = (ENTRY*)malloc(sizeof(ENTRY));
+
+	if(new != NULL) 
+	{
+		new_pat = (char*)malloc(ENTRY_STR_MAXLENGTH_BYTES);
+		new_tra = (char*)malloc(ENTRY_STR_MAXLENGTH_BYTES);
+
+		if(new_pat != NULL && new_tra != NULL)
+		{
+			new->instPattern = new_pat;	
+			strncpy(new->instPattern, instPattern, ENTRY_STR_MAXLENGTH);
+
+			new->instTranslation = new_tra;
+			strncpy(new->instTranslation, instTranslation, ENTRY_STR_MAXLENGTH);
+		}
+		else
+		{ //new foi alocado mas o rótulo não
+			free(new);
+			free(new_pat);
+			free(new_tra);
+			new = ENTRY_EALLOC;
 		}
 	}
 
@@ -53,7 +60,7 @@ ENTRY *entry_new(const char *pattern, uint8_t opcode)
 void entry_free(ENTRY *entry)
 {
 
-	free(entry->instructionPattern);
+	free(entry->instPattern);
 	free(entry);	
 
 }
@@ -62,17 +69,17 @@ const char *entry_getPattern(ENTRY *entry)
 {
 	if(entry != NULL)
 	{
-		return(entry->instructionPattern);
+		return(entry->instPattern);
 	}
 
 	return(NULL);
 }
 
-uint8_t entry_getOpcode(ENTRY *entry)
+char *entry_getTranslation(ENTRY *entry)
 {
 	if(entry != NULL)
 	{
-		return(entry->opcode);
+		return(entry->instTranslation);
 	}
 
 	return(0);
