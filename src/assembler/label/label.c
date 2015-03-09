@@ -21,10 +21,10 @@
 
 LABEL *label_new(const char *name, uint64_t num)
 {
-	LABEL *new;
+	LABEL *new = NULL;
 
-	if(name != NULL){
-		return (NULL);
+	if(name == NULL){
+		return (new);
 	}
 
 	new = (LABEL*)malloc(sizeof(LABEL));
