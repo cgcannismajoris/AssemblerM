@@ -11,7 +11,7 @@
  *         Revisao:  none
  *      Compilador:  gcc
  *
- *           Autor:  Gustavo Freitas de Amorim (), gustavofreitasamorim@gmail.com
+ *           Autor:  Cristian Costa Mello, Gustavo Freitas de Amorim 
  *     Organizacao:  VY Cannis Majoris
  *
  * =========================================================================
@@ -26,23 +26,103 @@
 #include <string.h>
 
 
-#define LABEL_LABELNAMELENGTH   20
-
 #define LABEL_EALLOC			NULL
 
 #define LABEL_STR_EALLOC		"Falha na alocação de memória no TAD LABEL."
 
+
+
 typedef struct _label
 {
-    char *          labelName;
-    uint64_t        labelLineNum;
-    struct _label * next;
+    char *          labelName;    //Nome da label;
+    uint64_t        labelLineNum; //Linha onde a label foi declarada;
+    struct _label * next;         //Próxima label da lista.
 } LABEL;
 
+
+/* -> LABEL *label_new(const char *name, uint64_t num)
+ * 
+ * - DESCRIÇÃO: Instancia uma nova estrutura que armazena uma label declarada no
+ *   código fonte do programa.
+ *
+ * - PARÂMETROS: 
+ *      -> const char *name: Nome da label.
+ *      -> uint64_t num: Número da linha onde a label foi declarada.
+ *
+ * - RETORNO: Estrutura do tipo LABEL instanciada.
+ *   	-> Se LABEL_EALLOC     - Erro na operação.
+ *   	-> Se !=  LABEL_EALLOC - Sucesso na operação.
+ */
 LABEL *     label_new(const char *name, uint64_t num);
+
+
+/* -> void label_free(LABEL *label)
+ *
+ * - DESCRIÇÃO: Destrói uma estrutura do tipo LABEL existente em memória.
+ *
+ * - PARÂMETROS: 
+ *      -> LABEL *label: Estrutura a ser destruída.
+ *
+ * - RETORNO: void.
+ */
 void        label_free(LABEL *label);
 
+
+/* -> char *label_getName(LABEL *label)
+ * 
+ * - DESCRIÇÃO: Retorna o nome da label armazenado na estrutura recebida como
+ *   parâmetro.
+ *
+ * - PARÂMETROS: 
+ *      -> LABEL *label: Estrutura a ser utilizada na operação. 
+ *
+ * - RETORNO: Nome armazenado na estrutura.
+ *   	-> Se NULL       - Erro na operação.
+ *   	-> Se != NULL    - Sucesso na operação.
+ */
 char *      label_getName(LABEL *label);
+
+
+/* -> uint64_t label_getLineNum(LABEL *label)
+ * 
+ * - DESCRIÇÃO: Retorna o número da linha armazenado na estrutura recebida como
+ *   parâmetro.
+ *
+ * - PARÂMETROS: 
+ *      -> LABEL *label: Estrutura a ser utilizada na operação. 
+ *
+ * - RETORNO: Nome armazenado na estrutura.
+ *   	-> Se 0       - Erro na operação.
+ *   	-> Se != 0    - Sucesso na operação.
+ */
 uint64_t    label_getLineNum(LABEL *label);
+
+
+/* -> LABEL *label_getNext(LABEL *label)
+ * 
+ * - DESCRIÇÃO: Retorna o ponteiro para a próxima label armazenado na estrutura
+ *   recebida.
+ *
+ * - PARÂMETROS: 
+ *      -> LABEL *label: Estrutura a ser utilizada na operação. 
+ *
+ * - RETORNO: Nome armazenado na estrutura.
+ *   	-> Se NULL       - Erro na operação.
+ *   	-> Se != NULL    - Sucesso na operação.
+ */
+LABEL *     label_getNext(LABEL *label);
+
+
+/* -> void label_setNext(LABEL *label, LABEL *next)
+ * 
+ * - DESCRIÇÃO: Armazena o ponteiro para a próxima label na estrutura recebida.
+ *
+ * - PARÂMETROS: 
+ *      -> LABEL *label: Estrutura a ser utilizada na operação. 
+ *
+ * - RETORNO: void. 
+ */
+void        label_setNext(LABEL *label, LABEL *next);
+
 
 #endif /* LABEL_HEADER */

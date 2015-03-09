@@ -10,7 +10,7 @@
  *         Revisao:  none
  *      Compilador:  gcc
  *
- *           Autor:  Gustavo Freitas de Amorim (), gustavofreitasamorim@gmail.com
+ *           Autor:  Cristian Costa Mello, Gustavo Freitas de Amorim 
  *     Organizacao:  VY Cannis Majoris
  *
  * =========================================================================
@@ -72,8 +72,17 @@ uint64_t label_getLineNum(LABEL *label)
 	return (0);
 }
 
+LABEL *     label_getNext(LABEL *label){
+	if(label != NULL){
+		return (label->next);
+	}
+	return (NULL);
+}
+
 void label_setNext(LABEL *label, LABEL *next){
 	if(label != NULL){
 		label->next = next;
 	}
 }
+
+
