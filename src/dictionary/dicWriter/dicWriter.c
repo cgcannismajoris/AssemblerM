@@ -28,10 +28,8 @@ DICWRITER *dicWriter_new(const char *filename)
 
 	if(file != NULL)
 	{
-
 		new = (DICWRITER*)malloc(sizeof(DICWRITER));
 		new->file = file;
-
 	}
 
     return new;
@@ -61,21 +59,22 @@ int dicWriter_writeQtdInst(DICWRITER *dicWriter, uint64_t num)
 }
 
 int dicWriter_writeInst(DICWRITER *dicWriter, 
-							const char *instructionPattern,
-                          		uint32_t opcode)
+							const char *instPattern,
+                          		const char *instTranslation)
 {
 
-	if(dicWriter != NULL && instructionPattern != NULL)
+	if(dicWriter != NULL && instPattern != NULL)
 	{
 		//Grava o padrão da instrução
-		fwrite(instructionPattern, sizeof(char), strlen(instructionPattern), 
+		fwrite(instPattern, sizeof(char), strlen(instPattern), 
 						dicWriter->file);
 
 		//Insere uma separação
-		fwrite(" ", sizeof(char), 1, dicWriter->file);
+		fwrite("&", sizeof(char), 1, dicWriter->file);
 
 		//Grava o opcode correspondente à instrução
-		fwrite(&opcode, sizeof(uint8_t), 1, dicWriter->file);
+		fwrite(instTranslation, sizeof(char), strlen(instTranslation), 
+						dicWriter->file);
 
 		//Grava o terminador de instrução
 		fwrite("\0", sizeof(char), 1, dicWriter->file);

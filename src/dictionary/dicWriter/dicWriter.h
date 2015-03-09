@@ -94,15 +94,15 @@ int             dicWriter_writeQtdInst(DICWRITER *dicWriter, uint64_t num);
  * - PARÂMETROS: 
  *      -> ASMWRITER *asmWriter: Estrutura a ser utilizada para a escrita da 
  *      instrução.
- *      -> const char *instructionPattern: Padrão de instrução a ser escrito.
- *      -> uint32_t opcode: Opcode correspondente ao padrão recebido.
+ *      -> const char *instPattern: Padrão de instrução a ser escrito.
+ *      -> const char *instTranslation: Tradução da instrução a ser escrita.
  *
  * - RETORNO: Estado da operação.
  *      -> Se 0                      - Sucesso na operação.
  *      -> Se DICWRITER_ENULLPOINTER - Erro na peração.
  */
 int             dicWriter_writeInst(DICWRITER *dicWriter, 
-										const char *instructionPattern,
-                                    		uint32_t opcode);
+										const char *instPattern,
+                                    		const char *instTranslation);
 
 #endif /* DICWRITER_HEADER */
