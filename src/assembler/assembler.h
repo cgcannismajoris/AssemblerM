@@ -4,11 +4,13 @@
 #ifndef ASSEMBLER_HEADER
 #define ASSEMBLER_HEADER
 
-#include "../asmLoader/asmLoader.h" /* incluir TAD ASMLOADER */
-#include "../asmWriter/asmWriter.h" /* incluir TAD ASMWRITER */
-#include "../instruction/instruction.h" /* incluir o TAD INSTRUCTION */
-#include "../dictionary/dictionary.h" /* incluir o TAD DICTIONARY */
-#include "label/label.h" /* incluir o TAD LABEL */
+#include "../asmLoader/asmLoader.h"         /* incluir TAD ASMLOADER */
+#include "../asmWriter/asmWriter.h"         /* incluir TAD ASMWRITER */
+#include "../instruction/instruction.h"     /* incluir o TAD INSTRUCTION */
+#include "../dictionary/dictionary.h"       /* incluir o TAD DICTIONARY */
+#include "reg/reg.h"                        /* incluir o TAD REG */
+#include "label/label.h"                    /* incluir o TAD LABEL */
+
 
 typedef struct _assembler
 {

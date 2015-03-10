@@ -7,7 +7,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 
+
+#define REG_EALLOC          NULL
+#define REG_EALLOC_MSG      "Falha ao alocar memória para REG."
 
 typedef struct _reg
 {
