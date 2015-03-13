@@ -32,8 +32,6 @@
 
 
 #define ENTRY_STRCOD_ASCII 				1
-#define ENTRY_STR_MAXLENGTH				11
-#define ENTRY_STR_MAXLENGTH_BYTES		(11 * ENTRY_STRCOD_ASCII)
 
 
 typedef struct _entry

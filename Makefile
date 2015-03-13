@@ -27,6 +27,9 @@ LABEL_SRC		= src/assembler/label/label.c
 REG_SRC			= src/assembler/reg/reg.c
 TOKENS_SRC		= src/scanner/tokens/tokens.c
 SCANNER_SRC		= src/scanner/scanner.c
+LINKEDL_SRC     = src/linkedList/linkedList.c
+GNODE_SRC       = src/linkedList/node.c
+GDMANIP_SRC     = src/linkedList/genericDataManipulation.c
 TOOL_DICWRITER_SRC = tools/dicwriter/main.c
 
 
@@ -43,7 +46,9 @@ LABEL_H			= src/assembler/label/label.h
 REG_H			= src/assembler/reg/reg.h
 TOKENS_H		= src/scanner/tokens/tokens.h
 SCANNER_H		= src/scanner/scanner.h
-
+LINKEDL_H       = src/linkedList/linkedList.h
+GNODE_H         = src/linkedList/node.h
+GDMANIP_H       = src/linkedList/genericDataManipulation.h
 
 # Arquivos-objeto
 IMAIN_OBJ		= obj/imain.o
@@ -59,6 +64,9 @@ LABEL_OBJ		= obj/label.o
 REG_OBJ			= obj/reg.o
 TOKENS_OBJ		= obj/tokens.o
 SCANNER_OBJ		= obj/scanner.o
+LINKEDL_OBJ     = obj/linkedList.o
+GNODE_OBJ       = obj/node.o
+GDMANIP_OBJ     = obj/genericDataManipulation.o
 TOOL_DICWRITER_OBJ	= tools/dicwriter/obj/tool_dicwriter.o
 
 
@@ -87,7 +95,7 @@ $(SCANNER_SRC)
 OBJ				= $(IMAIN_OBJ) $(ASSEMBLER_OBJ) $(ASMLOADER_OBJ) \
 $(ASMWRITER_OBJ) $(INSTRUCTION_OBJ) $(DICTIONARY_OBJ) $(ENTRY_OBJ) \
 $(DICWRITER_OBJ) $(DICLOADER_OBJ) $(LABEL_OBJ) $(REG_OBJ) $(TOKENS_OBJ) \
-$(SCANNER_OBJ)
+$(SCANNER_OBJ) $(LINKEDL_OBJ) $(GNODE_OBJ) $(GDMANIP_OBJ)
 
 
 BIN				= $(OUTPUT_FULLPATH_EXEC)
@@ -135,6 +143,16 @@ $(TOKENS_OBJ): $(TOKENS_H) $(TOKENS_SRC)
 $(SCANNER_OBJ): $(SCANNER_H) $(SCANNER_SRC)
 	$(COMPILER) $(CFLAG) $(SCANNER_SRC) $(LFLAG) $(SCANNER_OBJ)
 
+$(GDMANIP_OBJ): $(GDMANIP_H) $(GDMANIP_C)
+	$(COMPILER) $(CFLAG) $(GDMANIP_SRC) $(LFLAG) $(GDMANIP_OBJ)
+
+$(GNODE_OBJ): $(GNODE_H) $(GNODE_SRC)
+	$(COMPILER) $(CFLAG) $(GNODE_SRC) $(LFLAG) $(GNODE_OBJ)
+	
+$(LINKEDL_OBJ): $(LINKEDL_H) $(LINKEDL_SRC) $(GNODE_OBJ) $(GDMANIP_OBJ)
+	$(COMPILER) $(CFLAG) $(LINKEDL_SRC) $(LFLAG) $(LINKEDL_OBJ)
+
+
 # Regra de compilação da ferramenta dicwriter
 $(TOOL_DICWRITER_OBJ): $(DICWRITER_OBJ) $(TOOL_DICWRITER_SRC)
 	$(COMPILER) $(CFLAG) $(TOOL_DICWRITER_SRC) $(LFLAG) $(TOOL_DICWRITER_OBJ)
@@ -143,9 +161,10 @@ $(BIN): $(OBJ)
 	$(COMPILER) $(LFLAG) $(BIN) $(OBJ) $(LIBFLAG)
 
 # GERAÇÃO DA FERRAMENTA DICWRITER
-dicwriter_bin: mk_dir_dicwriter $(TOOL_DICWRITER_OBJ)
+dicwriter_bin: mk_dir_dicwriter $(TOOL_DICWRITER_OBJ) $(LINKEDL_OBJ) $(ENTRY_OBJ)
 	$(COMPILER) $(LFLAG) $(BIN_TOOL_DICWRITER) $(DICWRITER_OBJ) \
-	$(TOOL_DICWRITER_OBJ) $(LIBFLAG)
+	$(GDMANIP_OBJ) $(GNODE_OBJ) $(LINKEDL_OBJ) $(TOOL_DICWRITER_OBJ) \
+	$(ENTRY_OBJ)
 
 dicwriter: dicwriter_bin LN_SYMBOL_TOOL_DICWRITER
 
@@ -173,4 +192,4 @@ clean:
 
 clean_dicwriter:
 	rm -f $(OUTPUT_FULLPATH_EXEC_DICWRITER) bin/$(LN_SYMBOL_TOOL_DICWRITER) \
-	$(TOOL_DICWRITER_OBJ)
+	$(TOOL_DICWRITER_OBJ) $(LINKEDL_OBJ) $(GNODE_OBJ) $(GDMANIP_OBJ) $(ENTRY_OBJ) 

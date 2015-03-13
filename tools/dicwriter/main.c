@@ -7,11 +7,14 @@
 #include <signal.h>
 
 #include "../../src/dictionary/dicWriter/dicWriter.h"
-
+#include "../../src/linkedList/linkedList.h"
+#include "../../src/dictionary/entry/entry.h"
 
 #define STR_MAXLENGTH	256
 #define STR_OPMAXLENGTH 3
 
+#define FATAL_ERROR_ALLOC_MSGID    100
+#define SUCCESS_MSGID              90
 
 int translateOpcode(char *str);
 
@@ -20,12 +23,14 @@ void writeMsg(uint8_t id);
 int main(int argc, char **argv)
 {
 
-	DICWRITER *output;
+	LIST *entryList;
+	NODE *no;
+	ENTRY *entry;
+	DICWRITER *writer;
 	
 	char end = 's';
 	char instPattern[STR_MAXLENGTH];
 	char instTranslation[STR_MAXLENGTH];
-
 
 	if(argc < 2){
 		writeMsg(1);
@@ -36,7 +41,18 @@ int main(int argc, char **argv)
 		return (0);
 	}
 
-	output = dicWriter_new(argv[1]);
+	entryList = lista_new();
+	writer = dicWriter_new(argv[1]);
+
+	if(entryList == NULL || writer == NULL){
+		
+		free(entryList);
+		free(writer);
+
+		writeMsg(FATAL_ERROR_ALLOC_MSGID);
+
+		return (-1);
+	}
 
 	while(end != 'n'){
 
@@ -50,8 +66,24 @@ int main(int argc, char **argv)
 			writeMsg(4);
 			scanf("\n%[^\n]", instTranslation);
 		}
+		
+		//Instancia os novos elementos da lista
+		entry = entry_new(instPattern, instTranslation);
+		no = lista_node_new(entry, sizeof(ENTRY));
+	
+		//Se ocorreu algum problema
+		if(no == NULL || entry == NULL){
+			writeMsg(FATAL_ERROR_ALLOC_MSGID);
 
-		dicWriter_writeInst(output, instPattern, instTranslation);
+			lista_free(entryList);
+			entry_free(entry);
+			node_free(&no);
+
+			return (-1);
+		}
+		//Insere os novos elementos na lista
+		lista_insertLastNode(entryList, no);
+		//dicWriter_writeInst(writer, instPattern, instTranslation);
 		
 		writeMsg(5);
 		scanf(" %c", &end);
@@ -61,9 +93,28 @@ int main(int argc, char **argv)
 
 	}
 
-	dicWriter_free(output);
+	writeMsg(7);
 
-    return 0;
+	//Grava a quantidade de verbetes gerados 
+	dicWriter_writeQtdInst(writer, lista_getQuant(entryList));
+
+	//Grava os verbetes
+	while((no = lista_removeRaiz(entryList)) != NULL){
+		
+		entry = (ENTRY*)node_getData(no);
+		
+		dicWriter_writeInst(writer, entry_getPattern(entry), 
+						       entry_getTranslation(entry));
+
+		node_free(&no);
+	}
+	
+	writeMsg(SUCCESS_MSGID);
+
+	dicWriter_free(writer);
+	lista_free(entryList);
+   
+   	return 0;
 }
 
 
@@ -72,7 +123,7 @@ int translateOpcode(char *str){
 	int i, j;
 	char opStr[STR_OPMAXLENGTH];
 
-	for(i = 0; i < STR_OPMAXLENGTH && str[i] != ' '; i++){
+	for(i = 0; i < STR_OPMAXLENGTH && str[i] != ' ' && str[i] != '\0'; i++){
 		opStr[i] = str[i];
 		str[i] = ' ';
 	}
@@ -81,11 +132,12 @@ int translateOpcode(char *str){
 	str[0] = (uint8_t)atoi(opStr);
 	
 	//Se inseriu um opcode maior do que o limite...
-	if(str[i] != ' ' || str[0] > 63){
+	if(str[i] != ' ' || str[0] > 62){
 		return (-1);
 	}
 
-	for(j = 1, i = i; i < STR_MAXLENGTH && j  < STR_MAXLENGTH; j++, i++){
+	for(j = 1, i = i; i < STR_MAXLENGTH && j  < STR_MAXLENGTH && str[i] != '\0'; 
+					j++, i++){
 		str[j] = str[i];
 	}
 
@@ -100,18 +152,23 @@ void writeMsg(uint8_t id){
 			printf("Sem arquivo de saída.\n");
 			printf("Utilize -help para obter ajuda.\n");
 			break;
+
 		case 2:
 			printf("Insira o padrão da instrução: ");
 			break;
+
 		case 3:
 			printf("Insira a tradução do padrão: ");
 			break;
+
 		case 4:
 			printf("Opcode muito grande ou inválido! Tente novamente.\n");
 			break;
+
 		case 5:
 			printf("Adicionar mais? (s - SIM // n - NÃO) ");
 			break;
+
 		case 6:
 			printf("Padrão da instrução:\n");
 			printf(" -> Padrão de instrução:\n");
@@ -122,6 +179,17 @@ void writeMsg(uint8_t id){
 		   	printf("  $ -> Registrador\n");
 			printf("  %% -> Próxima instrução\n");
 			printf("  Exemplo: 12 $1 $2 $3 %%\n");
+			break;
+		case 7:
+			printf("Gravando dados no arquivo...");
+			break;
+
+		case SUCCESS_MSGID:
+			printf("SUCESSO!\n");
+			break;
+
+		case FATAL_ERROR_ALLOC_MSGID:
+			printf("\n\nFalha na alocação de memória!\n\n");
 			break;
 		default:
 			printf("\n\nERROR: MSG NOT FOUND!\n\n");

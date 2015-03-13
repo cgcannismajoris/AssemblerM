@@ -25,8 +25,7 @@ ENTRY *entry_new(const char *instPattern, const char *instTranslation)
 	char *new_pat = NULL;
 	char *new_tra = NULL;
 	
-	if(instPattern == NULL || instTranslation == NULL ||
-					strlen(instPattern) < ENTRY_STR_MAXLENGTH){
+	if(instPattern == NULL || instTranslation == NULL){
 		return (new);
 	}
 
@@ -34,16 +33,18 @@ ENTRY *entry_new(const char *instPattern, const char *instTranslation)
 
 	if(new != NULL) 
 	{
-		new_pat = (char*)malloc(ENTRY_STR_MAXLENGTH_BYTES);
-		new_tra = (char*)malloc(ENTRY_STR_MAXLENGTH_BYTES);
+		new_pat = (char*)malloc(strlen(instPattern) * ENTRY_STRCOD_ASCII);
+		new_tra = (char*)malloc(strlen(instTranslation) * ENTRY_STRCOD_ASCII);
 
 		if(new_pat != NULL && new_tra != NULL)
 		{
 			new->instPattern = new_pat;	
-			strncpy(new->instPattern, instPattern, ENTRY_STR_MAXLENGTH);
+			strncpy(new->instPattern, instPattern, strlen(instPattern) * 
+							ENTRY_STRCOD_ASCII);
 
 			new->instTranslation = new_tra;
-			strncpy(new->instTranslation, instTranslation, ENTRY_STR_MAXLENGTH);
+			strncpy(new->instTranslation, instTranslation, strlen(instTranslation) * 
+							ENTRY_STRCOD_ASCII);
 		}
 		else
 		{ //new foi alocado mas o rótulo não
