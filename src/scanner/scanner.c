@@ -1,8 +1,22 @@
-/* scanner.c
- * Implementação do SCANNER.
+/*
+ * ==========================================================================
+ *
+ * Nome do Arquivo:  scanner.c
+ *
+ *       Descricao:  Implementação do método de geração de tokens do assembler.
+ *
+ *          Versao:  1.0
+ *       Criado em:  14/03/2015 20:36:55
+ *         Revisao:  none
+ *      Compilador:  gcc
+ *
+ *           Autor:  Cristian Costa Mello, Gustavo Freitas de Amorim
+ *     Organizacao:  VY Cannis Majoris
+ *
+ * =========================================================================
  */
-#include "scanner.h"
 
+#include "scanner.h"
 
 TOKENS *scanner_scan(char *sentence)
 {
@@ -10,7 +24,7 @@ TOKENS *scanner_scan(char *sentence)
     char *str, *ptr_str;
     char *pch;
     char delim[] = SCANNER_DELIMS;
-    int cont_tokens = 0, i = 0;
+    int cont_tokens = 0;
 
     if ((str = (char *)malloc(strlen(sentence) * sizeof(char) + 1)) == NULL)
         return SCANNER_ERROR;

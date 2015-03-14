@@ -1,6 +1,21 @@
-/* scanner.h
- * SCANNER.
+/*
+ * ==========================================================================
+ *
+ * Nome do Arquivo:  scanner.h
+ *
+ *       Descricao:  Método para geração de tokens para o assembler.
+ *
+ *          Versao:  1.0
+ *       Criado em:  14/03/2015 20:37:32
+ *         Revisao:  none
+ *      Compilador:  gcc
+ *
+ *           Autor:  Cristian Costa Mello, Gustavo Freitas de Amorim
+ *     Organizacao:  VY Cannis Majoris
+ *
+ * =========================================================================
  */
+
 #ifndef SCANNER_HEADER
 #define SCANNER_HEADER
 

@@ -1,24 +1,78 @@
-/* dicLoader.c
- * Implementaçao do TAD DICLOADER.
+/*
+ * ==========================================================================
+ *
+ * Nome do Arquivo:  dicLoader.c
+ *
+ *       Descricao:  Implementação do TAD DICLOADER.
+ *
+ *          Versao:  1.0
+ *       Criado em:  14/03/2015 20:20:03
+ *         Revisao:  none
+ *      Compilador:  gcc
+ *
+ *           Autor:  Cristian Costa Mello, Gustavo Freitas de Amorim
+ *     Organizacao:  VY Cannis Majoris
+ *
+ * =========================================================================
  */
+
 #include "dicLoader.h"
 
 DICLOADER *dicLoader_new(const char *filename)
 {
-    return NULL;
+
+	DICLOADER *new = NULL;
+
+	if(filename == NULL){
+		return (new);
+	}
+
+	new = (DICLOADER*)malloc(sizeof(DICLOADER));
+
+	if(new != NULL){
+		
+		new->file = fopen(filename, "rb+");
+		
+		if(new->file == NULL){
+			free(new);
+			new = NULL;
+		}
+	}
+
+	return new;
 }
 
 void dicLoader_free(DICLOADER *dicLoader)
 {
-
+	fclose(dicLoader->file);
+	free(dicLoader);
 }
 
 uint64_t dicLoader_getQtdInst(DICLOADER *dicLoader)
 {
-    return 0;
+
+	uint64_t qtdInst = 0;
+	
+	fread(&qtdInst, sizeof(uint64_t), 1, dicLoader->file);
+	
+    return qtdInst;
 }
 
 char *dicLoader_getNextInst(DICLOADER *dicLoader)
 {
-    return NULL;
+	long int i = -1;
+	char *verbete;
+
+	if(feof(dicLoader->file)){
+		return (NULL);
+	}
+
+	verbete = (char *)malloc(sizeof(char) * DICLOADER_MAX_INST_LENGTH);
+
+	do{
+		i++;
+		fread(&(verbete[i]), sizeof(char), 1, dicLoader->file);
+	}while(i < DICLOADER_MAX_INST_LENGTH && verbete[i] != '\0');
+
+    return verbete;
 }

@@ -17,7 +17,6 @@
  * =========================================================================
  */
 
-
 #ifndef DICWRITER_HEADER
 #define DICWRITER_HEADER
 
@@ -37,6 +36,12 @@
 #define DICWRITER_EALLOC_MSG        "Falha na alocação da estrutura DICWRITER."
 
 
+#define DICWRITER_SEPARATOR		"&"
+#define DICWRITER_TERMINATOR	"\0"
+
+#define DICWRITER_SEPARATOR_CHR		'&'
+#define DICWRITER_TERMINATOR_CHR	'\0'
+
 typedef struct _dicWriter
 {
     FILE *file; //Ponteiro para o arquivo utilizado nas operações de escrita.
@@ -45,8 +50,8 @@ typedef struct _dicWriter
 
 /* -> DICWRITER *dicWriter_new(const char *filename)
  * 
- * - DESCRIÇÃO: Instancia um novo writer do assembler que será utilizado na
- *              escrita do arquivo de traduções da linguagem.
+ * - DESCRIÇÃO: Instancia um novo writer do dicionário que será utilizado na
+ *              escrita do arquivo de configurações do mesmo.
  *   
  * - PARÂMETROS: 
  *      -> const char *filename: Nome do arquivo a ser utilizado.

@@ -62,7 +62,6 @@ int dicWriter_writeInst(DICWRITER *dicWriter,
 							const char *instPattern,
                           		const char *instTranslation)
 {
-
 	if(dicWriter != NULL && instPattern != NULL)
 	{
 		//Grava o padrão da instrução
@@ -70,14 +69,14 @@ int dicWriter_writeInst(DICWRITER *dicWriter,
 						dicWriter->file);
 
 		//Insere uma separação
-		fwrite("&", sizeof(char), 1, dicWriter->file);
+		fwrite(DICWRITER_SEPARATOR, sizeof(char), 1, dicWriter->file);
 
 		//Grava o opcode correspondente à instrução
 		fwrite(instTranslation, sizeof(char), strlen(instTranslation), 
 						dicWriter->file);
 
 		//Grava o terminador de instrução
-		fwrite("\0", sizeof(char), 1, dicWriter->file);
+		fwrite(DICWRITER_TERMINATOR, sizeof(char), 1, dicWriter->file);
 
 		return(0);
 	}

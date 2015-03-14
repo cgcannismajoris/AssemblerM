@@ -10,7 +10,7 @@
  *         Revisao:  none
  *      Compilador:  gcc
  *
- *           Autor:  Gustavo Freitas de Amorim (), gustavofreitasamorim@gmail.com
+ *           Autor:  Cristian Costa Mello, Gustavo Freitas de Amorim
  *     Organizacao:  VY Cannis Majoris
  *
  * ===========================================================================
