@@ -37,7 +37,7 @@ typedef struct _tokens
 {
     char **  tokens;    //Vetor onde são armazenados os tokens
     uint8_t  qtdUsed;   //Quantidade de tokens armazenados
-	uint8_t  qtdMax;    //Quantidade máxima de tokes (tamanho do vetor char **tokens)
+    uint8_t  qtdMax;    //Quantidade máxima de tokens (tamanho do vetor char **tokens)
 } TOKENS;
 
 

@@ -13,7 +13,7 @@ void dic_free(DICTIONARY *dic)
 
 }
 
-ENTRY *dic_search(DICTIONARY *dic, const char *rotulo)
+ENTRY *dic_search(DICTIONARY *dic, const char *nomeOperacao)
 {
 	return (NULL);
 }

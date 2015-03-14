@@ -51,7 +51,7 @@ void token_free(TOKENS *token)
 
 	if(token != NULL){
 		
-		//Destrói as instrings
+        //Destrói as strings
 		for(qtd = 0; qtd < token->qtdMax; qtd++){
 			free(token->tokens[qtd]);
 		}

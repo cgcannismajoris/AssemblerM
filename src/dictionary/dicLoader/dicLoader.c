@@ -18,7 +18,7 @@ uint64_t dicLoader_getQtdInst(DICLOADER *dicLoader)
     return 0;
 }
 
-uint32_t dicLoader_getNextInst(DICLOADER *dicLoader)
+char *dicLoader_getNextInst(DICLOADER *dicLoader)
 {
-    return 0;
+    return NULL;
 }

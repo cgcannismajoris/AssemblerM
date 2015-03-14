@@ -17,6 +17,6 @@ DICLOADER *     dicLoader_new(const char *filename);
 void            dicLoader_free(DICLOADER *dicLoader);
 
 uint64_t        dicLoader_getQtdInst(DICLOADER *dicLoader);
-uint32_t        dicLoader_getNextInst(DICLOADER *dicLoader);
+char *          dicLoader_getNextInst(DICLOADER *dicLoader);
 
 #endif /* DICLOADER_HEADER */

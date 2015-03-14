@@ -60,10 +60,12 @@ ENTRY *entry_new(const char *instPattern, const char *instTranslation)
 
 void entry_free(ENTRY *entry)
 {
+    if (entry == NULL)
+        return;
 
+    free(entry->instTranslation);
 	free(entry->instPattern);
-	free(entry);	
-
+    free(entry);
 }
 
 const char *entry_getPattern(ENTRY *entry)
