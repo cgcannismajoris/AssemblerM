@@ -10,6 +10,7 @@
 #include "../dictionary/dictionary.h"       /* incluir o TAD DICTIONARY */
 #include "reg/reg.h"                        /* incluir o TAD REG */
 #include "label/label.h"                    /* incluir o TAD LABEL */
+#include "../scanner/scanner.h"             /* incluir o TAD SCANNER */
 
 
 typedef struct _assembler

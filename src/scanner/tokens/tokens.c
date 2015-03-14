@@ -31,7 +31,7 @@ TOKENS *token_new(uint8_t qtd)
 		new->tokens = (char**)malloc(sizeof(char*) * qtd);
 		
 		if(new->tokens != NULL){
-			memset(new->tokens, 0, qtd);
+            //memset(new->tokens, 0, qtd);
 			new->qtdUsed = 0;
 			new->qtdMax = qtd;
 		}
@@ -85,8 +85,8 @@ char *token_getToken(TOKENS *token, uint8_t pos)
 void token_addToken(TOKENS *token, char *t){
 	
 	if(token != NULL && t != NULL && token->qtdUsed < token->qtdMax){
-		token->tokens[token->qtdUsed] = (char*)malloc(sizeof(char) * strlen(t));
-		memcpy(token->tokens[token->qtdUsed], t, strlen(t));
+        token->tokens[token->qtdUsed] = (char*)malloc(sizeof(char) * strlen(t) + 1);
+        strncpy(token->tokens[token->qtdUsed], t, strlen(t));
 		
 		token->qtdUsed++;
 	}
