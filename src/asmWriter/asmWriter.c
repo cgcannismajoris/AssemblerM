@@ -16,21 +16,45 @@
  * =========================================================================
  */
 
-
-
 #include "asmWriter.h"
 
 ASMWRITER *asmWriter_new(const char *filename)
 {
-    return NULL;
+
+	ASMWRITER *new = NULL;
+
+	if(filename != NULL){
+		
+		new = (ASMWRITER*)malloc(sizeof(ASMWRITER));
+
+		if(new != NULL){
+			new->file = fopen(filename, "wb+");
+
+			if(new->file == NULL){
+				free(new);
+				new = NULL;
+			}
+		}
+	}
+    
+	return new;
 }
 
 void asmWriter_free(ASMWRITER *asmWriter)
 {
 
+	if(asmWriter != NULL){
+		fclose(asmWriter->file);
+		free(asmWriter);
+	}
+
 }
 
 void asmWriter_writeInst(ASMWRITER *asmWriter, INSTRUCTION *instruction)
 {
-
+	if(asmWriter != NULL && instruction != NULL){
+		fwrite(&(instruction->inst), sizeof(instruction->inst), 1, asmWriter->file);
+	}
 }
+
+

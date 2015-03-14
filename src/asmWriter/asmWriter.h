@@ -22,6 +22,7 @@
 #define ASMWRITER_HEADER
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "../instruction/instruction.h"
 
 typedef struct _asmWriter
