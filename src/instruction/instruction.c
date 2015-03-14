@@ -17,3 +17,37 @@
  */
 
 #include "instruction.h"
+
+
+INSTRUCTION *inst_new(uint32_t inst)
+{
+    INSTRUCTION *novo;
+
+    if ((novo = (INSTRUCTION *)malloc(sizeof(INSTRUCTION))) == NULL)
+        return INSTRUCTION_EALLOC;
+
+    novo->inst = inst;
+
+    return novo;
+}
+
+void inst_free(INSTRUCTION *instruction)
+{
+    if (instruction == NULL)
+        return;
+
+    free(instruction);
+}
+
+uint32_t inst_getInst(INSTRUCTION *instruction)
+{
+    if (instruction == NULL)
+        return INSTRUCTION_EGETINST;
+
+    return (instruction->inst);
+}
+
+void inst_setInst(INSTRUCTION *instruction, uint32_t inst)
+{
+    instruction->inst = inst;
+}
