@@ -86,8 +86,8 @@ void token_addToken(TOKENS *token, char *t){
 	
 	if(token != NULL && t != NULL && token->qtdUsed < token->qtdMax){
         token->tokens[token->qtdUsed] = (char*)malloc(sizeof(char) * strlen(t) + 1);
-        strncpy(token->tokens[token->qtdUsed], t, strlen(t));
-		
+        strncpy(token->tokens[token->qtdUsed], t, strlen(t) + 1);
+
 		token->qtdUsed++;
 	}
 }
