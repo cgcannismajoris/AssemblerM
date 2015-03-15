@@ -36,7 +36,6 @@ LABEL *label_new(const char *name, uint64_t num)
 		if(new->labelName != NULL){
 			strncpy(new->labelName, name, strlen(name));
 			new->labelLineNum = num;
-			new->next = NULL;
 		}
 		else{
 			free(new);
@@ -71,18 +70,4 @@ uint64_t label_getLineNum(LABEL *label)
 
 	return (0);
 }
-
-LABEL *     label_getNext(LABEL *label){
-	if(label != NULL){
-		return (label->next);
-	}
-	return (NULL);
-}
-
-void label_setNext(LABEL *label, LABEL *next){
-	if(label != NULL){
-		label->next = next;
-	}
-}
-
 

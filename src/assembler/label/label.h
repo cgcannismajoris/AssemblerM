@@ -36,7 +36,6 @@ typedef struct _label
 {
     char *          labelName;    //Nome da label;
     uint64_t        labelLineNum; //Linha onde a label foi declarada;
-    struct _label * next;         //Próxima label da lista.
 } LABEL;
 
 
@@ -96,33 +95,5 @@ char *      label_getName(LABEL *label);
  *   	-> Se != 0    - Sucesso na operação.
  */
 uint64_t    label_getLineNum(LABEL *label);
-
-
-/* -> LABEL *label_getNext(LABEL *label)
- * 
- * - DESCRIÇÃO: Retorna o ponteiro para a próxima label armazenado na estrutura
- *   recebida.
- *
- * - PARÂMETROS: 
- *      -> LABEL *label: Estrutura a ser utilizada na operação. 
- *
- * - RETORNO: Nome armazenado na estrutura.
- *   	-> Se NULL       - Erro na operação.
- *   	-> Se != NULL    - Sucesso na operação.
- */
-LABEL *     label_getNext(LABEL *label);
-
-
-/* -> void label_setNext(LABEL *label, LABEL *next)
- * 
- * - DESCRIÇÃO: Armazena o ponteiro para a próxima label na estrutura recebida.
- *
- * - PARÂMETROS: 
- *      -> LABEL *label: Estrutura a ser utilizada na operação. 
- *
- * - RETORNO: void. 
- */
-void        label_setNext(LABEL *label, LABEL *next);
-
 
 #endif /* LABEL_HEADER */

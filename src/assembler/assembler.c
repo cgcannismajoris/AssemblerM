@@ -1,13 +1,34 @@
-/* assembler.c
- * Implementaçao do TAD ASSEMBLER (PRINCIPAL).
+/*
+ * ==========================================================================
+ *
+ * Nome do Arquivo:  assembler.c
+ *
+ *       Descricao:  Implementação do TAD ASSEMBLER.
+ *
+ *          Versao:  1.0
+ *       Criado em:  15/03/2015 19:46:30
+ *         Revisao:  none
+ *      Compilador:  gcc
+ *
+ *           Autor:  Cristian Costa Mello, Gustavo Freitas de Amorim 
+ *     Organizacao:  VY Cannis Majoris
+ *
+ * =========================================================================
  */
 
-#include "assembler.h"
 
+#include "assembler.h"
 
 ASSEMBLER *assembler_new()
 {
 	ASSEMBLER *novo = (ASSEMBLER*)malloc(sizeof(ASSEMBLER));
+	
+	novo->listaLabels = lista_new();
+
+	if(novo->listaLabels == NULL){
+		free(novo);
+		novo = NULL;
+	}
 
 	return (novo);
 }
@@ -18,6 +39,9 @@ void assembler_free(ASSEMBLER *asmr)
 	free(asmr);
 }
 
+static void __assembler_assemble_makeLabels(ASSEMBLER *asmr){
+
+}
 
 int assembler_assemble(ASSEMBLER *asmr, const char *src, 
 							const char *bin, const char *dicFile)
@@ -27,6 +51,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 
 	TOKENS *actualTokens;
 	ENTRY *actualEntry;
+	LABEL *label;
 
 	//--------------- VARIÁVEIS PARA DEBUG ---------------------
 	uint64_t counter;

@@ -68,7 +68,7 @@ void dic_free(DICTIONARY *dic)
 
 }
 
-int __dic_search_compar(const void *one, const void *two){
+static int __dic_search_compar(const void *one, const void *two){
 	
 	//*one -> string enviada a bsearch como argumento
 	//*two -> ponteiro para a posição do vetor com o ponteiro para a estrutura ENTRY
@@ -106,7 +106,7 @@ int dic_save(DICTIONARY *dic, const char *filename)
 	return (-1);
 }
 
-int __dic_load_compar(const void *one, const void *two){
+static int __dic_load_compar(const void *one, const void *two){
 
 	//*one -> ENTRY enviado a qsort como argumento
 	//*two -> ponteiro para a posição do vetor com o ponteiro para a estrutura ENTRY

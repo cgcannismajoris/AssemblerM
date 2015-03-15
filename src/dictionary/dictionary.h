@@ -68,6 +68,22 @@ DICTIONARY *    dic_new(const char *filename);
 void            dic_free(DICTIONARY *dic);
 
 
+/* -> static int __dic_search_compar(const void *one, const void *two)
+ * 
+ * - DESCRIÇÃO: Método auxiliar da pesquisa de verbetes do dicionário.
+ *
+ * - PARÂMETROS: 
+ *      -> const void *one: String enviada à pesquisa.
+ *      -> const void *two: Estrutura ENTRY a ser comparada.
+ *
+ * - RETORNO: Resultado da comparação.
+ *      -> Se +1 - O primeiro deve vir antes do segundo.
+ *   	-> Se  0 - Elementos correspondem.
+ *   	-> Se -1 - O segundo deve vir antes do primeiro.
+ */
+static int __dic_search_compar(const void *one, const void *two);
+
+
 /* -> ENTRY *dic_search(DICTIONARY *dic, const char *nomeOperacao)
  * 
  * - DESCRIÇÃO: Busca um nome de operação dentro dos padrões de instrução 
@@ -97,6 +113,22 @@ ENTRY *         dic_search(DICTIONARY *dic, const char *nomeOperacao);
  *      -> Se != 0 - Sucesso na operação.
  */
 int             dic_save(DICTIONARY *dic, const char *filename);
+
+
+/* -> static int __dic_load_compar(const void *one, const void *two)
+ * 
+ * - DESCRIÇÃO: Método de comparação auxiliar na ordenação verbetes do dicionário.
+ *
+ * - PARÂMETROS: Estruturas a serem comparadas. 
+ *      -> const void *one: Estrutura ENTRY a ser comparada.
+ *      -> const void *two: Estrutura ENTRY a ser comparada.
+ *
+ * - RETORNO: Resultado da comparação.
+ *      -> Se +1 - O primeiro deve vir antes do segundo.
+ *   	-> Se  0 - Elementos correspondem.
+ *   	-> Se -1 - O segundo deve vir antes do primeiro.
+ */
+static int __dic_load_compar(const void *one, const void *two);
 
 
 /* -> int dic_load(DICTIONARY *dic)
