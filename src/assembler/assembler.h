@@ -13,15 +13,30 @@
 #include "../scanner/scanner.h"             /* incluir o TAD SCANNER */
 
 
+#define MACHINE_MAX_REG              32
+
+#define ASMLOADER_SUCCESS            0
+#define ASSEMBLER_ENULLPOINTER       -1
+
+#define ASMLOADER_SUCCESS_MSG        "Programa gerado com sucesso!"
+#define ASSEMBLER_ENULLPOINTER_MSG   "Referência inválida recebida no TAD ASMLOADER."
+
 typedef struct _assembler
 {
-    ASMLOADER *asmLoader;
-    ASMWRITER *asmWriter;
-    /* Implementar LISTA ENCADEADA para LABEL */
+    ASMLOADER *loader;
+	ASMWRITER *writer;
+    DICTIONARY *dic;
+	REG **reg;
+	LABEL *labels;
+	/* Implementar LISTA ENCADEADA para LABEL */
+
+	uint64_t qtdLabels;
+	uint64_t qtdReg;
+
 } ASSEMBLER, ASM;
 
-ASSEMBLER * assembler_new(const char *input, char *output);
-void        assembler_free(ASSEMBLER *assembler);
-int         assembler_assemble(ASSEMBLER *assembler, const char *src, const char *bin, const char *dicFile);
-
+ASSEMBLER * assembler_new();
+void        assembler_free(ASSEMBLER *asmr);
+int         assembler_assemble(ASSEMBLER *asmr, const char *src, const char *bin, const char *dicFile);
+ 
 #endif /* ASSEMBLER_HEADER */

@@ -1,0 +1,3 @@
+r1: faca ADD abacaxi va_para r2
+r2: faca sub abacaxi va_para r3
+r3: faca add melao va_para r4

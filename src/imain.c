@@ -10,7 +10,10 @@
 
 int main(int argc, char **argv)
 {
-    printf("Hello World!!!\n");
+
+	ASSEMBLER *asmr = assembler_new();
+
+	assembler_assemble(asmr, argv[1], "exit.out", "data/dic_m.dic");
 
     return 0;
 }
