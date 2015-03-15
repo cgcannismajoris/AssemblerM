@@ -27,7 +27,7 @@ LIST_INT lista_free(LISTA *this){
 	if(this != NULL){
 		lista_clear(this);
 		free(this);
-
+		
 		return (LIST_SUCCESS);
 	}
 
@@ -43,7 +43,7 @@ LIST_INT lista_clear(LISTA *this){
 		aux = lista_getLast(this);
 		while(aux != NULL){
 			temp = node_getAnte(aux);
-			node_free(&aux); //Nao e necessario verificar o retorno de node_free
+			node_free(aux); //Nao e necessario verificar o retorno de node_free
 							 //while ja garante a validade do no
 			aux = temp;
 		}
@@ -182,6 +182,13 @@ NODE *lista_removeRaiz(LISTA *this){
 			node_setAnteNull(root);
 			//Decrementa a quantidade de elementos
 			lista_setQuant(this, (lista_getQuant(this) - 1));
+
+			//Se acabaram os elementos...
+			if(lista_getQuant(this) == 0){
+				//Indica que a raiz e nula
+				lista_setRaiz(this, NULL);
+				lista_setLast(this, NULL);
+			}
 		}
 	}
 	return root;

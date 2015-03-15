@@ -38,7 +38,7 @@ typedef struct node{
 /* ----                Métodos Constrututores e Destrutures                 ----*/
 NODE *node_new(void* data, GENERIC_UCHAR data_ID, NODE_UCINT node_ref_lenght);
 
-NODE_UINT node_free(NODE **this);
+NODE_UINT node_free(NODE *this);
 
 /*----               Métodos de Interrelacionamento entre nos               ----*/
 NODE_INT node_conect(NODE *ante, NODE *post, NODE_UINT ref_post_in_ante, NODE_UINT ref_ante_int_post);

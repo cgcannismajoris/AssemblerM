@@ -71,18 +71,20 @@ int main(int argc, char **argv)
 		entry = entry_new(instPattern, instTranslation);
 		no = lista_node_new(entry, sizeof(ENTRY));
 	
+		//Insere os novos elementos na lista
+		lista_insertLastNode(entryList, no);
+
 		//Se ocorreu algum problema
 		if(no == NULL || entry == NULL){
 			writeMsg(FATAL_ERROR_ALLOC_MSGID);
 
 			lista_free(entryList);
 			entry_free(entry);
-			node_free(&no);
+			node_free(no);
 
 			return (-1);
 		}
-		//Insere os novos elementos na lista
-		lista_insertLastNode(entryList, no);
+
 		//dicWriter_writeInst(writer, instPattern, instTranslation);
 		
 		writeMsg(5);
@@ -106,7 +108,7 @@ int main(int argc, char **argv)
 		dicWriter_writeInst(writer, entry_getPattern(entry), 
 						       entry_getTranslation(entry));
 
-		node_free(&no);
+		node_free(no);
 	}
 	
 	writeMsg(SUCCESS_MSGID);

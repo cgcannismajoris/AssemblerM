@@ -22,7 +22,7 @@ NODE *node_new(void* data, GENERIC_UCHAR data_ID, NODE_UCINT node_ref_lenght){
 	if(new != NULL){
 		
 		//Armazena o dado no local adequado...
-		new->data = newGenericData(data, data_ID);
+		new->data = genericData_new(data, data_ID);
 
 		//Se existem nós nas redondezas...
 		if(node_ref_lenght != 0){
@@ -57,22 +57,22 @@ NODE *node_new(void* data, GENERIC_UCHAR data_ID, NODE_UCINT node_ref_lenght){
 	return (new);
 }
 
-NODE_UINT node_free(NODE **this){
+NODE_UINT node_free(NODE *this){
 
 	NODE_UINT ref_lenght;
 
-	if(*this != NULL){
+	if(this != NULL){
 		
 		//Destruição do conteúdo interno do nó
 		//Destruição do dado armazenado
-		free_genericData( &((*this)->data) );
+		genericData_free( this->data );
+
 		//Remoção das referências para as redondezas
-		for(ref_lenght = 0; ref_lenght < (**this).ref_lenght; ref_lenght++){
-			(*this)->ref = NULL;
+		for(ref_lenght = 0; ref_lenght < this->ref_lenght; ref_lenght++){
+			this->ref = NULL;
 		}
 
-		free(*this);
-		*this = NULL;
+		free(this);
 
 		return (NODE_SUCCESS);
 	}

@@ -32,9 +32,9 @@ typedef struct{
 
 } GENERIC;
 
-GENERIC *newGenericData(void *data, GENERIC_UCHAR ID);
+GENERIC *genericData_new(void *data, GENERIC_UCHAR ID);
 
-GENERIC_INT free_genericData(GENERIC **this);
+GENERIC_INT genericData_free(GENERIC *this);
 
 GENERIC_BOOL generic_isDataIDEqual(GENERIC *one, GENERIC *two);
 

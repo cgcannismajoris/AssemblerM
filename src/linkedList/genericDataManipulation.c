@@ -13,7 +13,7 @@
 #include "genericDataManipulation.h"
 
 /* ----                Métodos Constrututores e Destrutures                 ----*/
-GENERIC *newGenericData(void *data, GENERIC_UCHAR ID){
+GENERIC *genericData_new(void *data, GENERIC_UCHAR ID){
 	
 	GENERIC *new = (GENERIC*)malloc(sizeof(GENERIC));
 
@@ -25,20 +25,17 @@ GENERIC *newGenericData(void *data, GENERIC_UCHAR ID){
 	return(new);
 }
 
-GENERIC_INT free_genericData(GENERIC **this){
-	if(*this != NULL){
+GENERIC_INT genericData_free(GENERIC *this){
+	if(this != NULL){
 	
 		//Apaga o conteúdo do tipo genérico
-		(*this)->data_ID = 0;
-		(*this)->data = 0;
-
+		this->data_ID = 0;
+		this->data = 0;
 
 		//Desalocando o conteúdo genérico
-		free((*this)->data);
+		free(this->data);
 		//Desalocando o tipo GENERIC
-		free(*this);
-
-		*this = NULL;
+		free(this);
 
 		return (GENERIC_SUCCESS);
 	}
