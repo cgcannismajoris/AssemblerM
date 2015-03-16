@@ -18,13 +18,16 @@
 
 #include "scanner.h"
 
-TOKENS *scanner_scan(char *sentence)
+// LISTA DE PALAVRAS PARA IGNORAR
+// SEPARADOR DOS TOKENS
+TOKENS *scanner_scan(char *sentence, char **ignoreList, char *delims,
+                     uint64_t n_ignore)
 {
     TOKENS *toks;
     char *str, *ptr_str;
     char *pch;
-    char delim[] = SCANNER_DELIMS;
     int cont_tokens = 0;
+    uint64_t i = 0;
 
     if ((str = (char *)malloc(strlen(sentence) * sizeof(char) + 1)) == NULL)
         return SCANNER_ERROR;
@@ -36,23 +39,20 @@ TOKENS *scanner_scan(char *sentence)
     strcpy(str, sentence);
 
     /* Retiram-se as palavras a serem desprezadas. */
-    pch = strstr(str, SCANNER_IGNOREFACASTR);
+    for (i = 0; i < n_ignore; i++)
+    {
+        pch = strstr(str, ignoreList[i]);
 
-    /* Se pch == NULL, então a substring não foi encontrada. */
-    if (pch != NULL)
-        memset(pch, SCANNER_SPCLS, strlen(SCANNER_IGNOREFACASTR));
-
-    pch = strstr(str, SCANNER_IGNOREVAPARASTR);
-
-    if (pch != NULL)
-        memset(pch, SCANNER_SPCLS, strlen(SCANNER_IGNOREVAPARASTR));
+        if (pch != NULL)
+           memset(pch, SCANNER_SBCLS, strlen(ignoreList[i]));
+    }
 
     /* Contar os tokens. */
-    pch = strtok(str, delim);
+    pch = strtok(str, delims);
 
     while (pch != NULL)
     {
-        pch = strtok(NULL, delim);
+        pch = strtok(NULL, delims);
         cont_tokens++;
     }
 
@@ -70,7 +70,7 @@ TOKENS *scanner_scan(char *sentence)
         token_addToken(toks, str);
 
         str += strlen(str);
-        while(*(++str) == SCANNER_SPCLS);
+        while(*(++str) == SCANNER_SBCLS);
 
         cont_tokens--;
     }

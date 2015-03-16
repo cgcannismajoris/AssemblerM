@@ -29,12 +29,15 @@
 #define SCANNER_IGNOREFACASTR       "faca"
 #define SCANNER_IGNOREVAPARASTR     "va_para"
 #define SCANNER_DELIMS              " :"
-#define SCANNER_SPCLS               0x20        /* Space Bar*/
+#define SCANNER_SBCLS               0x20        /* Space Bar */
 
 #define SCANNER_ERROR               NULL
 #define SCANNER_ERROR_MSG           "Falha na operação de scanner."
 
 
-TOKENS *scanner_scan(char *sentence);
+TOKENS *scanner_scan(char *sentence,
+                     char **ignoreList,
+                     char *delims,
+                     uint64_t n_ignore);
 
 #endif /* SCANNER_HEADER */
