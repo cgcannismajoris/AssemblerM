@@ -96,4 +96,20 @@ char *      label_getName(LABEL *label);
  */
 uint64_t    label_getLineNum(LABEL *label);
 
+
+/* -> int label_comparName(const void *name, const void *label)
+ * 
+ * - DESCRIÇÃO: Compara uma string com o nome da label recebida.
+ *
+ * - PARÂMETROS: 
+ *      -> const void *name: String a ser utilizada na comparação.
+ *      -> const void *label: Estrutura a ser utilizada na operação. 
+ *
+ * - RETORNO: Nome armazenado na estrutura.
+ *   	-> Se > 0 - A string deve vir depois do nome da label. 
+ *   	-> Se = 0 - A string é igual ao nome da label.
+ *   	-> Se < 0 - A string deve vir antes do nome da label.
+ */
+int			label_comparName(const void *name, const void *label);
+
 #endif /* LABEL_HEADER */

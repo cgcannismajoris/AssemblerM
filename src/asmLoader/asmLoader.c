@@ -58,3 +58,10 @@ char *asmLoader_getNextInst(ASMLOADER *asmLoader)
 
     return asmLoader->inst_atual;
 }
+
+void asmLoader_rewind(ASMLOADER *asmLoader){
+
+	if(asmLoader != NULL){
+		rewind(asmLoader->file);
+	}
+}

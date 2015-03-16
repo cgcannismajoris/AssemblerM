@@ -100,6 +100,19 @@ int lista_removeNode(LISTA *this, NODE *no);
 NODE *lista_removeRaiz(LISTA *this);
 
 
+/* Descrição	: Procura um nó dentro da lista.
+ *
+ * Argumentos	: 
+ * 	 -> LISTA *this = Lista a ter a raiz removida.
+ * 	 -> const void *key = Chave a ser pesquisada.
+ * 	 -> void (*compar)(const void *, const void *) = Função de comparação.
+ * Retorno		: Ponteiro para o nó encontrado.
+ * 	 Se != NULL = Nó encontrado.
+ * 	 Se == NULL = Nó não encontrado.
+ */
+NODE *lista_search(LISTA *this, const void *key, 
+				int (*compar)(const void *, const void *));
+
 
 /*  ----     Exibição de Elementos      ---- */
 /* Descrição	: Imprime na tela todos os elementos de uma lista encadeada.

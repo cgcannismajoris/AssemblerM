@@ -87,4 +87,15 @@ void            asmLoader_free(ASMLOADER *asmLoader);
 char *         asmLoader_getNextInst(ASMLOADER *asmLoader);
 
 
+/* -> void asmLoader_rewind(ASMLOADER *asmLoader)
+ * 
+ * - DESCRIÇÃO: Retorna para o início do arquivo.
+ *
+ * - PARÂMETROS: 
+ *      -> ASMLOADER *asmLoader: Estrutura a ser utilizada ma operação. 
+ *
+ * - RETORNO: void.
+ */
+void asmLoader_rewind(ASMLOADER *asmLoader);
+
 #endif /* ASMLOADER_HEADER */

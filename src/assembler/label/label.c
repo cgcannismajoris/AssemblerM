@@ -34,7 +34,7 @@ LABEL *label_new(const char *name, uint64_t num)
 		new->labelName = (char*)malloc(sizeof(char)*(strlen(name) + 1));
 
 		if(new->labelName != NULL){
-			strncpy(new->labelName, name, strlen(name));
+			strncpy(new->labelName, name, strlen(name) + 1);
 			new->labelLineNum = num;
 		}
 		else{
@@ -69,5 +69,11 @@ uint64_t label_getLineNum(LABEL *label)
 	}
 
 	return (0);
+}
+
+int label_comparName(const void *name, const void *label){
+	
+	return (strcmp(name, ((LABEL*)label)->labelName));
+
 }
 

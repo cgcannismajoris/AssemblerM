@@ -43,7 +43,7 @@ typedef struct _assembler
 	ASMWRITER *writer;
     DICTIONARY *dic;
 	REG **reg;
-	LISTA *listaLabels;
+	LISTA *labels;
 
 	uint64_t qtdReg;
 

@@ -215,6 +215,32 @@ int lista_printLista(LISTA *this, void (*show_na_tela)(void*)){
 	return(i); //Retorna a quantidade de elementos exibidos
 }
 
+/*  ----     Procura de elementos       ---- */
+NODE *lista_search(LISTA *this, const void *key, 
+				int (*compar)(const void *, const void *)){
+	
+	NODE *result = NULL;
+	NODE *temp;
+	uint64_t counter;	
+
+	if(this == NULL || compar == NULL){
+		return (NULL);
+	}
+	
+	temp = this->root;
+
+	while(temp != NULL){
+		if(compar(key, node_getData(temp)) == 0){
+			return(temp);
+		}
+		else{
+			temp = node_getProx(temp);
+		} 
+	}
+
+	return (NULL);
+}
+
 /*  ----        Geters e Seters         ---- */
 NODE *lista_getRaiz(LISTA *this){
 	return(this->root); //Retorna a raiz da lista recebida
