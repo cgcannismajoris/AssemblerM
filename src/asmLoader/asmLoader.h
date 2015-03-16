@@ -31,7 +31,7 @@
 #define ASMLOADER_EALLOC_MSG    "Falha na alocação da estrutura ASMLOADER."
 #define ASMLOADER_EGETINST_MSG  "Falha ao se obter nova instrução."
 
-#define ASMLOADER_FCOD_ASCII           1                            /* Codificação ASCII (1 byte/caractere) */
+#define ASMLOADER_FCOD_ASCII           1                             /* Codificação ASCII (1 byte/caractere) */
 #define ASMLOADER_INST_MAXCHARLENGTH   256 * (ASMLOADER_FCOD_ASCII)  /* Quantidade máxima de caracteres da instrução */
 
 
@@ -96,6 +96,6 @@ char *         asmLoader_getNextInst(ASMLOADER *asmLoader);
  *
  * - RETORNO: void.
  */
-void asmLoader_rewind(ASMLOADER *asmLoader);
+void            asmLoader_rewind(ASMLOADER *asmLoader);
 
 #endif /* ASMLOADER_HEADER */

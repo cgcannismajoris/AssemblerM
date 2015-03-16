@@ -13,27 +13,27 @@ REG *reg_new(const char *name, uint8_t num)
 
     c = strlen(name);
 
-    if ((novo->regName = (char *)malloc(c)) == NULL)
+    if ((novo->name = (char *)malloc(c)) == NULL)
         return REG_EALLOC;
 
-    strcpy(novo->regName, name);
-    novo->regNum = num;
+    strcpy(novo->name, name);
+    novo->num = num;
 
     return novo;
 }
 
 void reg_free(REG *reg)
 {
-    free(reg->regName);
+    free(reg->name);
     free(reg);
 }
 
 char *reg_getName(REG *reg)
 {
-    return reg->regName;
+    return reg->name;
 }
 
 uint8_t reg_getNum(REG *reg)
 {
-    return reg->regNum;
+    return reg->num;
 }

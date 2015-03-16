@@ -21,8 +21,11 @@
 
 ASSEMBLER *assembler_new()
 {
-	ASSEMBLER *novo = (ASSEMBLER*)malloc(sizeof(ASSEMBLER));
+    ASSEMBLER *novo;
 	
+    if ((novo = (ASSEMBLER*)malloc(sizeof(ASSEMBLER))) == NULL)
+        return ASSEMBLER_EALLOC;
+
 	novo->labels = lista_new();
 
 	if(novo->labels == NULL){
@@ -168,7 +171,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 
 
 
-	return (ASMLOADER_SUCCESS);
+    return (ASSEMBLER_SUCCESS);
 }
 
 

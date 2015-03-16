@@ -31,11 +31,11 @@ LABEL *label_new(const char *name, uint64_t num)
 
 	if(new != NULL){
 		
-		new->labelName = (char*)malloc(sizeof(char)*(strlen(name) + 1));
+        new->name = (char*)malloc(sizeof(char)*(strlen(name) + 1));
 
-		if(new->labelName != NULL){
-			strncpy(new->labelName, name, strlen(name) + 1);
-			new->labelLineNum = num;
+        if(new->name != NULL){
+            strncpy(new->name, name, strlen(name) + 1);
+            new->num = num;
 		}
 		else{
 			free(new);
@@ -49,7 +49,7 @@ LABEL *label_new(const char *name, uint64_t num)
 void label_free(LABEL *label)
 {
 	if(label != NULL){
-		free(label->labelName);
+        free(label->name);
 		free(label);
 	}
 }
@@ -57,7 +57,7 @@ void label_free(LABEL *label)
 char *label_getName(LABEL *label)
 {
 	if(label != NULL){
-		return (label->labelName);
+        return (label->name);
 	}
 	return (NULL);
 }
@@ -65,7 +65,7 @@ char *label_getName(LABEL *label)
 uint64_t label_getLineNum(LABEL *label)
 {
     if(label != NULL){
-		return (label->labelLineNum);
+        return (label->num);
 	}
 
 	return (0);
@@ -73,7 +73,7 @@ uint64_t label_getLineNum(LABEL *label)
 
 int label_comparName(const void *name, const void *label){
 	
-	return (strcmp(name, ((LABEL*)label)->labelName));
+    return (strcmp(name, ((LABEL*)label)->name));
 
 }
 

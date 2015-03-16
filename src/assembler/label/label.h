@@ -34,8 +34,8 @@
 
 typedef struct _label
 {
-    char *          labelName;    //Nome da label;
-    uint64_t        labelLineNum; //Linha onde a label foi declarada;
+    char *          name;    //Nome da label;
+    uint64_t        num;     //Linha onde a label foi declarada;
 } LABEL;
 
 

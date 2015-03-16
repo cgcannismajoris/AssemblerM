@@ -29,29 +29,41 @@
 #include "../scanner/scanner.h"             /* incluir o TAD SCANNER */
 #include "../linkedList/linkedList.h"		/* incluir o TAD LISTA */
 
+
 #define MACHINE_MAX_REG              32
 
-#define ASMLOADER_SUCCESS            0
+#define ASSEMBLER_SUCCESS            0
 #define ASSEMBLER_ENULLPOINTER       -1
 
-#define ASMLOADER_SUCCESS_MSG        "Programa gerado com sucesso!"
-#define ASSEMBLER_ENULLPOINTER_MSG   "Referência inválida recebida no TAD ASMLOADER."
+#define ASSEMBLER_SUCCESS_MSG        "Programa gerado com sucesso!"
+#define ASSEMBLER_ENULLPOINTER_MSG   "Referência inválida recebida no TAD ASSEMBLER."
+
+#define ASSEMBLER_EALLOC             NULL
+#define ASSEMBLER_EALLOC_MSG         "Falha na alocação do TAD ASSEMBLER."
+
 
 typedef struct _assembler
 {
-    ASMLOADER *loader;
-	ASMWRITER *writer;
-    DICTIONARY *dic;
-	REG **reg;
-	LISTA *labels;
+    ASMLOADER *     loader;
+    ASMWRITER *     writer;
+    DICTIONARY *    dic;
+    REG **          reg;
+    LISTA *         labels;
 
-	uint64_t qtdReg;
+    uint64_t        qtdReg;
 
 } ASSEMBLER, ASM;
 
+
 ASSEMBLER * assembler_new();
 void        assembler_free(ASSEMBLER *asmr);
+
+int         assembler_assemble(ASSEMBLER *asmr,
+                               const char *src,
+                               const char *bin,
+                               const char *dicFile);
+
 static void __assembler_assemble_makeLabels(ASSEMBLER *asmr);
-int         assembler_assemble(ASSEMBLER *asmr, const char *src, const char *bin, const char *dicFile);
+
  
 #endif /* ASSEMBLER_HEADER */

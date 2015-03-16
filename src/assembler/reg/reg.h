@@ -15,8 +15,8 @@
 
 typedef struct _reg
 {
-    char *      regName;
-    uint8_t     regNum;
+    char *      name;
+    uint8_t     num;
 } REG;
 
 REG *       reg_new(const char *name, uint8_t num);
