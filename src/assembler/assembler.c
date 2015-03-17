@@ -93,7 +93,7 @@ static int __assembler_assemble_labelJudge(char *label){
 	char *pos;
   	
    	//Se a entrada é inválida	
-	if(label == NULL){
+	if(label == NULL || strlen(label) == 1){
 		return (ASSEMBLER_FALSE);
 	}
 
