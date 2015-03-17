@@ -30,6 +30,9 @@
 #include "../linkedList/linkedList.h"		/* incluir o TAD LISTA */
 
 
+#define ASSEMBLER_TRUE               1
+#define ASSEMBLER_FALSE              0
+
 #define MACHINE_MAX_REG              32
 
 #define ASSEMBLER_SUCCESS            0
@@ -41,6 +44,15 @@
 #define ASSEMBLER_EALLOC             NULL
 #define ASSEMBLER_EALLOC_MSG         "Falha na alocação do TAD ASSEMBLER."
 
+#define ASSEMBLER_IGNORE1			 "faca"
+#define ASSEMBLER_IGNORE2			 "va_para"
+
+#define ASSEMBLER_IGNORE_QTD		 2
+
+#define ASSEMBLER_SEPARATOR			 " "
+
+#define ASSEMBLER_LABEL_TERMINATOR	 ":" //Terminador da label (deve aparecer na 
+									     //declaração de uma nova label)
 
 typedef struct _assembler
 {
@@ -63,7 +75,7 @@ int         assembler_assemble(ASSEMBLER *asmr,
                                const char *bin,
                                const char *dicFile);
 
-static void __assembler_assemble_makeLabels(ASSEMBLER *asmr);
+static int __assembler_assemble_makeLabels(ASSEMBLER *asmr);
 
  
 #endif /* ASSEMBLER_HEADER */
