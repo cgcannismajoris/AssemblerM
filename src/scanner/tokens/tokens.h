@@ -110,4 +110,7 @@ char *      token_getToken(TOKENS *token, uint8_t pos);
  */
 void        token_addToken(TOKENS *token, char *t);
 
+
+int         token_search(TOKENS *token, const char *search);
+
 #endif /* TOKENS_HEADER */

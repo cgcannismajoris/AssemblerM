@@ -92,4 +92,17 @@ void token_addToken(TOKENS *token, char *t){
 	}
 }
 
+int token_search(TOKENS *token, const char *search)
+{
+    uint8_t i;
+
+    for (i = 0; i < token->qtdUsed; i++)
+    {
+        if (!strcmp(token->tokens[i], search))
+            return i;
+    }
+
+    return -1;
+}
+
 
