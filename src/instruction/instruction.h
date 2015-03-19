@@ -40,21 +40,21 @@ typedef struct _inst_r
     unsigned int dest:      5;
     unsigned int orig1:     5;
     unsigned int orig2:     5;
-    unsigned int address:   11;
+    signed int address:     11;
 } TIPO_R, TYPE_R;
 
 typedef struct _inst_j
 {
     unsigned int opcode:    6;
-    unsigned int address:   26;
-} TIPO_J, TYPE_J;
+    signed int address:     26;
+} TIPO_J, TYPE_J; 
 
 typedef struct _inst_b
 {
     unsigned int opcode:    6;
     unsigned int reg1:      5;
     unsigned int reg2:      5;
-    unsigned int address:   16;
+    signed int address:     16;
 } TIPO_B, TYPE_B;
 
 
