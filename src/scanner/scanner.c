@@ -20,7 +20,7 @@
 
 // LISTA DE PALAVRAS PARA IGNORAR
 // SEPARADOR DOS TOKENS
-TOKENS *scanner_scan(char *sentence, char **ignoreList, char *delims,
+TOKENS *scanner_scan(const char *sentence, char **ignoreList, char *delims,
                      uint64_t n_ignore)
 {
     TOKENS *toks;

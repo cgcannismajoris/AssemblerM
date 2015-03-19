@@ -20,20 +20,16 @@
 
 ASMWRITER *asmWriter_new(const char *filename)
 {
-
 	ASMWRITER *new = NULL;
 
-	if(filename != NULL){
-		
-		new = (ASMWRITER*)malloc(sizeof(ASMWRITER));
+	new = (ASMWRITER*)malloc(sizeof(ASMWRITER));
 
-		if(new != NULL){
-			new->file = fopen(filename, "wb+");
+	if(new != NULL){
+		new->file = fopen(filename, "wb+");
 
-			if(new->file == NULL){
-				free(new);
-				new = NULL;
-			}
+		if(new->file == NULL){
+			free(new);
+			new = NULL;
 		}
 	}
     
@@ -42,19 +38,13 @@ ASMWRITER *asmWriter_new(const char *filename)
 
 void asmWriter_free(ASMWRITER *asmWriter)
 {
-
-	if(asmWriter != NULL){
-		fclose(asmWriter->file);
-		free(asmWriter);
-	}
+	fclose(asmWriter->file);
+	free(asmWriter);
 
 }
 
 void asmWriter_writeInst(ASMWRITER *asmWriter, INSTRUCTION *instruction)
 {
-	if(asmWriter != NULL && instruction != NULL){
-		fwrite(&(instruction->inst), sizeof(instruction->inst), 1, asmWriter->file);
-	}
+	fwrite(&(instruction->inst), sizeof(instruction->inst), 1, asmWriter->file);
 }
-
 

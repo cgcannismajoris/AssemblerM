@@ -62,8 +62,8 @@ typedef struct _assembler
     REG **          reg;
     LISTA *         labels;
 
-    uint64_t        qtdReg;
-
+    long int        qtdReg;
+	uint64_t		instCounter;
 } ASSEMBLER, ASM;
 
 
@@ -75,6 +75,8 @@ int         assembler_assemble(ASSEMBLER *asmr,
                                const char *bin,
                                const char *dicFile);
 
+long int assembler_regSearch(ASSEMBLER *asmr, char *name);
+long int assembler_addReg(ASSEMBLER *asmr, char *regName);
 static int __assembler_assemble_makeLabels(ASSEMBLER *asmr);
 
  

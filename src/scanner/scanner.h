@@ -35,7 +35,7 @@
 #define SCANNER_ERROR_MSG           "Falha na operação de scanner."
 
 
-TOKENS *scanner_scan(char *sentence,
+TOKENS *scanner_scan(const char *sentence,
                      char **ignoreList,
                      char *delims,
                      uint64_t n_ignore);
