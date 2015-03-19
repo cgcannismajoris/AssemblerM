@@ -10,6 +10,8 @@
 #	3. make clean : limpa o projeto (não limpa dicwriter);
 #
 #	4. make clean_dicwriter : limpa somente o dicwriter.
+#
+#	5. make instdebug: compilação da ferramenta de depuração do INSTRUCTION.
 
 
 # DEFINIÇÕES DE ARQUIVOS #####################
@@ -31,6 +33,7 @@ LINKEDL_SRC     = src/linkedList/linkedList.c
 GNODE_SRC       = src/linkedList/node.c
 GDMANIP_SRC     = src/linkedList/genericDataManipulation.c
 TOOL_DICWRITER_SRC = tools/dicwriter/main.c
+TOOL_INSTDEBUG_SRC = tools/instdebug/main.c
 
 
 # Arquivos-cabeçalho
@@ -50,6 +53,7 @@ LINKEDL_H       = src/linkedList/linkedList.h
 GNODE_H         = src/linkedList/node.h
 GDMANIP_H       = src/linkedList/genericDataManipulation.h
 
+
 # Arquivos-objeto
 IMAIN_OBJ		= obj/imain.o
 ASSEMBLER_OBJ	= obj/assembler.o
@@ -68,6 +72,7 @@ LINKEDL_OBJ     = obj/linkedList.o
 GNODE_OBJ       = obj/node.o
 GDMANIP_OBJ     = obj/genericDataManipulation.o
 TOOL_DICWRITER_OBJ	= tools/dicwriter/obj/tool_dicwriter.o
+TOOL_INSTDEBUG_OBJ =  tools/instdebug/obj/tool_instdebug.o
 
 
 # Símbolos de arquivos de saída
@@ -76,6 +81,11 @@ OUTPUT_FULLPATH_EXEC	= bin/$(OUTPUT_NAME_EXEC)
 
 OUTPUT_NAME_EXEC_DICWRITER = dicwriter
 OUTPUT_FULLPATH_EXEC_DICWRITER = tools/$(OUTPUT_NAME_EXEC_DICWRITER)/bin/$(OUTPUT_NAME_EXEC_DICWRITER)
+
+
+OUTPUT_NAME_EXEC_INSTDEBUG = instdebug
+OUTPUT_FULLPATH_EXEC_INSTDEBUG = tools/$(OUTPUT_NAME_EXEC_INSTDEBUG)/bin/$(OUTPUT_NAME_EXEC_INSTDEBUG)
+
 
 LN_SYMBOL				= $(OUTPUT_NAME_EXEC)
 LN_SYMBOL_TOOL_DICWRITER = $(OUTPUT_NAME_EXEC_DICWRITER)
@@ -98,8 +108,9 @@ $(DICWRITER_OBJ) $(DICLOADER_OBJ) $(LABEL_OBJ) $(REG_OBJ) $(TOKENS_OBJ) \
 $(SCANNER_OBJ) $(LINKEDL_OBJ) $(GNODE_OBJ) $(GDMANIP_OBJ)
 
 
-BIN				= $(OUTPUT_FULLPATH_EXEC)
-BIN_TOOL_DICWRITER = $(OUTPUT_FULLPATH_EXEC_DICWRITER)
+BIN					= $(OUTPUT_FULLPATH_EXEC)
+BIN_TOOL_DICWRITER	= $(OUTPUT_FULLPATH_EXEC_DICWRITER)
+BIN_TOOL_INSTDEBUG	= $(OUTPUT_FULLPATH_EXEC_INSTDEBUG)
 
 
 all: mk_dir $(BIN)
@@ -152,7 +163,6 @@ $(GNODE_OBJ): $(GNODE_H) $(GNODE_SRC)
 $(LINKEDL_OBJ): $(LINKEDL_H) $(LINKEDL_SRC) $(GNODE_OBJ) $(GDMANIP_OBJ)
 	$(COMPILER) $(CFLAG) $(LINKEDL_SRC) $(LFLAG) $(LINKEDL_OBJ)
 
-
 # Regra de compilação da ferramenta dicwriter
 $(TOOL_DICWRITER_OBJ): $(DICWRITER_OBJ) $(TOOL_DICWRITER_SRC)
 	$(COMPILER) $(CFLAG) $(TOOL_DICWRITER_SRC) $(LFLAG) $(TOOL_DICWRITER_OBJ)
@@ -168,6 +178,14 @@ dicwriter_bin: mk_dir_dicwriter $(TOOL_DICWRITER_OBJ) $(LINKEDL_OBJ) $(ENTRY_OBJ
 
 dicwriter: dicwriter_bin LN_SYMBOL_TOOL_DICWRITER
 
+
+# Regra de compilação da ferramenta instdebug
+instdebug: all mk_dir_instdebug
+	gcc -c tools/instdebug/main.c -o tools/instdebug/obj/instdebug.o
+	gcc -o tools/instdebug/bin/instdebug tools/instdebug/obj/instdebug.o \
+	$(INSTRUCTION_OBJ)
+
+
 # GERAÇÃO DO LINK SIMBÓLICO #################
 LN_SYMBOL:
 	rm -f $(OUTPUT_NAME_EXEC)
@@ -178,6 +196,11 @@ LN_SYMBOL_TOOL_DICWRITER:
 	cd bin && ln -s ../$(OUTPUT_FULLPATH_EXEC_DICWRITER)
 	cd ..
 
+LN_SYMBOL_TOOL_INSTDEBUG:
+	rm -f bin/$(OUTPUT_NAME_EXEC_INSTDEBUG)
+	cd bin && ln -s ../$(OUTPUT_FULLPATH_EXEC_INSTDEBUG)
+	cd ..
+
 # CRIAÇÃO DE PASTAS #########################
 mk_dir:
 	mkdir -p bin data obj
@@ -185,6 +208,10 @@ mk_dir:
 mk_dir_dicwriter:
 	mkdir -p tools/$(OUTPUT_NAME_EXEC_DICWRITER)/bin
 	mkdir -p tools/$(OUTPUT_NAME_EXEC_DICWRITER)/obj
+
+mk_dir_instdebug:
+	mkdir -p tools/$(OUTPUT_NAME_EXEC_INSTDEBUG)/bin
+	mkdir -p tools/$(OUTPUT_NAME_EXEC_INSTDEBUG)/obj
 
 clean:
 	rm -f $(OUTPUT_FULLPATH_EXEC) $(LN_SYMBOL) *~ *.swp *.swo \
