@@ -21,7 +21,7 @@
 #include <stdint.h>
 
 
- /* -> char *asmError_new(uint32_t desc)
+/* -> char *asmError_new(uint32_t desc)
  * 
  * - DESCRIÇÃO: Instancia uma nova string para armazenamento de erros.
  *

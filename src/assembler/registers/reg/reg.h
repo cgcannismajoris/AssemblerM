@@ -11,7 +11,7 @@
  *         Revisao:  none
  *      Compilador:  gcc
  *
- *           Autor:  Gustavo Freitas de Amorim (), gustavofreitasamorim@gmail.com
+ *           Autor:  Cristian Costa Mello, Gustavo Freitas de Amorim
  *     Organizacao:  VY Cannis Majoris
  *
  * =========================================================================
@@ -26,7 +26,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "../../asmError.h"
+#include "../../../asmError.h"
 
 #define REG_EALLOC          NULL
 #define REG_EALLOC_MSG      "Falha ao alocar memória para REG."

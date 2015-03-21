@@ -12,9 +12,11 @@
 
 #include "node.h"
 
+#define LIST_EALLOC			NULL
+#define LIST_EALLOC_MSG		"Falha ao alocar memória no TAD LIST."
+
 #define LIST_SUCCESS		 0
 #define LIST_NULL_POINTER 	-2
-
 
 #define NODE_REF_LENGHT 2
 #define ANTE			0

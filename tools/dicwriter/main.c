@@ -197,3 +197,8 @@ void writeMsg(uint8_t id){
 			printf("\n\nERROR: MSG NOT FOUND!\n\n");
 	}
 }
+
+void asmerror_setinst(char *erro)
+{
+	printf("Um erro ocorreu: %s", erro);
+}

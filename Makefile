@@ -22,6 +22,7 @@
 # Arquivos de código-fonte
 IMAIN_SRC		= src/imain.c
 ASSEMBLER_SRC	= src/assembler/assembler.c
+ASSEMBLERAN_SRC = src/assembler/assemblerAnalyser.c
 ASMLOADER_SRC	= src/asmLoader/asmLoader.c
 ASMWRITER_SRC	= src/asmWriter/asmWriter.c
 INSTRUCTION_SRC	= src/instruction/instruction.c
@@ -30,7 +31,8 @@ ENTRY_SRC		= src/dictionary/entry/entry.c
 DICWRITER_SRC	= src/dictionary/dicWriter/dicWriter.c
 DICLOADER_SRC	= src/dictionary/dicLoader/dicLoader.c
 LABEL_SRC		= src/assembler/label/label.c
-REG_SRC			= src/assembler/reg/reg.c
+REGISTERS_SRC	= src/assembler/registers/registers.c
+REG_SRC			= src/assembler/registers/reg/reg.c
 TOKENS_SRC		= src/scanner/tokens/tokens.c
 SCANNER_SRC		= src/scanner/scanner.c
 LINKEDL_SRC     = src/linkedList/linkedList.c
@@ -43,6 +45,7 @@ TOOL_INSTDEBUG_SRC = tools/instdebug/main.c
 
 # Arquivos-cabeçalho
 ASSEMBLER_H		= src/assembler/assembler.h
+ASSEMBLERAN_H   = src/assembler/assemblerAnalyser.h
 ASMLOADER_H		= src/asmLoader/asmLoader.h
 ASMWRITER_H		= src/asmWriter/asmWriter.h
 INSTRUCTION_H	= src/instruction/instruction.h
@@ -51,7 +54,8 @@ ENTRY_H			= src/dictionary/entry/entry.h
 DICWRITER_H		= src/dictionary/dicWriter/dicWriter.h
 DICLOADER_H		= src/dictionary/dicLoader/dicLoader.h
 LABEL_H			= src/assembler/label/label.h
-REG_H			= src/assembler/reg/reg.h
+REGISTERS_H		= src/assembler/registers/registers.h
+REG_H			= src/assembler/registers/reg/reg.h
 TOKENS_H		= src/scanner/tokens/tokens.h
 SCANNER_H		= src/scanner/scanner.h
 LINKEDL_H       = src/linkedList/linkedList.h
@@ -62,6 +66,7 @@ ASMERROR_H		= src/asmError.h
 # Arquivos-objeto
 IMAIN_OBJ		= obj/imain.o
 ASSEMBLER_OBJ	= obj/assembler.o
+ASSEMBLERAN_OBJ = obj/assemblerAnalyser.o
 ASMLOADER_OBJ	= obj/asmLoader.o
 ASMWRITER_OBJ	= obj/asmWriter.o
 INSTRUCTION_OBJ	= obj/instruction.o
@@ -70,6 +75,7 @@ ENTRY_OBJ		= obj/entry.o
 DICWRITER_OBJ	= obj/dicWriter.o
 DICLOADER_OBJ	= obj/dicLoader.o
 LABEL_OBJ		= obj/label.o
+REGISTERS_OBJ	= obj/registers.o
 REG_OBJ			= obj/reg.o
 TOKENS_OBJ		= obj/tokens.o
 SCANNER_OBJ		= obj/scanner.o
@@ -102,16 +108,18 @@ COMPILER 		= gcc
 CFLAG 			= -c
 LFLAG 			= -o
 #LIBFLAG 		=
-SRC 			= $(IMAIN_SRC) $(ASSEMBLER_SRC) $(ASMLOADER_SRC) \
-$(ASMWRITER_SRC) $(INSTRUCTION_SRC) $(DICTIONARY_SRC) $(ENTRY_SRC) \
-$(DICWRITER_SRC) $(DICLOADER_SRC) $(LABEL_SRC) $(REG_SRC) $(TOKENS_SRC) \
-$(SCANNER_SRC) $(LINKEDL_SRC) $(GNODE_SRC) $(GDMANIP_SRC) $(ASMERROR_SRC)
+SRC 			= $(IMAIN_SRC) $(ASSEMBLERAN_SRC)  $(ASSEMBLER_SRC) \
+$(ASMLOADER_SRC) $(ASMWRITER_SRC) $(INSTRUCTION_SRC) $(DICTIONARY_SRC) \
+$(ENTRY_SRC) $(DICWRITER_SRC) $(DICLOADER_SRC) $(LABEL_SRC) $(REG_SRC) \
+$(TOKENS_SRC) $(SCANNER_SRC) $(LINKEDL_SRC) $(GNODE_SRC) $(GDMANIP_SRC) \
+$(ASMERROR_SRC) $(REGISTERS_SRC) 
 
 
-OBJ				= $(IMAIN_OBJ) $(ASSEMBLER_OBJ) $(ASMLOADER_OBJ) \
-$(ASMWRITER_OBJ) $(INSTRUCTION_OBJ) $(DICTIONARY_OBJ) $(ENTRY_OBJ) \
-$(DICWRITER_OBJ) $(DICLOADER_OBJ) $(LABEL_OBJ) $(REG_OBJ) $(TOKENS_OBJ) \
-$(SCANNER_OBJ) $(LINKEDL_OBJ) $(GNODE_OBJ) $(GDMANIP_OBJ) $(ASMERROR_OBJ)
+OBJ				= $(IMAIN_OBJ) $(ASSEMBLERAN_OBJ) $(ASSEMBLER_OBJ) \
+$(ASMLOADER_OBJ) $(ASMWRITER_OBJ) $(INSTRUCTION_OBJ) $(DICTIONARY_OBJ) \
+$(ENTRY_OBJ) $(DICWRITER_OBJ) $(DICLOADER_OBJ) $(LABEL_OBJ)  \
+$(TOKENS_OBJ) $(SCANNER_OBJ) $(LINKEDL_OBJ) $(GNODE_OBJ) $(GDMANIP_OBJ) \
+$(ASMERROR_OBJ) $(REG_OBJ) $(REGISTERS_OBJ)
 
 
 BIN					= $(OUTPUT_FULLPATH_EXEC)
@@ -123,6 +131,9 @@ all: mk_dir $(BIN)
 
 $(IMAIN_OBJ): $(IMAIN_SRC)
 	$(COMPILER) $(CFLAG) $(IMAIN_SRC) $(LFLAG) $(IMAIN_OBJ)
+
+$(ASSEMBLERAN_OBJ): $(ASSEMBLERAN_H) $(ASSEMBLERAN_SRC)
+	$(COMPILER) $(CFLAG) $(ASSEMBLERAN_SRC) $(LFLAG) $(ASSEMBLERAN_OBJ)
 
 $(ASSEMBLER_OBJ): $(ASSEMBLER_H) $(ASSEMBLER_SRC)
 	$(COMPILER) $(CFLAG) $(ASSEMBLER_SRC) $(LFLAG) $(ASSEMBLER_OBJ)
@@ -150,6 +161,9 @@ $(DICLOADER_OBJ): $(DICLOADER_H) $(DICLOADER_SRC)
 
 $(LABEL_OBJ): $(LABEL_H) $(LABEL_SRC)
 	$(COMPILER) $(CFLAG) $(LABEL_SRC) $(LFLAG) $(LABEL_OBJ)
+
+$(REGISTERS_OBJ): $(REGISTERS_H) $(REGISTERS_SRC)
+	$(COMPILER) $(CFLAG) $(REGISTERS_SRC) $(LFLAG) $(REGISTERS_OBJ)
 
 $(REG_OBJ): $(REG_H) $(REG_SRC)
 	$(COMPILER) $(CFLAG) $(REG_SRC) $(LFLAG) $(REG_OBJ)
@@ -183,8 +197,8 @@ $(BIN): $(OBJ)
 	$(COMPILER) $(LFLAG) $(BIN) $(OBJ) $(LIBFLAG)
 
 # GERAÇÃO DA FERRAMENTA DICWRITER
-dicwriter_bin: mk_dir_dicwriter $(TOOL_DICWRITER_OBJ) $(LINKEDL_OBJ) $(ENTRY_OBJ)
-	$(COMPILER) $(LFLAG) $(BIN_TOOL_DICWRITER) $(DICWRITER_OBJ) \
+dicwriter_bin: mk_dir_dicwriter $(TOOL_DICWRITER_OBJ) $(LINKEDL_OBJ) $(ENTRY_OBJ) $(ASMERROR_OBJ)
+	$(COMPILER) $(LFLAG) $(BIN_TOOL_DICWRITER) $(ASMERROR_OBJ)  $(DICWRITER_OBJ) \
 	$(GDMANIP_OBJ) $(GNODE_OBJ) $(LINKEDL_OBJ) $(TOOL_DICWRITER_OBJ) \
 	$(ENTRY_OBJ)
 

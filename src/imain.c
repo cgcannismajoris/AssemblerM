@@ -28,7 +28,15 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-	assembler_assemble(asmr, argv[1], "exit.out", "data/dic_m.dic");
+	if(assembler_assemble(asmr, argv[1], "exit.out", "data/dic_m.dic") == ASSEMBLER_FAILLURE)
+	{
+		fprintf(stderr, "ASSEMBLER: %s\n", asmError_getDesc());
+        return EXIT_FAILURE;
+	}
+	else
+	{
+		printf("Concluído com %li linhas processadas.\n", asmr->instCounter);
+	}
 
     asmError_free();
 

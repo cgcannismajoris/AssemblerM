@@ -18,7 +18,6 @@
 
 
 #include "assembler.h"
-#include "assemblerAnaliser.c"
 
 ASSEMBLER *assembler_new()
 {
@@ -30,26 +29,20 @@ ASSEMBLER *assembler_new()
         return ASSEMBLER_EALLOC;
     }
 
-    if (novo->labels = lista_new());
-
-	if(novo->labels == NULL){
+    if ((novo->labels = lista_new()) == LIST_EALLOC)
+	{
 		free(novo);
-		novo = NULL;
+		return (ASSEMBLER_EALLOC);
 	}
 
-    if ((novo->reg = (REG**)malloc(sizeof(REG*) * MACHINE_MAX_REG)) == NULL)
-        return ASSEMBLER_EALLOC;
-
-	novo->qtdReg = 0;
-	
-	novo->instCounter = 0;
-
-    if(novo->reg == NULL)
-    {
+    if ((novo->regs = registers_new(MACHINE_MAX_REG)) == REGISTERS_EALLOC)
+	{
 		lista_free(novo->labels);
 		free(novo);
-		novo = NULL;
+		return ASSEMBLER_EALLOC;
 	}
+       
+	novo->instCounter = 0;
 
 	return (novo);
 }
@@ -57,42 +50,9 @@ ASSEMBLER *assembler_new()
 
 void assembler_free(ASSEMBLER *asmr)
 {
-
 	lista_free(asmr->labels);
-		
-	
+	registers_free(asmr->regs);	
 	free(asmr);
-}
-
-long int assembler_addReg(ASSEMBLER *asmr, char *regName){
-	
-	REG *novo;
-
-	if(asmr->qtdReg >= 31){
-		return (-1);
-	}
-
-	novo = reg_new(regName);
-
-	if(novo != NULL){
-		asmr->reg[asmr->qtdReg] = novo;
-		asmr->qtdReg++;
-		return (asmr->qtdReg - 1); //Retorna a posição onde foi adicionado
-	}
-
-	return (0);
-}
-
-long int assembler_regSearch(ASSEMBLER *asmr, char *name){
-	
-	long int i;
-	for(i = 0; i < asmr->qtdReg; i++){
-		if(strcmp(reg_getName(asmr->reg[i]), name) == 0){
-			return (i);
-		}
-	}
-	
-	return (-1);
 }
 
 int assembler_assemble(ASSEMBLER *asmr, const char *src, 
@@ -112,61 +72,54 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 	TOKENS *patternTokens;
 	TOKENS *transTokens;
 
-
-	//--------------- VARIÁVEIS PARA DEBUG ---------------------
-	uint64_t i;
-	//---------------------- FIM -------------------------------
-
-	//Inicializa as estruturas que irão compor o assembler:
+	//------ Inicializa as estruturas que irão compor o assembler: ------ 
+	//Inicializa o loader
     if ((asmr->loader = asmLoader_new(src)) == ASMLOADER_EALLOC)
-        return EXIT_FAILURE;
+        return (ASSEMBLER_FAILLURE);
 
+	//Inciliza o writer
     if ((asmr->writer = asmWriter_new(bin)) == ASMWRITER_EALLOC)
-        return EXIT_FAILURE;
+        return (ASSEMBLER_FAILLURE);
+	
+	//Inicia o dicionário
+	if((asmr->dic    = dic_new(dicFile)) == DICTIONARY_EALLOC)
+		return (ASSEMBLER_FAILLURE);
 
-    asmr->dic    = dic_new(dicFile);
-	asmr->reg    = (REG**)malloc(sizeof(REG*) * MACHINE_MAX_REG);
+	asmr->instCounter = 0;
+
+	//------ INICIA O PROCESSAMENTO -------------------------------------
 	
 	//Faz busca pelas labels declaradas no arquivo
-	if((i = __assembler_assemble_makeLabels(asmr)) != ASSEMBLER_SUCCESS){
-		printf("Declaração de label invalida encontrada na linha: %li\n", i);
-		return -1;
+	if(assembler_makeLabels(asmr) != ASSEMBLER_SUCCESS){
+		printf("Declaração de label invalida encontrada na linha: %li\n", asmr->instCounter);
+		asmError_setDesc(ASSEMBLER_EMOUNT);
+		return (ASSEMBLER_FAILLURE);
 	}
 
 	//Carrega o dicionário
 	dic_load(asmr->dic);
 	
 	//Cria a lista de termos a serem ignorados
-	ignoreList = __assembler_assemble_makeIgnoreList();
+	ignoreList = assembler_makeIgnoreList();
 
 	//Enquanto for possível carregar novas instruções
 	while((actualInst = asmLoader_getNextInst(asmr->loader)) != NULL){
 
-		//Inicio da operação
-		printf("\n--------------- ACTUAL INSTRUCTION = %s -------------\n\n", actualInst);
-		
-		
 		//Gera os tokens
 		actualTokens = scanner_scan(actualInst, ignoreList, ASSEMBLER_SEPARATOR, 
 						ASSEMBLER_IGNORE_QTD);
 		
 
-		//Exibe os tokens gerados
-		printf("GENERATED TOKENS:\n");
-		for(i = 0; i < token_getQtd(actualTokens); i++){
-			printf(" -> %s\n", token_getToken(actualTokens, (uint8_t)i));
-		}
-		printf("\n");
-
-
 		//Procura o nome da instrução no dicionário
 		actualEntry = dic_search(asmr->dic, token_getToken(actualTokens, 1));
+		
 		
 		//Se não conseguiu encontrar a instrução referenciada no dicionário...
 		if(actualEntry == NULL){
 			printf("Instrução inválida na linha %li.\n", asmr->instCounter);
+			asmError_setDesc(ASSEMBLER_EMOUNT); 
 			assembler_free(asmr);
-			return (-1);
+			return (ASSEMBLER_FAILLURE);
 		}
 
 
@@ -174,48 +127,46 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 		patternTokens = scanner_scan(entry_getPattern(actualEntry), NULL, " ", 0);
 		transTokens = scanner_scan(entry_getTranslation(actualEntry), NULL, " ", 0);
 	
+
 		//Se escreveu uma quantidade de argumentos inválida
 		//O decremento de 1 é devido à entrada apresentar o label da intrução
 		//e o dicionário não ter este armazenado
 		if(token_getQtd(patternTokens) != token_getQtd(actualTokens) - 1){
 			//Mostra o erro e finaliza
 			printf("Escrita inválida na linha %li.\n", asmr->instCounter);
+			asmError_setDesc(ASSEMBLER_EMOUNT);
 			assembler_free(asmr);			
-			return (-1);
+			return (ASSEMBLER_FAILLURE);
 		}	
 
+
 		//Gera a instrução de máquina	
-		inst = __assembler_assemble_makeInstruction(asmr, actualTokens, patternTokens,
-														transTokens);
+		inst = assembler_makeInst(asmr, actualTokens, patternTokens, transTokens);
 		
-		if(inst == NULL){
+		if(inst == ASSEMBLER_EALLOC){
 			printf("Erro na linha %li!\n", asmr->instCounter);
+			//asmError já foi setado...
 			assembler_free(asmr);
-			return (-1);
+			return (ASSEMBLER_FAILLURE);
 		}
 		
+	
 		//Grava a instrução gerada no arquivo
 		asmWriter_writeInst(asmr->writer, inst);
+
 
 		//Libera regiões de memória que não serão mais utilizadas
 		token_free(actualTokens);
 
 		asmr->instCounter++;	
-
-		//Fim da operação
-		printf("--------------------------- END -----------------------\n");
 	}
-	printf("\n");
-		
+
 	//Libera regiões de memória que não serão mais utilizadas	
 	asmLoader_free(asmr->loader);
 	asmWriter_free(asmr->writer);
 	lista_free(asmr->labels);
 	dic_free(asmr->dic);
-	for(--asmr->qtdReg; asmr->qtdReg >= 0; asmr->qtdReg--){
-		reg_free(asmr->reg[asmr->qtdReg]);
-	}
-	free(asmr->reg);
+	registers_free(asmr->regs);
 
-    return (ASSEMBLER_SUCCESS);
+    return (asmr->instCounter);
 }

@@ -1,33 +1,27 @@
 /*
  * ==========================================================================
  *
- * Nome do Arquivo:  assemblerAnaliser.c
+ * Nome do Arquivo:  assemblerAnalyser.c
  *
- *       Descricao:  
+ *       Descricao:  Implementação do módulo assemblerAnalyser.
  *
  *          Versao:  1.0
  *       Criado em:  18/03/2015 16:08:36
  *         Revisao:  none
  *      Compilador:  gcc
  *
- *           Autor:  Gustavo Freitas de Amorim (), gustavofreitasamorim@gmail.com
+ *           Autor:  Cristian Costa Mello, Gustavo Freitas de Amorim
  *     Organizacao:  VY Cannis Majoris
  *
  * =========================================================================
  */
 
-#include "assembler.h"
+#include "assemblerAnalyser.h"
 
-static uint64_t __assembler_assemble_getNumNextLabel(ASSEMBLER *asmr, 
-								const char *label){
+uint64_t assembler_searchLabel(ASSEMBLER *asmr, const char *label){
 
 	NODE *tmpNode;
 	LABEL *tmpLabel;
-
-
-	if(label == NULL){
-		return (0);
-	}
 	
 	//Busca a próxima label na lista	
 	tmpNode = lista_search(asmr->labels, label, label_comparName);
@@ -44,28 +38,13 @@ static uint64_t __assembler_assemble_getNumNextLabel(ASSEMBLER *asmr,
 }
 
 
-static int __assembler_assemble_isAddress(const char *add){
-	
-	if(add == NULL){
-		return (ASSEMBLER_FALSE);
-	}
-
-	if(add[0] == '%'){
-		return (ASSEMBLER_TRUE);
-//		return (atoi(add + 1));
-	}
-
-	return (ASSEMBLER_FALSE);
-
-}
-
-static char **__assembler_assemble_makeIgnoreList(){
+char **assembler_makeIgnoreList(){
 
 	char **ignoreList = (char**)malloc(sizeof(char*) * ASSEMBLER_IGNORE_QTD);
 	uint64_t i;
 
 
-	if(ignoreList == NULL){
+	if((ignoreList = (char**)malloc(sizeof(char*) * ASSEMBLER_IGNORE_QTD)) == ASSEMBLERANALYSER_EALLOC){
 		return (ASSEMBLER_EALLOC);
 	}
 
@@ -82,21 +61,16 @@ static char **__assembler_assemble_makeIgnoreList(){
 		}
 	}
 	
-
 	strcpy(ignoreList[0], ASSEMBLER_IGNORE1);
 	strcpy(ignoreList[1], ASSEMBLER_IGNORE2);
 
 	return(ignoreList);
 }
 
-static void __assembler_assemble_freeIgnoreList(char **ignoreList){
+void assembler_freeIgnoreList(char **ignoreList){
 	
 	uint64_t counter;
 	
-	if(ignoreList == NULL){
-		return;
-	}
-
 	for(counter = 0; counter < ASSEMBLER_IGNORE_QTD; counter++){
 		free(ignoreList[counter]);
 	}
@@ -104,7 +78,7 @@ static void __assembler_assemble_freeIgnoreList(char **ignoreList){
 	free(ignoreList);
 }
 
-static int __assembler_assemble_labelJudge(char *label){
+int assembler_labelJudge(char *label){
 
 	char *pos;
   	
@@ -130,7 +104,7 @@ static int __assembler_assemble_labelJudge(char *label){
 	return (ASSEMBLER_FALSE);
 }
 
-static INSTRUCTION *__assembler_assemble_makeInstruction(ASSEMBLER *asmr, 
+INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr, 
 				TOKENS *input, TOKENS *pattern, TOKENS *translation){
 
 	INSTRUCTION *novo = NULL;
@@ -156,36 +130,39 @@ static INSTRUCTION *__assembler_assemble_makeInstruction(ASSEMBLER *asmr,
 		 */
 
 		if(token_getQtd(translation) != 5){
+			asmError_setDesc(ASSEMBLER_EUSER_INVALIDDIC_MSG);
 			return (NULL);
 		}
 
 		TIPO_R inst;
 		
 		inst.opcode = opcode;
-		
+	
 		//--------------- Monta dest ---------------
 		//Obtém a string que identifica o reg
 		aux = token_getToken(translation, 1);
 		//Obtém a posição correspondente na tradução
 		pos = token_search(pattern, aux);
-		
+	
 		//Erro de processamento! DICIONÁRIO INVÁLIDO
 		if(pos == -1){
+			asmError_setDesc(ASSEMBLER_EUSER_INVALIDDIC_MSG);
 			return (NULL);
 		}
 		
 		//Obtém a string correspondente na instrução
 		//O + 1 é devido ao input armazenar o label da instrução
 		aux = token_getToken(input, pos + 1);
-			
+		
 		//Obtém a posição do registrador referênciado
 		//Se não encontrar, instancia um novo
-		if((pos = assembler_regSearch(asmr, aux)) == -1){
+		if((pos = registers_regSearch(asmr->regs, aux)) == -1){
 			
-			//Obtém a posição correta
-			pos = assembler_addReg(asmr, aux);
+			//Obtém a posição correta criando um novo registrador
+			pos = registers_addReg(asmr->regs, aux);
 
 			if(pos == - 1){ //Excedeu 32 registradores
+				//A descrição do erro já foi setada no asmError.
 				return (NULL);
 			}
 		}
@@ -201,6 +178,7 @@ static INSTRUCTION *__assembler_assemble_makeInstruction(ASSEMBLER *asmr,
 
 		//Erro de processamento! DICIONÁRIO INVÁLIDO
 		if(pos == -1){
+			asmError_setDesc(ASSEMBLER_EUSER_INVALIDDIC_MSG);
 			return (NULL);
 		}
 
@@ -209,17 +187,18 @@ static INSTRUCTION *__assembler_assemble_makeInstruction(ASSEMBLER *asmr,
 		
 		//Obtém a posição do registrador referênciado
 		//Se não encontrar, instancia um novo
-		if((pos = assembler_regSearch(asmr, aux)) == -1){
+		if((pos = registers_regSearch(asmr->regs, aux)) == -1){
 			//Obtém a posição correta
-			pos = assembler_addReg(asmr, aux);
+			pos = registers_addReg(asmr->regs, aux);
 
 			if(pos == - 1){ //Excedeu 32 registradores
+				//A descrição do erro já foi setada no asmError.
 				return (NULL);
 			}
 		}
 
 		//Seta o valor:
-		inst.orig1 = pos;	
+		inst.orig1 = pos;
 
 		//--------------- Monta orig2 ---------------
 		//Obtém a string que identifica o reg/num
@@ -245,9 +224,9 @@ static INSTRUCTION *__assembler_assemble_makeInstruction(ASSEMBLER *asmr,
 	
 				//Obtém a posição do registrador referênciado
 				//Se não encontrar, instancia um novo
-				if((pos = assembler_regSearch(asmr, aux)) == -1){
+				if((pos = registers_regSearch(asmr->regs, aux)) == -1){
 					//Obtém a posição correta
-					pos = assembler_addReg(asmr, aux);
+					pos = registers_addReg(asmr->regs, aux);
 		
 					if(pos == - 1){ //Excedeu 32 registradores
 						return (NULL);
@@ -268,6 +247,7 @@ static INSTRUCTION *__assembler_assemble_makeInstruction(ASSEMBLER *asmr,
 
 		//Erro de processamento! DICIONÁRIO INVÁLIDO - ENTRADA INCONSISTENTE
 		if(pos == -1){
+			asmError_setDesc(ASSEMBLER_EUSER_INVALIDDIC_MSG);
 			return (NULL);
 		}
 	 	
@@ -276,7 +256,7 @@ static INSTRUCTION *__assembler_assemble_makeInstruction(ASSEMBLER *asmr,
 		
 		//Obtém o número da linha da label referenciada
 		//Se não achar é sinal que deseja finalizar o programa
-		if((pos = __assembler_assemble_getNumNextLabel(asmr, aux)) == 0){
+		if((pos = assembler_searchLabel(asmr, aux)) == 0){
 			pos = lista_getQuant(asmr->labels) + 1; 
 		}
 		
@@ -284,6 +264,7 @@ static INSTRUCTION *__assembler_assemble_makeInstruction(ASSEMBLER *asmr,
 		//que isto, não é possível montar o programa
 		if((int)(pos - asmr->instCounter) > 1023 || 
 						(int)(pos - asmr->instCounter) < -1023){
+			asmError_setDesc(ASSEMBLER_EUSER_ADDRESSOVERFLOW_MSG);
 			return(NULL);
 		}
 
@@ -304,17 +285,137 @@ static INSTRUCTION *__assembler_assemble_makeInstruction(ASSEMBLER *asmr,
 	else if(opcode >= 45 && opcode <= 55){
 
 	}
+	//Tipos especiais
+	else if(opcode == 56){
+		/* BEQZ: 
+		 *  0 - Opcode
+		 *  1 - reg
+		 *  2 - address_t
+		 *  3 - address_f
+		 */
+
+		if(token_getQtd(translation) != 4){
+			printf("token qtd = %i\n", token_getQtd(translation));
+			asmError_setDesc(ASSEMBLER_EUSER_INVALIDDIC_MSG);
+			return (NULL);
+		}
+
+		TYPE_ESP_BEQZ inst;
+		
+		inst.opcode = opcode;
+			
+		//--------------- Monta reg ---------------
+		//Obtém a string que identifica o reg
+		aux = token_getToken(translation, 1);
+		//Obtém a posição correspondente na tradução
+		pos = token_search(pattern, aux);
+	
+		//Erro de processamento! DICIONÁRIO INVÁLIDO
+		if(pos == -1){
+			asmError_setDesc(ASSEMBLER_EUSER_INVALIDDIC_MSG);
+			return (NULL);
+		}
+		
+		//Obtém a string correspondente na instrução
+		//O + 1 é devido ao input armazenar o label da instrução
+		aux = token_getToken(input, pos + 1);
+		
+		//Obtém a posição do registrador referênciado
+		//Se não encontrar, instancia um novo
+		if((pos = registers_regSearch(asmr->regs, aux)) == -1){
+			
+			//Obtém a posição correta criando um novo registrador
+			pos = registers_addReg(asmr->regs, aux);
+
+			if(pos == - 1){ //Excedeu 32 registradores
+				//A descrição do erro já foi setada no asmError.
+				return (NULL);
+			}
+		}
+
+		//Seta o valor:
+		inst.reg = pos;
+		
+		//--------------- Monta address_t ---------------
+		//Obtém a string que identifica a label
+		aux = token_getToken(translation, 2);
+		
+		//Obtém a posição correspondente no pattern
+		pos = token_search(pattern, aux);
+
+ 		//Erro de processamento! DICIONÁRIO INVÁLIDO - ENTRADA INCONSISTENTE
+		if(pos == -1){
+			asmError_setDesc(ASSEMBLER_EUSER_INVALIDDIC_MSG);
+			return (NULL);
+		}
+	 	
+		//Busca a referência na entrada	
+		aux = token_getToken(input, pos + 1);
+		
+		//Obtém o número da linha da label referenciada
+		//Se não achar é sinal que deseja finalizar o programa
+		if((pos = assembler_searchLabel(asmr, aux)) == 0){
+			pos = lista_getQuant(asmr->labels) + 1; 
+		}
+		
+		//address só pode armazenar 11bits, se o salto a ser feito é maior
+		//que isto, não é possível montar o programa
+		if((int)(pos - asmr->instCounter) > 1023 || 
+						(int)(pos - asmr->instCounter) < -1023){
+			asmError_setDesc(ASSEMBLER_EUSER_ADDRESSOVERFLOW_MSG);
+			return(NULL);
+		}
+
+		//Armazena a distância do salto
+		inst.address_t = (int)(pos - (long int)asmr->instCounter - 1);
+
+		//--------------- Monta address_f ---------------
+		//Obtém a string que identifica a label
+		aux = token_getToken(translation, 3);
+		
+		//Obtém a posição correspondente no pattern
+		pos = token_search(pattern, aux);
+
+		//Erro de processamento! DICIONÁRIO INVÁLIDO - ENTRADA INCONSISTENTE
+		if(pos == -1){
+			asmError_setDesc(ASSEMBLER_EUSER_INVALIDDIC_MSG);
+			return (NULL);
+		}
+	 	
+		//Busca a referência na entrada	
+		aux = token_getToken(input, pos + 1);
+		
+		//Obtém o número da linha da label referenciada
+		//Se não achar é sinal que deseja finalizar o programa
+		if((pos = assembler_searchLabel(asmr, aux)) == 0){
+			//Define o salto para uma instrução posterior a última
+			pos = lista_getQuant(asmr->labels) + 1; 
+		}
+		
+		//address só pode armazenar 11bits, se o salto a ser feito é maior
+		//que isto, não é possível montar o programa
+		if((int)(pos - asmr->instCounter) > 1023 || 
+						(int)(pos - asmr->instCounter) < -1023){
+			asmError_setDesc(ASSEMBLER_EUSER_ADDRESSOVERFLOW_MSG);
+			return(NULL);
+		}
+
+		//Armazena a distância do salto
+		inst.address_f = (int)(pos - (long int)asmr->instCounter - 1);
+		
+		//Armazena o valor na estrutura INSTRUCTION
+		novo = (INSTRUCTION*)malloc(sizeof(INSTRUCTION));
+		INSTRUCTION_SETINST(novo->inst, inst);	
+	}
 	//Tipo não definido
 	else{
 		return (NULL);
 	}
 
-
-
 	return (novo);
 }
 
-static int __assembler_assemble_makeLabels(ASSEMBLER *asmr){
+int assembler_makeLabels(ASSEMBLER *asmr){
 	
 	uint64_t counter = 1;
 
@@ -327,12 +428,8 @@ static int __assembler_assemble_makeLabels(ASSEMBLER *asmr){
 	NODE *tmpNode;
 	LABEL *tmpLabel;
 
-	if(asmr == NULL){
-		return (ASSEMBLER_ENULLPOINTER);
-	}
-	
 	//Gera a lista de itens a serem ignorados	
-	ignoreList = __assembler_assemble_makeIgnoreList();
+	ignoreList = assembler_makeIgnoreList();
 
 	//Posiciona no início do arquivo
 	asmLoader_rewind(asmr->loader);
@@ -345,12 +442,12 @@ static int __assembler_assemble_makeLabels(ASSEMBLER *asmr){
 						ASSEMBLER_IGNORE_QTD);
 		
 		//Se a label não for válida
-		if(__assembler_assemble_labelJudge(token_getToken(actualTokens, 0)) ==
+		if(assembler_labelJudge(token_getToken(actualTokens, 0)) ==
 						ASSEMBLER_FALSE){
 			//Libera regiões de memória que não serão mais utilizadas
 			lista_free(asmr->labels);
 			token_free(actualTokens);
-			__assembler_assemble_freeIgnoreList(ignoreList);
+			assembler_freeIgnoreList(ignoreList);
 			asmr->labels = NULL;
 			
 			//Reposiciona o arquivo
@@ -361,7 +458,6 @@ static int __assembler_assemble_makeLabels(ASSEMBLER *asmr){
 		}
 		
 		//Se a label for válida, segue adiante.
-
 
 		//Constrói a label, removendo o ':' presente no final
 		actualLabel = token_getToken(actualTokens, 0);
@@ -379,7 +475,7 @@ static int __assembler_assemble_makeLabels(ASSEMBLER *asmr){
 		counter++;
 	}
 
-	__assembler_assemble_freeIgnoreList(ignoreList);
+	assembler_freeIgnoreList(ignoreList);
 
 	//Reposiciona no início do arquivo
 	asmLoader_rewind(asmr->loader);
