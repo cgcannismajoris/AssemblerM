@@ -21,59 +21,42 @@
 
 LABEL *label_new(const char *name, uint64_t num)
 {
-	LABEL *new = NULL;
+	LABEL *novo = NULL;
 
-	if(name == NULL){
-		return (new);
+	if((novo = (LABEL*)malloc(sizeof(LABEL))) == LABEL_EALLOC)
+	{
+		asmError_setDesc(LABEL_EALLOC_MSG);
+		return (LABEL_EALLOC);
 	}
 
-	new = (LABEL*)malloc(sizeof(LABEL));
-
-	if(new != NULL){
-		
-        new->name = (char*)malloc(sizeof(char)*(strlen(name) + 1));
-
-        if(new->name != NULL){
-            strncpy(new->name, name, strlen(name) + 1);
-            new->num = num;
-		}
-		else{
-			free(new);
-			new = LABEL_EALLOC;
-		}
+	if((novo->name = (char*)malloc(sizeof(char)*(strlen(name) + 1))) == LABEL_EALLOC)
+	{
+		asmError_setDesc(LABEL_EALLOC_MSG);
+		return (LABEL_EALLOC);
 	}
 
-    return new;
+	strncpy(novo->name, name, strlen(name) + 1);
+	novo->num = num;
+    return novo;
 }
 
 void label_free(LABEL *label)
 {
-	if(label != NULL){
-        free(label->name);
-		free(label);
-	}
+	free(label->name);
+	free(label);
 }
 
 char *label_getName(LABEL *label)
 {
-	if(label != NULL){
-        return (label->name);
-	}
-	return (NULL);
+	return (label->name);
 }
 
 uint64_t label_getLineNum(LABEL *label)
 {
-    if(label != NULL){
-        return (label->num);
-	}
-
-	return (0);
+	return (label->num);
 }
 
 int label_comparName(const void *name, const void *label){
-	
     return (strcmp(name, ((LABEL*)label)->name));
-
 }
 

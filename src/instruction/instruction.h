@@ -19,6 +19,7 @@
 #ifndef INSTRUCTION_HEADER
 #define INSTRUCTION_HEADER
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -27,9 +28,6 @@
 
 #define INSTRUCTION_EALLOC                  NULL
 #define INSTRUCTION_EALLOC_MSG              "Falha ao alocar memória para INSTRUCTION."
-
-#define INSTRUCTION_EGETINST                0
-#define INSTRUCTION_EGETINST_MSG            "Falha ao se obter instrução."
 
 #define INSTRUCTION_SETINST(inst, type)     memcpy(&inst, &type, sizeof(uint32_t))
 

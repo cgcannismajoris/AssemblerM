@@ -30,7 +30,6 @@ DICTIONARY *dic_new(const char *filename)
 
     if ((novo->loader = dicLoader_new(filename)) == DICLOADER_EALLOC)
     {
-
         free(novo);
         return DICTIONARY_EALLOC;
     }
@@ -145,5 +144,3 @@ int dic_load(DICTIONARY *dic)
 
 	return (0);
 }
-
-

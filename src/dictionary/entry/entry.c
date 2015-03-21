@@ -21,48 +21,44 @@
 ENTRY *entry_new(const char *instPattern, const char *instTranslation)
 {
 	
-	ENTRY *new = NULL;
-	char *new_pat = NULL;
-	char *new_tra = NULL;
+	ENTRY *novo = NULL;
+	char *novo_pat = NULL;
+	char *novo_tra = NULL;
 	
-	if(instPattern == NULL || instTranslation == NULL){
-		return (new);
-	}
-
-	new = (ENTRY*)malloc(sizeof(ENTRY));
-
-	if(new != NULL) 
+	if((novo = (ENTRY*)malloc(sizeof(ENTRY))) == ENTRY_EALLOC)
 	{
-		new_pat = (char*)malloc(strlen(instPattern) * ENTRY_STRCOD_ASCII);
-		new_tra = (char*)malloc(strlen(instTranslation) * ENTRY_STRCOD_ASCII);
-
-		if(new_pat != NULL && new_tra != NULL)
-		{
-			new->instPattern = new_pat;	
-			strncpy(new->instPattern, instPattern, strlen(instPattern) * 
-							ENTRY_STRCOD_ASCII);
-
-			new->instTranslation = new_tra;
-			strncpy(new->instTranslation, instTranslation, strlen(instTranslation) * 
-							ENTRY_STRCOD_ASCII);
-		}
-		else
-		{ //new foi alocado mas o rótulo não
-			free(new);
-			free(new_pat);
-			free(new_tra);
-			new = ENTRY_EALLOC;
-		}
+		asmError_setDesc(ENTRY_EALLOC_MSG);
+		return ENTRY_EALLOC;
 	}
 
-    return new;
+	if((novo_pat = (char*)malloc(strlen(instPattern) * ENTRY_STRCOD_ASCII)) == ENTRY_EALLOC)
+	{
+		free(novo);
+		asmError_setDesc(ENTRY_EALLOC_MSG);
+		return ENTRY_EALLOC;
+	}
+	
+	if((novo_tra = (char*)malloc(strlen(instTranslation) * ENTRY_STRCOD_ASCII)) == ENTRY_EALLOC)
+	{
+		free(novo_pat);
+		free(novo);
+		asmError_setDesc(ENTRY_EALLOC_MSG);
+		return ENTRY_EALLOC;
+	}
+
+	novo->instPattern = novo_pat;	
+	strncpy(novo->instPattern, instPattern, strlen(instPattern) * 
+					ENTRY_STRCOD_ASCII);
+
+	novo->instTranslation = novo_tra;
+	strncpy(novo->instTranslation, instTranslation, strlen(instTranslation) * 
+					ENTRY_STRCOD_ASCII);
+
+    return novo;
 }
 
 void entry_free(ENTRY *entry)
 {
-    if (entry == NULL)
-        return;
-
     free(entry->instTranslation);
 	free(entry->instPattern);
     free(entry);
@@ -70,20 +66,10 @@ void entry_free(ENTRY *entry)
 
 const char *entry_getPattern(ENTRY *entry)
 {
-	if(entry != NULL)
-	{
-		return(entry->instPattern);
-	}
-
-	return(NULL);
+	return(entry->instPattern);
 }
 
 char *entry_getTranslation(ENTRY *entry)
 {
-	if(entry != NULL)
-	{
-		return(entry->instTranslation);
-	}
-
-	return(0);
+	return(entry->instTranslation);
 }

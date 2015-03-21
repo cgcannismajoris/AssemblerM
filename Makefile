@@ -167,6 +167,9 @@ $(LINKEDL_OBJ): $(LINKEDL_H) $(LINKEDL_SRC) $(GNODE_OBJ) $(GDMANIP_OBJ)
 $(TOOL_DICWRITER_OBJ): $(DICWRITER_OBJ) $(TOOL_DICWRITER_SRC)
 	$(COMPILER) $(CFLAG) $(TOOL_DICWRITER_SRC) $(LFLAG) $(TOOL_DICWRITER_OBJ)
 
+$(TOOL_INSTDEBUG_OBJ): $(INSTRUCTION_OBJ) $(TOOL_INSTDEBUG_SRC)
+	$(COMPILER) $(CFLAG) $(TOOL_INSTDEBUG_SRC) $(LFLAG) $(TOOL_INSTDEBUG_SRC)
+
 $(BIN): $(OBJ)
 	$(COMPILER) $(LFLAG) $(BIN) $(OBJ) $(LIBFLAG)
 
@@ -177,13 +180,17 @@ dicwriter_bin: mk_dir_dicwriter $(TOOL_DICWRITER_OBJ) $(LINKEDL_OBJ) $(ENTRY_OBJ
 	$(ENTRY_OBJ)
 
 dicwriter: dicwriter_bin LN_SYMBOL_TOOL_DICWRITER
-
+	$(COMPILER) $(LFLAG) $(BIN_INSTDEBUG_TOOL)  $(INSTRUCTION_OBJ) \
+	$(TOOL_INSTDEBUG_OBJ)
+	
 
 # Regra de compilação da ferramenta instdebug
-instdebug: all mk_dir_instdebug
+instdebug_bin: mk_dir_instdebug $(INSTRUCTION_OBJ)
 	gcc -c tools/instdebug/main.c -o tools/instdebug/obj/instdebug.o
 	gcc -o tools/instdebug/bin/instdebug tools/instdebug/obj/instdebug.o \
 	$(INSTRUCTION_OBJ)
+
+instdebug: instdebug_bin LN_SYMBOL_TOOL_INSTDEBUG
 
 
 # GERAÇÃO DO LINK SIMBÓLICO #################

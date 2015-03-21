@@ -22,26 +22,25 @@
 TOKENS *token_new(uint8_t qtd)
 {
 	
-	TOKENS *new = NULL;
+	TOKENS *novo = NULL;
 	
-	new = (TOKENS*)malloc(sizeof(TOKENS));
-	
-	if(new != NULL){
-
-		new->tokens = (char**)malloc(sizeof(char*) * qtd);
-		
-		if(new->tokens != NULL){
-            //memset(new->tokens, 0, qtd);
-			new->qtdUsed = 0;
-			new->qtdMax = qtd;
-		}
-		else{
-			free(new);
-			new = TOKENS_EALLOC;
-		}
+	if((novo = (TOKENS*)malloc(sizeof(TOKENS))) == TOKENS_EALLOC)
+	{
+		asmError_setDesc(TOKENS_EALLOC_MSG);
+		return (TOKENS_EALLOC);
 	}
+	
+	if((novo->tokens = (char**)malloc(sizeof(char*) * qtd)) == TOKENS_EALLOC)
+	{
+		free(novo);
+		asmError_setDesc(TOKENS_EALLOC_MSG);
+		return (TOKENS_EALLOC);
+	}
+	
+	novo->qtdUsed = 0;
+	novo->qtdMax = qtd;
 
-	return new;
+	return novo;
 }
 
 void token_free(TOKENS *token)
@@ -49,42 +48,30 @@ void token_free(TOKENS *token)
 	
 	uint8_t qtd;
 
-	if(token != NULL){
-		
-        //Destrói as strings
-		for(qtd = 0; qtd < token->qtdMax; qtd++){
-			free(token->tokens[qtd]);
-		}
-
-		free(token->tokens);
-		free(token);
-
+    //Destrói as strings
+	for(qtd = 0; qtd < token->qtdMax; qtd++)
+	{
+		free(token->tokens[qtd]);
 	}
+
+	free(token->tokens);
+	free(token);
 }
 
 uint8_t token_getQtd(TOKENS *token)
 {
-
-	if(token != NULL){
-		return (token->qtdUsed);
-	}
-
-    return 0;
+	return (token->qtdUsed);
 }
 
 char *token_getToken(TOKENS *token, uint8_t pos)
 {
-
-	if(token != NULL && pos < token->qtdMax){
-		return (token->tokens[pos]);
-	}
-
-    return NULL;
+	return (token->tokens[pos]);
 }
 
 void token_addToken(TOKENS *token, char *t){
 	
-	if(token != NULL && t != NULL && token->qtdUsed < token->qtdMax){
+	if(token->qtdUsed < token->qtdMax)
+	{
         token->tokens[token->qtdUsed] = (char*)malloc(sizeof(char) * strlen(t) + 1);
         strncpy(token->tokens[token->qtdUsed], t, strlen(t) + 1);
 
@@ -104,5 +91,3 @@ int token_search(TOKENS *token, const char *search)
 
     return -1;
 }
-
-

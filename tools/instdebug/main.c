@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#define COMPILING_INSTDEBUG 1
+
+extern void     asmError_setDesc(const char *failureDesc);
+
 #include "../../src/instruction/instruction.h"
 
 int main(int argc, char **argv)
@@ -11,8 +15,13 @@ int main(int argc, char **argv)
     TYPE_B tipo_b;
     TYPE_J tipo_j;
 
+	if(argc == 1)
+	{
+		printf("Insira um arquivo de entrada...\n");
+		return (EXIT_FAILURE);
+	}
 
-    FILE *file = fopen("data/first_mounted_file.out", "rb+");
+    FILE *file = fopen(argv[1], "rb+");
 
     fread(&numInst, sizeof(uint32_t), 1, file);
     INSTRUCTION_SETINST(tipo_r, numInst);
@@ -56,4 +65,9 @@ int main(int argc, char **argv)
     fclose(file);
 
     return 0;
+}
+
+void asmError_setDesc(const char *failureDesc)
+{
+	printf("Ocorreu um erro ao alocar uma nova instrução...\n");
 }

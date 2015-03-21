@@ -21,65 +21,49 @@
 DICWRITER *dicWriter_new(const char *filename)
 {
 
-	DICWRITER *new = NULL;
+	DICWRITER *novo = NULL;
 	FILE *file;
 
-	file = fopen(filename, "wb+");
-
-	if(file != NULL)
+	if((file = fopen(filename, "wb+")) == DICWRITER_EALLOC)
 	{
-		new = (DICWRITER*)malloc(sizeof(DICWRITER));
-		new->file = file;
+		asmError_setDesc(DICWRITER_EALLOC_MSG);
+		return DICWRITER_EALLOC;
 	}
 
-    return new;
+	novo = (DICWRITER*)malloc(sizeof(DICWRITER));
+	novo->file = file;
+
+    return novo;
 }
 
 void dicWriter_free(DICWRITER *dicWriter)
 {
-	if(dicWriter != NULL)
-	{
-		fclose(dicWriter->file);
-		free(dicWriter);
-	}
+	fclose(dicWriter->file);
+	free(dicWriter);
 }
 
-int dicWriter_writeQtdInst(DICWRITER *dicWriter, uint64_t num)
+void dicWriter_writeQtdInst(DICWRITER *dicWriter, uint64_t num)
 {
-	
-	if(dicWriter != NULL)
-	{
-		//Grava a quantidade de instruções armazenadas no arquivo
-		fwrite(&num, sizeof(uint64_t), 1, dicWriter->file);
-
-		return(0);
-	}
-	
-	return(DICWRITER_ENULLPOINTER);
+	//Grava a quantidade de instruções armazenadas no arquivo
+	fwrite(&num, sizeof(uint64_t), 1, dicWriter->file);
 }
 
-int dicWriter_writeInst(DICWRITER *dicWriter, 
+void dicWriter_writeInst(DICWRITER *dicWriter, 
 							const char *instPattern,
                           		const char *instTranslation)
 {
-	if(dicWriter != NULL && instPattern != NULL)
-	{
-		//Grava o padrão da instrução
-		fwrite(instPattern, sizeof(char), strlen(instPattern), 
-						dicWriter->file);
+	//Grava o padrão da instrução
+	fwrite(instPattern, sizeof(char), strlen(instPattern), 
+					dicWriter->file);
 
-		//Insere uma separação
-		fwrite(DICWRITER_SEPARATOR, sizeof(char), 1, dicWriter->file);
+	//Insere uma separação
+	fwrite(DICWRITER_SEPARATOR, sizeof(char), 1, dicWriter->file);
 
-		//Grava o opcode correspondente à instrução
-		fwrite(instTranslation, sizeof(char), strlen(instTranslation), 
-						dicWriter->file);
+	//Grava o opcode correspondente à instrução
+	fwrite(instTranslation, sizeof(char), strlen(instTranslation), 
+					dicWriter->file);
 
-		//Grava o terminador de instrução
-		fwrite(DICWRITER_TERMINATOR, sizeof(char), 1, dicWriter->file);
+	//Grava o terminador de instrução
+	fwrite(DICWRITER_TERMINATOR, sizeof(char), 1, dicWriter->file);
 
-		return(0);
-	}
-	
-	return(DICWRITER_ENULLPOINTER);
 }

@@ -30,7 +30,6 @@
 
 #define ENTRY_EALLOC_MSG 	"Falha na alocação da estrutura ENTRY."
 
-
 #define ENTRY_STRCOD_ASCII 				1
 
 

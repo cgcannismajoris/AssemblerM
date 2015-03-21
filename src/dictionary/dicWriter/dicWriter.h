@@ -25,16 +25,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define DICWRITER_SUCCESS        0      /* Sucesso na operação (não vale para ponteiros) */
-#define DICWRITER_EWRITE        -1      /* Falha ao escrever no arquivo */
-#define DICWRITER_ENULLPOINTER  -2      /* Ponteiro nulo recebido */
 #define DICWRITER_EALLOC		NULL    /* FALHA DE ALOCAÇÃO */
 
-
-#define DICWRITER_EWRITE_MSG        "Falha ao escrever no arquivo em DICWRITER."
-#define DICWRITER_ENULLPOINTER_MSG  "Ponteiro nulo recebido em DICWRITER."
 #define DICWRITER_EALLOC_MSG        "Falha na alocação da estrutura DICWRITER."
-
 
 #define DICWRITER_SEPARATOR		"&"
 #define DICWRITER_TERMINATOR	"\0"
@@ -84,11 +77,9 @@ void            dicWriter_free(DICWRITER *dicWriter);
  *      quantidade de instruções.
  *      -> uint64_t num: Quantidade de instruções a ser escrita.
  *
- * - RETORNO: Estado da operação.
- *      -> Se 0                      - Sucesso na operação.
- *      -> Se DICWRITER_ENULLPOINTER - Erro na operação.
+ * - RETORNO: void.
  */
-int             dicWriter_writeQtdInst(DICWRITER *dicWriter, uint64_t num);
+void             dicWriter_writeQtdInst(DICWRITER *dicWriter, uint64_t num);
 
 
 /* -> void dicWriter_writeInst(DICWRITER *dicWriter, const char *instructionPattern, 
@@ -102,11 +93,9 @@ int             dicWriter_writeQtdInst(DICWRITER *dicWriter, uint64_t num);
  *      -> const char *instPattern: Padrão de instrução a ser escrito.
  *      -> const char *instTranslation: Tradução da instrução a ser escrita.
  *
- * - RETORNO: Estado da operação.
- *      -> Se 0                      - Sucesso na operação.
- *      -> Se DICWRITER_ENULLPOINTER - Erro na peração.
+ * - RETORNO: void.
  */
-int             dicWriter_writeInst(DICWRITER *dicWriter, 
+void             dicWriter_writeInst(DICWRITER *dicWriter, 
 										const char *instPattern,
                                     		const char *instTranslation);
 
