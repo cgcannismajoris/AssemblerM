@@ -25,6 +25,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../asmError.h"
+
 #define ASMLOADER_EALLOC        NULL    /* FALHA DE ALOCAÇÃO */
 #define ASMLOADER_EGETINST      NULL    /* Falha ao se obter nova instrução */
 

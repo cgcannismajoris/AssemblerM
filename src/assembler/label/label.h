@@ -25,6 +25,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "../../asmError.h"
 
 #define LABEL_EALLOC			NULL
 

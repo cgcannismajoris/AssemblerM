@@ -26,6 +26,8 @@
 #include <string.h>
 
 
+#include "../asmError.h"
+
 #define INSTRUCTION_EALLOC                  NULL
 #define INSTRUCTION_EALLOC_MSG              "Falha ao alocar memória para INSTRUCTION."
 

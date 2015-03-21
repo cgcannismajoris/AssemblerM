@@ -26,6 +26,8 @@
 #include <stdint.h>
 #include <stdio.h>
  
+#include "../../asmError.h"
+
 #define ENTRY_EALLOC		NULL
 
 #define ENTRY_EALLOC_MSG 	"Falha na alocação da estrutura ENTRY."

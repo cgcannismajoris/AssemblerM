@@ -25,6 +25,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../../asmError.h"
+
 #define DICWRITER_EALLOC		NULL    /* FALHA DE ALOCAÇÃO */
 
 #define DICWRITER_EALLOC_MSG        "Falha na alocação da estrutura DICWRITER."

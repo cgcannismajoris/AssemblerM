@@ -26,6 +26,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "../../asmError.h"
 
 #define REG_EALLOC          NULL
 #define REG_EALLOC_MSG      "Falha ao alocar memória para REG."

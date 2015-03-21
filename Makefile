@@ -7,11 +7,15 @@
 #
 #	2. make dicwriter : compilação somente da ferramenta dicwriter;
 #
-#	3. make clean : limpa o projeto (não limpa dicwriter);
+#	3. make instdebug: compilação da ferramenta de depuração do INSTRUCTION.
 #
-#	4. make clean_dicwriter : limpa somente o dicwriter.
+#	4. make clean : limpa o projeto (não limpa dicwriter);
 #
-#	5. make instdebug: compilação da ferramenta de depuração do INSTRUCTION.
+#	5. make clean_dicwriter : limpa somente o dicwriter.
+#
+#	6. make clean_dicwriter : limpa somente o dicwriter.
+#
+
 
 
 # DEFINIÇÕES DE ARQUIVOS #####################
@@ -32,6 +36,7 @@ SCANNER_SRC		= src/scanner/scanner.c
 LINKEDL_SRC     = src/linkedList/linkedList.c
 GNODE_SRC       = src/linkedList/node.c
 GDMANIP_SRC     = src/linkedList/genericDataManipulation.c
+ASMERROR_SRC	= src/asmError.c
 TOOL_DICWRITER_SRC = tools/dicwriter/main.c
 TOOL_INSTDEBUG_SRC = tools/instdebug/main.c
 
@@ -52,7 +57,7 @@ SCANNER_H		= src/scanner/scanner.h
 LINKEDL_H       = src/linkedList/linkedList.h
 GNODE_H         = src/linkedList/node.h
 GDMANIP_H       = src/linkedList/genericDataManipulation.h
-
+ASMERROR_H		= src/asmError.h
 
 # Arquivos-objeto
 IMAIN_OBJ		= obj/imain.o
@@ -71,8 +76,9 @@ SCANNER_OBJ		= obj/scanner.o
 LINKEDL_OBJ     = obj/linkedList.o
 GNODE_OBJ       = obj/node.o
 GDMANIP_OBJ     = obj/genericDataManipulation.o
-TOOL_DICWRITER_OBJ	= tools/dicwriter/obj/tool_dicwriter.o
-TOOL_INSTDEBUG_OBJ =  tools/instdebug/obj/tool_instdebug.o
+ASMERROR_OBJ	= obj/asmError.o
+TOOL_DICWRITER_OBJ = tools/dicwriter/obj/tool_dicwriter.o
+TOOL_INSTDEBUG_OBJ = tools/instdebug/obj/tool_instdebug.o
 
 
 # Símbolos de arquivos de saída
@@ -89,7 +95,7 @@ OUTPUT_FULLPATH_EXEC_INSTDEBUG = tools/$(OUTPUT_NAME_EXEC_INSTDEBUG)/bin/$(OUTPU
 
 LN_SYMBOL				= $(OUTPUT_NAME_EXEC)
 LN_SYMBOL_TOOL_DICWRITER = $(OUTPUT_NAME_EXEC_DICWRITER)
-
+LN_SYMBOL_TOOL_INSTDEBUG = $(OUTPUT_NAME_EXEC_INSTDEBUG)
 
 # DEFINIÇÕES PARA COMPILAÇÃO #################
 COMPILER 		= gcc
@@ -99,13 +105,13 @@ LFLAG 			= -o
 SRC 			= $(IMAIN_SRC) $(ASSEMBLER_SRC) $(ASMLOADER_SRC) \
 $(ASMWRITER_SRC) $(INSTRUCTION_SRC) $(DICTIONARY_SRC) $(ENTRY_SRC) \
 $(DICWRITER_SRC) $(DICLOADER_SRC) $(LABEL_SRC) $(REG_SRC) $(TOKENS_SRC) \
-$(SCANNER_SRC)
+$(SCANNER_SRC) $(LINKEDL_SRC) $(GNODE_SRC) $(GDMANIP_SRC) $(ASMERROR_SRC)
 
 
 OBJ				= $(IMAIN_OBJ) $(ASSEMBLER_OBJ) $(ASMLOADER_OBJ) \
 $(ASMWRITER_OBJ) $(INSTRUCTION_OBJ) $(DICTIONARY_OBJ) $(ENTRY_OBJ) \
 $(DICWRITER_OBJ) $(DICLOADER_OBJ) $(LABEL_OBJ) $(REG_OBJ) $(TOKENS_OBJ) \
-$(SCANNER_OBJ) $(LINKEDL_OBJ) $(GNODE_OBJ) $(GDMANIP_OBJ)
+$(SCANNER_OBJ) $(LINKEDL_OBJ) $(GNODE_OBJ) $(GDMANIP_OBJ) $(ASMERROR_OBJ)
 
 
 BIN					= $(OUTPUT_FULLPATH_EXEC)
@@ -163,12 +169,15 @@ $(GNODE_OBJ): $(GNODE_H) $(GNODE_SRC)
 $(LINKEDL_OBJ): $(LINKEDL_H) $(LINKEDL_SRC) $(GNODE_OBJ) $(GDMANIP_OBJ)
 	$(COMPILER) $(CFLAG) $(LINKEDL_SRC) $(LFLAG) $(LINKEDL_OBJ)
 
+$(ASMERROR_OBJ): $(ASMERROR_SRC) $(ASMERRROR_H)
+	$(COMPILER) $(CFLAG) $(ASMERROR_SRC) $(LFLAG) $(ASMERROR_OBJ)
+
 # Regra de compilação da ferramenta dicwriter
 $(TOOL_DICWRITER_OBJ): $(DICWRITER_OBJ) $(TOOL_DICWRITER_SRC)
 	$(COMPILER) $(CFLAG) $(TOOL_DICWRITER_SRC) $(LFLAG) $(TOOL_DICWRITER_OBJ)
 
 $(TOOL_INSTDEBUG_OBJ): $(INSTRUCTION_OBJ) $(TOOL_INSTDEBUG_SRC)
-	$(COMPILER) $(CFLAG) $(TOOL_INSTDEBUG_SRC) $(LFLAG) $(TOOL_INSTDEBUG_SRC)
+	$(COMPILER) $(CFLAG) $(TOOL_INSTDEBUG_SRC) $(LFLAG) $(TOOL_INSTDEBUG_OBJ)
 
 $(BIN): $(OBJ)
 	$(COMPILER) $(LFLAG) $(BIN) $(OBJ) $(LIBFLAG)
@@ -185,10 +194,8 @@ dicwriter: dicwriter_bin LN_SYMBOL_TOOL_DICWRITER
 	
 
 # Regra de compilação da ferramenta instdebug
-instdebug_bin: mk_dir_instdebug $(INSTRUCTION_OBJ)
-	gcc -c tools/instdebug/main.c -o tools/instdebug/obj/instdebug.o
-	gcc -o tools/instdebug/bin/instdebug tools/instdebug/obj/instdebug.o \
-	$(INSTRUCTION_OBJ)
+instdebug_bin: mk_dir_instdebug $(TOOL_INSTDEBUG_OBJ)
+	$(COMPILER) $(LFLAG) $(BIN_TOOL_INSTDEBUG) $(INSTRUCTION_OBJ) $(TOOL_INSTDEBUG_OBJ)
 
 instdebug: instdebug_bin LN_SYMBOL_TOOL_INSTDEBUG
 
@@ -220,10 +227,15 @@ mk_dir_instdebug:
 	mkdir -p tools/$(OUTPUT_NAME_EXEC_INSTDEBUG)/bin
 	mkdir -p tools/$(OUTPUT_NAME_EXEC_INSTDEBUG)/obj
 
-clean:
+clean: clean_dicwriter clean_instdebug
 	rm -f $(OUTPUT_FULLPATH_EXEC) $(LN_SYMBOL) *~ *.swp *.swo \
-	$(OBJ) $(TOOL_DICWRITER_OBJ)
+	$(OBJ)
 
 clean_dicwriter:
-	rm -f $(OUTPUT_FULLPATH_EXEC_DICWRITER) bin/$(LN_SYMBOL_TOOL_DICWRITER) \
+	rm -rf $(OUTPUT_FULLPATH_EXEC_DICWRITER) bin/$(LN_SYMBOL_TOOL_DICWRITER) \
 	$(TOOL_DICWRITER_OBJ) $(LINKEDL_OBJ) $(GNODE_OBJ) $(GDMANIP_OBJ) $(ENTRY_OBJ) 
+
+clean_instdebug:
+	rm -rf $(OUTPUT_FULLPATH_EXEC_INSTDEBUG) bin/$(LN_SYMBOL_TOOL_INSTDEBUG) \
+	$(TOOL_INSTDEBUG_OBJ) $(INSTRUCTION_OBJ)
+

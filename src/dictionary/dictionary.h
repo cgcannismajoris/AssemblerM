@@ -20,6 +20,7 @@
 #ifndef DICTIONARY_HEADER
 #define DICTIONARY_HEADER
 
+#include "../asmError.h"
 #include "entry/entry.h"            /* incluir o TAD ENTRY */
 #include "dicLoader/dicLoader.h"    /* incluir o TAD DICLOADER */
 #include "dicWriter/dicWriter.h"    /* incluir o TAD DICWRITER */
