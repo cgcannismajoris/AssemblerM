@@ -58,6 +58,13 @@ typedef struct _inst_b
     signed int address:     16;
 } TIPO_B, TYPE_B;
 
+typedef struct _esp_beqz
+{
+    unsigned int opcode:    6;
+    unsigned int reg:       5;
+    signed int address_t:   10;
+    signed int address_f:   11;
+} TYPE_ESP_BEQZ;
 
 //Estrutura para armazenamento da instrução binária
 typedef struct _instruction
