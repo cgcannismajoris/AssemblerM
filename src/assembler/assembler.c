@@ -25,22 +25,27 @@ ASSEMBLER *assembler_new()
     ASSEMBLER *novo;
 	
     if ((novo = (ASSEMBLER*)malloc(sizeof(ASSEMBLER))) == NULL)
+    {
+        asmError_setDesc(ASSEMBLER_EALLOC_MSG);
         return ASSEMBLER_EALLOC;
+    }
 
-	novo->labels = lista_new();
+    if (novo->labels = lista_new());
 
 	if(novo->labels == NULL){
 		free(novo);
 		novo = NULL;
 	}
 
-	novo->reg = (REG**)malloc(sizeof(REG*) * MACHINE_MAX_REG);
+    if ((novo->reg = (REG**)malloc(sizeof(REG*) * MACHINE_MAX_REG)) == NULL)
+        return ASSEMBLER_EALLOC;
 
 	novo->qtdReg = 0;
 	
 	novo->instCounter = 0;
 
-	if(novo->reg == NULL){
+    if(novo->reg == NULL)
+    {
 		lista_free(novo->labels);
 		free(novo);
 		novo = NULL;
@@ -112,14 +117,14 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 	uint64_t i;
 	//---------------------- FIM -------------------------------
 
-	if(asmr == NULL || src == NULL || bin == NULL || dicFile == NULL){
-		return (ASSEMBLER_ENULLPOINTER);
-	}
-
 	//Inicializa as estruturas que irão compor o assembler:
-	asmr->loader = asmLoader_new(src);
-	asmr->writer = asmWriter_new(bin);
-	asmr->dic    = dic_new(dicFile);
+    if ((asmr->loader = asmLoader_new(src)) == ASMLOADER_EALLOC)
+        return EXIT_FAILURE;
+
+    if ((asmr->writer = asmWriter_new(bin)) == ASMWRITER_EALLOC)
+        return EXIT_FAILURE;
+
+    asmr->dic    = dic_new(dicFile);
 	asmr->reg    = (REG**)malloc(sizeof(REG*) * MACHINE_MAX_REG);
 	
 	//Faz busca pelas labels declaradas no arquivo

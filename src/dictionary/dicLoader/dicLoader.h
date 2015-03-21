@@ -26,11 +26,12 @@
 #include <string.h>
 
  
-#define DICLOADER_MAX_INST_LENGTH 256
+#define DICLOADER_MAX_INST_LENGTH   256
 
-#define DICLOADER_EALLOC NULL
+#define DICLOADER_EALLOC            NULL
+#define DICLOADER_EALLOC_MSG        "Falha ao alocar memória no TAD DICLOADER."
 
-#define DICLOADER_EALLOC_MSG "Falha ao alocar memória no TAD DICLOADER."
+#define DICLOADER_EFOPEN_MSG        NULL
 
 
 typedef struct _dicLoader

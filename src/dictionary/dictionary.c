@@ -20,52 +20,44 @@
 
 DICTIONARY *dic_new(const char *filename)
 {
-	DICTIONARY *novo = NULL;
+    DICTIONARY *novo;
 
-	if(filename == NULL){
-		return novo;
-	}
+    if ((novo = (DICTIONARY*)malloc(sizeof(DICTIONARY))) == DICTIONARY_EALLOC)
+    {
+        asmError_setDesc(DICTIONARY_EALLOC_MSG);
+        return DICTIONARY_EALLOC;
+    }
 
-	novo = (DICTIONARY*)malloc(sizeof(DICTIONARY));
+    if ((novo->loader = dicLoader_new(filename)) == DICLOADER_EALLOC)
+    {
 
-	if(novo == NULL){
-		return (novo);
-	}
-
-	novo->loader = dicLoader_new(filename);
-	
-	if(novo->loader == NULL){
-		free(novo);
-		return (novo);
-	}
+        free(novo);
+        return DICTIONARY_EALLOC;
+    }
 
 	novo->qtdEntry = dicLoader_getQtdInst(novo->loader);
 
-	novo->verbetes = (ENTRY**)malloc(sizeof(ENTRY*) * novo->qtdEntry);
+    if ((novo->verbetes = (ENTRY**)malloc(sizeof(ENTRY*) * novo->qtdEntry)) == DICTIONARY_EALLOC)
+    {
+        asmError_setDesc(DICTIONARY_ELOAD_MSG);
 
-	if(novo->verbetes == NULL){
-		dicLoader_free(novo->loader);
-		free(novo);
-		novo = NULL;
-	}
+        dicLoader_free(novo->loader);
+        free(novo);
+        return DICTIONARY_EALLOC;
+    }
 
 	return novo;
 }
 
 void dic_free(DICTIONARY *dic)
 {
-	
-	if(dic != NULL){
-		dicLoader_free(dic->loader);
+    dicLoader_free(dic->loader);
 
-		for(--dic->qtdEntry; dic->qtdEntry != 0; dic->qtdEntry--){
-			entry_free(dic->verbetes[dic->qtdEntry]);
-		}
+    for(--dic->qtdEntry; dic->qtdEntry != 0; dic->qtdEntry--)
+        entry_free(dic->verbetes[dic->qtdEntry]);
 		
-		free(dic->verbetes);
-		free(dic);
-	}
-
+    free(dic->verbetes);
+    free(dic);
 }
 
 static int __dic_search_compar(const void *one, const void *two){
@@ -81,11 +73,6 @@ static int __dic_search_compar(const void *one, const void *two){
 
 ENTRY *dic_search(DICTIONARY *dic, const char *nomeOperacao)
 {
-
-	if(dic == NULL || nomeOperacao == NULL){
-		return (NULL);
-	}
-
 	char nomeOperacao_ex[strlen(nomeOperacao) + 1];
 	
 	strcpy(nomeOperacao_ex, nomeOperacao);
@@ -95,10 +82,10 @@ ENTRY *dic_search(DICTIONARY *dic, const char *nomeOperacao)
 	ENTRY **result = bsearch(nomeOperacao_ex, dic->verbetes, dic->qtdEntry, 
 					sizeof(ENTRY**), __dic_search_compar);
 
-	if(result != NULL)
+    if(result != DICTIONARY_BSEARCH_NOTFOUND)
 		return (*result);
 
-	return (NULL);
+    return (DICTIONARY_BSEARCH_NOTFOUND);
 }
 
 int dic_save(DICTIONARY *dic, const char *filename)
@@ -124,21 +111,17 @@ static int __dic_load_compar(const void *one, const void *two){
 }
 
 int dic_load(DICTIONARY *dic)
-{
-	
+{	
 	uint64_t count;
 	uint64_t separator;
 	char *verbete;
-
-	if(dic == NULL){
-		return (DICTIONARY_ELOAD);
-	}
 
 	for(count = 0; count < dic->qtdEntry; count++){
 
 		verbete = dicLoader_getNextInst(dic->loader);
 		
-		if(verbete == NULL){
+        if (verbete == NULL)
+        {
 			free(dic);
 			return (DICTIONARY_ELOAD);
 		}

@@ -20,27 +20,28 @@
 
 ASMWRITER *asmWriter_new(const char *filename)
 {
-	ASMWRITER *new = NULL;
+    ASMWRITER *novo;
 
-	new = (ASMWRITER*)malloc(sizeof(ASMWRITER));
+    if ((novo = (ASMWRITER*)malloc(sizeof(ASMWRITER))) == ASMWRITER_EALLOC)
+    {
+        asmError_setDesc(ASMWRITER_EALLOC_MSG);
+        return ASMWRITER_EALLOC;
+    }
 
-	if(new != NULL){
-		new->file = fopen(filename, "wb+");
-
-		if(new->file == NULL){
-			free(new);
-			new = NULL;
-		}
-	}
+    if ((novo->file = fopen(filename, "wb+")) == ASMWRITER_EALLOC)
+    {
+        asmError_setDesc(ASMWRITER_EFOPEN_MSG);
+        free(novo);
+        return ASMWRITER_EALLOC;
+    }
     
-	return new;
+    return novo;
 }
 
 void asmWriter_free(ASMWRITER *asmWriter)
 {
 	fclose(asmWriter->file);
 	free(asmWriter);
-
 }
 
 void asmWriter_writeInst(ASMWRITER *asmWriter, INSTRUCTION *instruction)

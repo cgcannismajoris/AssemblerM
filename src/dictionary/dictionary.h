@@ -28,9 +28,14 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#define DICTIONARY_EALLOC               NULL
+#define DICTIONARY_EALLOC_MSG           "Falha ao alocar estrutura DICTIONARY."
 
-#define DICTIONARY_ELOAD         -1
-#define DICTIONARY_ELOAD_MSG     "Falha ao carregar o dicionário."
+#define DICTIONARY_ELOAD                -1
+#define DICTIONARY_ELOAD_MSG            "Falha ao carregar o dicionário."
+
+#define DICTIONARY_BSEARCH_NOTFOUND     NULL
+
 
 typedef struct _dictionary
 {

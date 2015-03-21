@@ -20,26 +20,23 @@
 
 DICLOADER *dicLoader_new(const char *filename)
 {
+    DICLOADER *novo;
 
-	DICLOADER *new = NULL;
+    if ((novo = (DICLOADER*)malloc(sizeof(DICLOADER))) == DICLOADER_EALLOC)
+    {
+        asmError_setDesc(DICLOADER_EALLOC_MSG);
+        return DICLOADER_EALLOC;
+    }
 
-	if(filename == NULL){
-		return (new);
-	}
+    if ((novo->file = fopen(filename, "rb+")) == DICLOADER_EALLOC)
+    {
+        asmError_setDesc(DICLOADER_EFOPEN_MSG);
 
-	new = (DICLOADER*)malloc(sizeof(DICLOADER));
+        free(novo);
+        return DICLOADER_EALLOC;
+    }
 
-	if(new != NULL){
-		
-		new->file = fopen(filename, "rb+");
-		
-		if(new->file == NULL){
-			free(new);
-			new = NULL;
-		}
-	}
-
-	return new;
+    return novo;
 }
 
 void dicLoader_free(DICLOADER *dicLoader)
@@ -50,7 +47,6 @@ void dicLoader_free(DICLOADER *dicLoader)
 
 uint64_t dicLoader_getQtdInst(DICLOADER *dicLoader)
 {
-
 	uint64_t qtdInst = 0;
 	
 	fread(&qtdInst, sizeof(uint64_t), 1, dicLoader->file);
@@ -67,12 +63,17 @@ char *dicLoader_getNextInst(DICLOADER *dicLoader)
 		return (NULL);
 	}
 
-	verbete = (char *)malloc(sizeof(char) * DICLOADER_MAX_INST_LENGTH);
+    if ((verbete = (char *)malloc(sizeof(char) * DICLOADER_MAX_INST_LENGTH)) == NULL)
+    {
+        asmError_setDesc(DICLOADER_EALLOC_MSG);
+        return DICLOADER_EALLOC;
+    }
 
-	do{
+    do
+    {
 		i++;
 		fread(&(verbete[i]), sizeof(char), 1, dicLoader->file);
-	}while(i < DICLOADER_MAX_INST_LENGTH && verbete[i] != '\0');
+    } while(i < DICLOADER_MAX_INST_LENGTH && verbete[i] != '\0');
 
     return verbete;
 }

@@ -25,10 +25,15 @@ ASMLOADER *asmLoader_new(const char *filename)
     ASMLOADER *novo;
 
     if ((novo = (ASMLOADER *)malloc(sizeof(ASMLOADER))) == ASMLOADER_EALLOC)
+    {
+        asmError_setDesc(ASMLOADER_EALLOC_MSG);
         return ASMLOADER_EALLOC; /* stderr => ASMLOADER_EALLOC_MSG */
+    }
+
 
     if ((novo->inst_atual = (char *)malloc(ASMLOADER_INST_MAXCHARLENGTH)) == NULL)
     {
+        asmError_setDesc(ASMLOADER_EALLOC_MSG);
         free(novo);
         return ASMLOADER_EALLOC;
     }
@@ -37,6 +42,8 @@ ASMLOADER *asmLoader_new(const char *filename)
     {
         free(novo->inst_atual);
         free(novo);
+
+        asmError_setDesc(ASMLOADER_EFOPEN_MSG);
         return ASMLOADER_EALLOC;
     }
 
@@ -59,9 +66,7 @@ char *asmLoader_getNextInst(ASMLOADER *asmLoader)
     return asmLoader->inst_atual;
 }
 
-void asmLoader_rewind(ASMLOADER *asmLoader){
-
-	if(asmLoader != NULL){
-		rewind(asmLoader->file);
-	}
+void asmLoader_rewind(ASMLOADER *asmLoader)
+{
+    rewind(asmLoader->file);
 }

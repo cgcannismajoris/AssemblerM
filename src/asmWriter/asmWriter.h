@@ -26,6 +26,13 @@
 
 #include "../instruction/instruction.h"
 
+#define ASMWRITER_EALLOC        NULL
+#define ASMWRITER_EALLOC_MSG    "Falha na alocação da estrutura ASWRITER."
+
+#define ASMWRITER_EFOPEN        NULL
+#define ASMWRITER_EFOPEN_MSG    "Falha ao salvar arquivo."
+
+
 typedef struct _asmWriter
 {
     FILE *file;
