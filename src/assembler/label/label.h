@@ -28,8 +28,8 @@
 #include "../../asmError.h"
 
 #define LABEL_EALLOC			NULL
-
 #define LABEL_EALLOC_MSG		"Falha na alocação de memória no TAD LABEL."
+
 
 typedef struct _label
 {

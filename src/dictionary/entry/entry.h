@@ -20,19 +20,17 @@
 #ifndef ENTRY_HEADER
 #define ENTRY_HEADER
 
-#include <stddef.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
  
 #include "../../asmError.h"
 
 #define ENTRY_EALLOC		NULL
-
 #define ENTRY_EALLOC_MSG 	"Falha na alocação da estrutura ENTRY."
 
-#define ENTRY_STRCOD_ASCII 				1
+#define ENTRY_STRCOD_ASCII 	1
 
 
 typedef struct _entry

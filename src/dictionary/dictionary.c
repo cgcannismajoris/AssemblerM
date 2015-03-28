@@ -22,13 +22,13 @@ DICTIONARY *dic_new(const char *filename)
 {
     DICTIONARY *novo;
 
-    if ((novo = (DICTIONARY*)malloc(sizeof(DICTIONARY))) == DICTIONARY_EALLOC)
+    if ((novo = (DICTIONARY*)malloc(sizeof(DICTIONARY))) == NULL)
     {
         asmError_setDesc(DICTIONARY_EALLOC_MSG);
         return DICTIONARY_EALLOC;
     }
 
-    if ((novo->loader = dicLoader_new(filename)) == DICLOADER_EALLOC)
+    if ((novo->loader = dicLoader_new(filename)) == NULL)
     {
         free(novo);
         return DICTIONARY_EALLOC;
@@ -36,7 +36,7 @@ DICTIONARY *dic_new(const char *filename)
 
 	novo->qtdEntry = dicLoader_getQtdInst(novo->loader);
 
-    if ((novo->verbetes = (ENTRY**)malloc(sizeof(ENTRY*) * novo->qtdEntry)) == DICTIONARY_EALLOC)
+    if ((novo->verbetes = (ENTRY**)malloc(sizeof(ENTRY*) * novo->qtdEntry)) == NULL)
     {
         asmError_setDesc(DICTIONARY_ELOAD_MSG);
 

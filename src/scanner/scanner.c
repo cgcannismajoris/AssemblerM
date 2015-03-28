@@ -67,7 +67,12 @@ TOKENS *scanner_scan(const char *sentence, char **ignoreList, char *delims,
     /* Inserir os tokens da string str na estrutura toks. */
     while (cont_tokens)
     {
-        token_addToken(toks, str);
+        if (token_addToken(toks, str) == TOKENS_ETOKOVERFLOW)
+        {
+            free(str);
+            asmError_setDesc(SCANNER_ERROR_MSG);
+            return SCANNER_ERROR;
+        }
 
         str += strlen(str);
         while(*(++str) == SCANNER_SBCLS);

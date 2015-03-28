@@ -21,24 +21,27 @@
 
 #include "reg/reg.h"
 
-#define REGISTERS_EALLOC		NULL
-#define REGISTERS_EALLOC_MSG	"Falha ao alocar memória no TAD REGISTERS."
+#define REGISTERS_EALLOC                    NULL
+#define REGISTERS_EALLOC_MSG                "Falha ao alocar memória no TAD REGISTERS."
 
-#define REGISTERS_EDECOVERFLOW		-1
-#define REGISTERS_EDECOVERFLOW_MSG	"Quantidade máxima de registradores atingida."
+#define REGISTERS_EDECOVERFLOW              -1
+#define REGISTERS_EDECOVERFLOW_MSG          "Quantidade máxima de registradores atingida."
 
+#define ASSEMBLER_EUSER_ADDRESSOVERFLOW     -1
 #define ASSEMBLER_EUSER_ADDRESSOVERFLOW_MSG "Endereço muito grande."
+
 
 typedef struct _registers
 {
-	REG **regs;
-	uint32_t qtdRegs;
-	uint32_t maxQtd;
+    REG **      regs;
+    uint32_t    qtdRegs;
+    uint32_t    maxQtd;
 } REGISTERS;
 
-REGISTERS *registers_new(long int maxQtd);
-void registers_free(REGISTERS *regs);
-long int registers_addReg(REGISTERS *regs, char *regName);
-long int registers_regSearch(REGISTERS *regs, char *name);
+
+REGISTERS *     registers_new(long int maxQtd);
+void            registers_free(REGISTERS *regs);
+long int        registers_addReg(REGISTERS *regs, char *regName);
+long int        registers_regSearch(REGISTERS *regs, char *name);
 
 #endif

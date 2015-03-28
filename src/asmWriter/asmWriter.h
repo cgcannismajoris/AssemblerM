@@ -30,7 +30,7 @@
 #define ASMWRITER_EALLOC_MSG    "Falha na alocação da estrutura ASWRITER."
 
 #define ASMWRITER_EFOPEN        NULL
-#define ASMWRITER_EFOPEN_MSG    "Falha ao salvar arquivo."
+#define ASMWRITER_EFOPEN_MSG    "Falha ao salvar arquivo binário."
 
 
 typedef struct _asmWriter

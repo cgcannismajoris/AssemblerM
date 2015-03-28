@@ -22,9 +22,9 @@
 static char *__failureDescription;
 
 
-char *asmError_new(uint32_t desc)
+char *asmError_new(uint32_t desc_length)
 {
-    if ((__failureDescription = (char *)malloc(sizeof(char) * desc)) == NULL)
+    if ((__failureDescription = (char *)malloc(sizeof(char) * desc_length)) == NULL)
         return NULL;
 
     return __failureDescription;

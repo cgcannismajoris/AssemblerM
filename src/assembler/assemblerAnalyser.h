@@ -24,19 +24,18 @@
 #define ASSEMBLERANALYSER_EALLOC		NULL
 #define ASSEMBLERANALYSER_EALLOC_MSG	"Falha ao alocar memória no módulo ASSEMBLERANALYSER."
 
-uint64_t assembler_searchLabel(ASSEMBLER *asmr, const char *label);
 
-int assembler_isAddress(const char *add);
+uint64_t        assembler_searchLabel(ASSEMBLER *asmr, const char *label);
 
-char **assembler_makeIgnoreList();
+char **         assembler_makeIgnoreList();
 
-void assembler_freeIgnoreList(char **ignoreList);
+void            assembler_freeIgnoreList(char **ignoreList);
 
-int assembler_labelJudge(char *label);
+int             assembler_labelJudge(char *label);
 
-INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr, 
-				TOKENS *input, TOKENS *pattern, TOKENS *translation);
+INSTRUCTION *   assembler_makeInst(ASSEMBLER *asmr, TOKENS *input,
+                                   TOKENS *pattern, TOKENS *translation);
 
-int assembler_makeLabels(ASSEMBLER *asmr);
+int             assembler_makeLabels(ASSEMBLER *asmr);
 
 #endif

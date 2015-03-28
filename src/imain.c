@@ -28,7 +28,7 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-	if(assembler_assemble(asmr, argv[1], "exit.out", "data/dic_m.dic") == ASSEMBLER_FAILLURE)
+    if(assembler_assemble(asmr, argv[1], "exit.out", "data/dic_m.dic") == ASSEMBLER_FAILURE)
 	{
 		fprintf(stderr, "ASSEMBLER: %s\n", asmError_getDesc());
         return EXIT_FAILURE;

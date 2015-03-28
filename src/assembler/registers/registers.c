@@ -20,16 +20,15 @@
 
 REGISTERS *registers_new(long int maxQtd)
 {
-
 	REGISTERS *novo;
 
-	if((novo = (REGISTERS*)malloc(sizeof(REGISTERS))) == REGISTERS_EALLOC)
+    if((novo = (REGISTERS*)malloc(sizeof(REGISTERS))) == NULL)
 	{
 		asmError_setDesc(REGISTERS_EALLOC_MSG);
 		return (REGISTERS_EALLOC);
 	}
 
-	if((novo->regs = (REG**)malloc(sizeof(REG*) * maxQtd)) == REGISTERS_EALLOC)
+    if((novo->regs = (REG**)malloc(sizeof(REG*) * maxQtd)) == NULL)
 	{
 		free(novo);
 		asmError_setDesc(REGISTERS_EALLOC_MSG);
@@ -53,7 +52,6 @@ void registers_free(REGISTERS *regs)
 
 long int registers_addReg(REGISTERS *regs, char *regName)
 {
-	
 	REG *novo;
 
 	if(regs->qtdRegs >= (regs->maxQtd - 1)){

@@ -27,15 +27,18 @@
 
 #include "../../asmError.h"
 
-#define DICWRITER_EALLOC		NULL    /* FALHA DE ALOCAÇÃO */
-
+#define DICWRITER_EALLOC            NULL    /* FALHA DE ALOCAÇÃO */
 #define DICWRITER_EALLOC_MSG        "Falha na alocação da estrutura DICWRITER."
 
-#define DICWRITER_SEPARATOR		"&"
-#define DICWRITER_TERMINATOR	"\0"
+#define DICWRITER_EFOPEN            NULL
+#define DICWRITER_EFOPEN_MSG        "Falha na abertura do arquivo de gravação do dicionário."
+
+#define DICWRITER_SEPARATOR         "&"
+#define DICWRITER_TERMINATOR        "\0"
 
 #define DICWRITER_SEPARATOR_CHR		'&'
 #define DICWRITER_TERMINATOR_CHR	'\0'
+
 
 typedef struct _dicWriter
 {
@@ -99,6 +102,6 @@ void             dicWriter_writeQtdInst(DICWRITER *dicWriter, uint64_t num);
  */
 void             dicWriter_writeInst(DICWRITER *dicWriter, 
 										const char *instPattern,
-                                    		const char *instTranslation);
+                                        const char *instTranslation);
 
 #endif /* DICWRITER_HEADER */

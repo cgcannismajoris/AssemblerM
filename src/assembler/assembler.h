@@ -32,9 +32,7 @@ int         assembler_assemble(ASSEMBLER *asmr,
                                const char *bin,
                                const char *dicFile);
 
-long int assembler_regSearch(ASSEMBLER *asmr, char *name);
-long int assembler_addReg(ASSEMBLER *asmr, char *regName);
-static int __assembler_assemble_makeLabels(ASSEMBLER *asmr);
+static int  __assembler_assemble_makeLabels(ASSEMBLER *asmr);
 
  
 #endif /* ASSEMBLER_HEADER */

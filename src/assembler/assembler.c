@@ -75,15 +75,15 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 	//------ Inicializa as estruturas que irão compor o assembler: ------ 
 	//Inicializa o loader
     if ((asmr->loader = asmLoader_new(src)) == ASMLOADER_EALLOC)
-        return (ASSEMBLER_FAILLURE);
+        return (ASSEMBLER_FAILURE);
 
 	//Inciliza o writer
     if ((asmr->writer = asmWriter_new(bin)) == ASMWRITER_EALLOC)
-        return (ASSEMBLER_FAILLURE);
+        return (ASSEMBLER_FAILURE);
 	
 	//Inicia o dicionário
 	if((asmr->dic    = dic_new(dicFile)) == DICTIONARY_EALLOC)
-		return (ASSEMBLER_FAILLURE);
+        return (ASSEMBLER_FAILURE);
 
 	asmr->instCounter = 0;
 
@@ -93,7 +93,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 	if(assembler_makeLabels(asmr) != ASSEMBLER_SUCCESS){
 		printf("Declaração de label invalida encontrada na linha: %li\n", asmr->instCounter);
 		asmError_setDesc(ASSEMBLER_EMOUNT);
-		return (ASSEMBLER_FAILLURE);
+        return (ASSEMBLER_FAILURE);
 	}
 
 	//Carrega o dicionário
@@ -119,7 +119,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 			printf("Instrução inválida na linha %li.\n", asmr->instCounter);
 			asmError_setDesc(ASSEMBLER_EMOUNT); 
 			assembler_free(asmr);
-			return (ASSEMBLER_FAILLURE);
+            return (ASSEMBLER_FAILURE);
 		}
 
 
@@ -136,7 +136,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 			printf("Escrita inválida na linha %li.\n", asmr->instCounter);
 			asmError_setDesc(ASSEMBLER_EMOUNT);
 			assembler_free(asmr);			
-			return (ASSEMBLER_FAILLURE);
+            return (ASSEMBLER_FAILURE);
 		}	
 
 
@@ -147,7 +147,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 			printf("Erro na linha %li!\n", asmr->instCounter);
 			//asmError já foi setado...
 			assembler_free(asmr);
-			return (ASSEMBLER_FAILLURE);
+            return (ASSEMBLER_FAILURE);
 		}
 		
 	

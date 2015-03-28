@@ -32,7 +32,7 @@
  *   	-> Se NULL    - Erro na operação.
  *   	-> Se != NULL - Sucesso na operação.
  */
-char *   asmError_new(uint32_t desc);
+char *   asmError_new(uint32_t desc_length);
 
 
 /* -> void asmError_free()

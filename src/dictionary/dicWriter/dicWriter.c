@@ -20,17 +20,23 @@
 
 DICWRITER *dicWriter_new(const char *filename)
 {
-
-	DICWRITER *novo = NULL;
+    DICWRITER *novo;
 	FILE *file;
 
-	if((file = fopen(filename, "wb+")) == DICWRITER_EALLOC)
+    if((file = fopen(filename, "wb+")) == NULL)
 	{
 		asmError_setDesc(DICWRITER_EALLOC_MSG);
 		return DICWRITER_EALLOC;
 	}
 
-	novo = (DICWRITER*)malloc(sizeof(DICWRITER));
+    if ((novo = (DICWRITER*)malloc(sizeof(DICWRITER))) == NULL)
+    {
+        fclose(file);
+
+        asmError_setDesc(DICWRITER_EFOPEN_MSG);
+        return DICWRITER_EFOPEN;
+    }
+
 	novo->file = file;
 
     return novo;

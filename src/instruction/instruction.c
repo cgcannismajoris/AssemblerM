@@ -23,7 +23,7 @@ INSTRUCTION *inst_new(uint32_t inst)
 {
     INSTRUCTION *novo;
 
-    if ((novo = (INSTRUCTION *)malloc(sizeof(INSTRUCTION))) == INSTRUCTION_EALLOC)
+    if ((novo = (INSTRUCTION *)malloc(sizeof(INSTRUCTION))) == NULL)
 	{
 		//Caso esteja compilando para a ferramenta INSTDEBUG, não insere o código 
 		//entre ifndef e endif.

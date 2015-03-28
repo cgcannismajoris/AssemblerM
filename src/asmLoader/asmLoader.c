@@ -24,7 +24,7 @@ ASMLOADER *asmLoader_new(const char *filename)
 {
     ASMLOADER *novo;
 
-    if ((novo = (ASMLOADER *)malloc(sizeof(ASMLOADER))) == ASMLOADER_EALLOC)
+    if ((novo = (ASMLOADER *)malloc(sizeof(ASMLOADER))) == NULL)
     {
         asmError_setDesc(ASMLOADER_EALLOC_MSG);
         return ASMLOADER_EALLOC; /* stderr => ASMLOADER_EALLOC_MSG */

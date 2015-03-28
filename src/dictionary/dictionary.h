@@ -20,14 +20,14 @@
 #ifndef DICTIONARY_HEADER
 #define DICTIONARY_HEADER
 
+#include <stdlib.h>
+#include <stdint.h>
+
 #include "../asmError.h"
 #include "entry/entry.h"            /* incluir o TAD ENTRY */
 #include "dicLoader/dicLoader.h"    /* incluir o TAD DICLOADER */
 #include "dicWriter/dicWriter.h"    /* incluir o TAD DICWRITER */
 
-#include <stdlib.h>
-#include <stddef.h>
-#include <stdint.h>
 
 #define DICTIONARY_EALLOC               NULL
 #define DICTIONARY_EALLOC_MSG           "Falha ao alocar estrutura DICTIONARY."
@@ -40,9 +40,9 @@
 
 typedef struct _dictionary
 {
-	DICLOADER *loader;
-    ENTRY **verbetes;
-    uint64_t qtdEntry;
+    DICLOADER * loader;
+    ENTRY **    verbetes;
+    uint64_t    qtdEntry;
 } DICTIONARY, DIC;
 
 

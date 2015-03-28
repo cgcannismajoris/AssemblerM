@@ -19,16 +19,13 @@
 #ifndef SCANNER_HEADER
 #define SCANNER_HEADER
 
-#include "tokens/tokens.h" /* incluir o TAD TOKENS (Conjunto de TOKENS) */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 
+#include "tokens/tokens.h" /* incluir o TAD TOKENS (Conjunto de TOKENS) */
 
-#define SCANNER_IGNOREFACASTR       "faca"
-#define SCANNER_IGNOREVAPARASTR     "va_para"
-#define SCANNER_DELIMS              " :"
+
 #define SCANNER_SBCLS               0x20        /* Space Bar */
 
 #define SCANNER_ERROR               NULL

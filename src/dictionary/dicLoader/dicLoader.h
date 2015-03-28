@@ -32,7 +32,8 @@
 #define DICLOADER_EALLOC            NULL
 #define DICLOADER_EALLOC_MSG        "Falha ao alocar memória no TAD DICLOADER."
 
-#define DICLOADER_EFOPEN_MSG        NULL
+#define DICLOADER_EFOPEN            NULL
+#define DICLOADER_EFOPEN_MSG        "Falha ao abrir arquivo de dicionário."
 
 
 typedef struct _dicLoader

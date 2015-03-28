@@ -29,15 +29,18 @@
 
 #include "../../asmError.h"
 
-#define TOKENS_EALLOC       NULL
-#define TOKENS_EALLOC_MSG   "Falha ao alocar memória no TAD TOKENS."
+#define TOKENS_EALLOC               NULL
+#define TOKENS_EALLOC_MSG           "Falha ao alocar memória no TAD TOKENS."
 
- 
+#define TOKENS_ETOKOVERFLOW         -1
+#define TOKENS_ETOKOVERFLOW_MSG     "Estouro do limite de TOKENS."
+
+
 typedef struct _tokens
 {
-    char **  tokens;    //Vetor onde são armazenados os tokens
-    uint8_t  qtdUsed;   //Quantidade de tokens armazenados
-    uint8_t  qtdMax;    //Quantidade máxima de tokens (tamanho do vetor char **tokens)
+    char **     tokens;    //Vetor onde são armazenados os tokens
+    uint32_t    qtdUsed;   //Quantidade de tokens armazenados
+    uint32_t    qtdMax;    //Quantidade máxima de tokens (tamanho do vetor char **tokens)
 } TOKENS;
 
 
@@ -54,7 +57,7 @@ typedef struct _tokens
  *   	-> Se NULL    - Erro na operação.
  *   	-> Se != NULL - Sucesso na operação.
  */
-TOKENS *    token_new(uint8_t qtd);
+TOKENS *    token_new(uint32_t qtd);
 
 
 /* -> void token_free(TOKENS *token)
@@ -80,7 +83,7 @@ void        token_free(TOKENS *token);
  *   	-> Se 0    - Erro na operação.
  *   	-> Se != 0 - Sucesso na operação.
  */
-uint8_t     token_getQtd(TOKENS *token);
+uint32_t    token_getQtd(TOKENS *token);
 
 
 /* -> char *token_getToken(TOKENS *token, uint8_t pos)
@@ -95,7 +98,7 @@ uint8_t     token_getQtd(TOKENS *token);
  *   	-> Se NULL    - Erro na operação.
  *   	-> Se != NULL - Sucesso na operação.
  */
-char *      token_getToken(TOKENS *token, uint8_t pos);
+char *      token_getToken(TOKENS *token, uint32_t pos);
 
 
 /* -> void token_addToken(TOKENS *token, char *t)
@@ -108,9 +111,9 @@ char *      token_getToken(TOKENS *token, uint8_t pos);
  *
  * - RETORNO: void.
  */
-void        token_addToken(TOKENS *token, char *t);
+int         token_addToken(TOKENS *token, char *t);
 
 
-int         token_search(TOKENS *token, const char *search);
+long int    token_search(TOKENS *token, const char *search);
 
 #endif /* TOKENS_HEADER */

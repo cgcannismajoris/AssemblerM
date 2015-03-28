@@ -24,7 +24,7 @@ REG *reg_new(const char *name)
     REG *novo;
     int c;
 
-    if ((novo = (REG *)malloc(sizeof(REG))) == REG_EALLOC)
+    if ((novo = (REG *)malloc(sizeof(REG))) == NULL)
 	{
 		asmError_setDesc(REG_EALLOC_MSG);
         return REG_EALLOC;
@@ -32,7 +32,7 @@ REG *reg_new(const char *name)
 
     c = strlen(name);
 
-    if ((novo->name = (char *)malloc(c)) == REG_EALLOC)
+    if ((novo->name = (char *)malloc(c)) == NULL)
 	{
 		asmError_setDesc(REG_EALLOC_MSG);
         return REG_EALLOC;

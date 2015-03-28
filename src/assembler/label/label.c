@@ -21,15 +21,15 @@
 
 LABEL *label_new(const char *name, uint64_t num)
 {
-	LABEL *novo = NULL;
+    LABEL *novo;
 
-	if((novo = (LABEL*)malloc(sizeof(LABEL))) == LABEL_EALLOC)
+    if((novo = (LABEL*)malloc(sizeof(LABEL))) == NULL)
 	{
 		asmError_setDesc(LABEL_EALLOC_MSG);
 		return (LABEL_EALLOC);
 	}
 
-	if((novo->name = (char*)malloc(sizeof(char)*(strlen(name) + 1))) == LABEL_EALLOC)
+    if((novo->name = (char*)malloc(sizeof(char)*(strlen(name) + 1))) == NULL)
 	{
 		asmError_setDesc(LABEL_EALLOC_MSG);
 		return (LABEL_EALLOC);
@@ -56,7 +56,8 @@ uint64_t label_getLineNum(LABEL *label)
 	return (label->num);
 }
 
-int label_comparName(const void *name, const void *label){
+int label_comparName(const void *name, const void *label)
+{
     return (strcmp(name, ((LABEL*)label)->name));
 }
 

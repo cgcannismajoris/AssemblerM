@@ -22,16 +22,17 @@ ASMWRITER *asmWriter_new(const char *filename)
 {
     ASMWRITER *novo;
 
-    if ((novo = (ASMWRITER*)malloc(sizeof(ASMWRITER))) == ASMWRITER_EALLOC)
+    if ((novo = (ASMWRITER*)malloc(sizeof(ASMWRITER))) == NULL)
     {
         asmError_setDesc(ASMWRITER_EALLOC_MSG);
         return ASMWRITER_EALLOC;
     }
 
-    if ((novo->file = fopen(filename, "wb+")) == ASMWRITER_EALLOC)
+    if ((novo->file = fopen(filename, "wb+")) == NULL)
     {
-        asmError_setDesc(ASMWRITER_EFOPEN_MSG);
         free(novo);
+        asmError_setDesc(ASMWRITER_EFOPEN_MSG);
+
         return ASMWRITER_EALLOC;
     }
     

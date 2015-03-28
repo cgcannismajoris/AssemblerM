@@ -20,25 +20,24 @@
 
 ENTRY *entry_new(const char *instPattern, const char *instTranslation)
 {
+    ENTRY *novo;
+    char *novo_pat;
+    char *novo_tra;
 	
-	ENTRY *novo = NULL;
-	char *novo_pat = NULL;
-	char *novo_tra = NULL;
-	
-	if((novo = (ENTRY*)malloc(sizeof(ENTRY))) == ENTRY_EALLOC)
+    if((novo = (ENTRY*)malloc(sizeof(ENTRY))) == NULL)
 	{
 		asmError_setDesc(ENTRY_EALLOC_MSG);
 		return ENTRY_EALLOC;
 	}
 
-	if((novo_pat = (char*)malloc(strlen(instPattern) * ENTRY_STRCOD_ASCII)) == ENTRY_EALLOC)
+    if((novo_pat = (char*)malloc(strlen(instPattern) * ENTRY_STRCOD_ASCII)) == NULL)
 	{
 		free(novo);
 		asmError_setDesc(ENTRY_EALLOC_MSG);
 		return ENTRY_EALLOC;
 	}
 	
-	if((novo_tra = (char*)malloc(strlen(instTranslation) * ENTRY_STRCOD_ASCII)) == ENTRY_EALLOC)
+    if((novo_tra = (char*)malloc(strlen(instTranslation) * ENTRY_STRCOD_ASCII)) == NULL)
 	{
 		free(novo_pat);
 		free(novo);

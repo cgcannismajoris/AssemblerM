@@ -22,18 +22,18 @@ DICLOADER *dicLoader_new(const char *filename)
 {
     DICLOADER *novo;
 
-    if ((novo = (DICLOADER*)malloc(sizeof(DICLOADER))) == DICLOADER_EALLOC)
+    if ((novo = (DICLOADER*)malloc(sizeof(DICLOADER))) == NULL)
     {
         asmError_setDesc(DICLOADER_EALLOC_MSG);
         return DICLOADER_EALLOC;
     }
 
-    if ((novo->file = fopen(filename, "rb+")) == DICLOADER_EALLOC)
+    if ((novo->file = fopen(filename, "rb+")) == NULL)
     {
         asmError_setDesc(DICLOADER_EFOPEN_MSG);
 
         free(novo);
-        return DICLOADER_EALLOC;
+        return DICLOADER_EFOPEN;
     }
 
     return novo;

@@ -40,20 +40,19 @@ uint64_t assembler_searchLabel(ASSEMBLER *asmr, const char *label){
 
 char **assembler_makeIgnoreList(){
 
-	char **ignoreList = (char**)malloc(sizeof(char*) * ASSEMBLER_IGNORE_QTD);
+    char **ignoreList;
 	uint64_t i;
 
-
-	if((ignoreList = (char**)malloc(sizeof(char*) * ASSEMBLER_IGNORE_QTD)) == ASSEMBLERANALYSER_EALLOC){
+    if((ignoreList = (char**)malloc(sizeof(char*) * ASSEMBLER_IGNORE_QTD)) == NULL){
 		return (ASSEMBLER_EALLOC);
 	}
 
 	for(i = 0; i < ASSEMBLER_IGNORE_QTD; i++){
 		ignoreList[i] = (char *)malloc(sizeof(char) * strlen(ASSEMBLER_IGNORE1) + 1);
 		
-		if(ignoreList[i] == 0){
+        if(ignoreList[i] == NULL){
 			for(i; i != 0; i--){
-				ignoreList[i] = (char *)malloc(sizeof(char) * strlen(ASSEMBLER_IGNORE1) + 1);
+                free(ignoreList[i]);
 			}
 			
 			free(ignoreList);

@@ -19,14 +19,13 @@
 #ifndef INSTRUCTION_HEADER
 #define INSTRUCTION_HEADER
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 
-
 #include "../asmError.h"
+
 
 #define INSTRUCTION_EALLOC                  NULL
 #define INSTRUCTION_EALLOC_MSG              "Falha ao alocar memória para INSTRUCTION."
@@ -37,39 +36,39 @@
 //Tipos de Instruções aceitos
 typedef struct _inst_r
 {
-    unsigned int opcode:    6;
-    unsigned int dest:      5;
-    unsigned int orig1:     5;
-    unsigned int orig2:     5;
-    signed int address:     11;
+    unsigned int    opcode:    6;
+    unsigned int    dest:      5;
+    unsigned int    orig1:     5;
+    unsigned int    orig2:     5;
+    signed int      address:   11;
 } TIPO_R, TYPE_R;
 
 typedef struct _inst_j
 {
-    unsigned int opcode:    6;
-    signed int address:     26;
-} TIPO_J, TYPE_J; 
+    unsigned int    opcode:    6;
+    signed int      address:   26;
+} TIPO_J, TYPE_J;
 
 typedef struct _inst_b
 {
-    unsigned int opcode:    6;
-    unsigned int reg1:      5;
-    unsigned int reg2:      5;
-    signed int address:     16;
+    unsigned int    opcode:    6;
+    unsigned int    reg1:      5;
+    unsigned int    reg2:      5;
+    signed int      address:   16;
 } TIPO_B, TYPE_B;
 
 typedef struct _esp_beqz
 {
-    unsigned int opcode:    6;
-    unsigned int reg:       5;
-    signed int address_t:   10;
-    signed int address_f:   11;
+    unsigned int    opcode:    6;
+    unsigned int    reg:       5;
+    signed int      address_t: 10;
+    signed int      address_f: 11;
 } TYPE_ESP_BEQZ;
 
 //Estrutura para armazenamento da instrução binária
 typedef struct _instruction
 {
-    uint32_t inst;
+    uint32_t        inst;
 } INSTRUCTION;
 
 
@@ -85,7 +84,7 @@ typedef struct _instruction
  *   	-> Se INSTRUCTION_EALLOC    - Erro na operação.
  *   	-> Se != INSTRUCTION_EALLOC - Sucesso na operação.
  */
-INSTRUCTION * inst_new(uint32_t inst);
+INSTRUCTION *   inst_new(uint32_t inst);
 
 /* -> uint32_t inst_free(INSTRUCTION *inst)
  *
@@ -97,7 +96,7 @@ INSTRUCTION * inst_new(uint32_t inst);
  *
  * - RETORNO: void.
  */
-void          inst_free(INSTRUCTION *instruction);
+void            inst_free(INSTRUCTION *instruction);
 
 
 /* -> uint32_t inst_getInst(INSTRUCTION *inst)
@@ -112,7 +111,7 @@ void          inst_free(INSTRUCTION *instruction);
  *   	-> Se INSTRUCTION_EGETINST       - Erro na operação.
  *   	-> Se != INSTRUCTION_EGETINST    - Sucesso na operação.
  */
-uint32_t      inst_getInst(INSTRUCTION *instruction);
+uint32_t        inst_getInst(INSTRUCTION *instruction);
 
 
 /* -> void inst_setInst(INSTRUCTION *instruction, uint32_t inst)
@@ -126,7 +125,7 @@ uint32_t      inst_getInst(INSTRUCTION *instruction);
  *
  * - RETORNO: void.
  */
-void          inst_setInst(INSTRUCTION *instruction, uint32_t inst);
+void            inst_setInst(INSTRUCTION *instruction, uint32_t inst);
 
 #endif /* INSTRUCTION_HEADER */
 

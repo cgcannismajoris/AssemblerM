@@ -17,8 +17,15 @@ SOURCES += \
     src/assembler/reg/reg.c \
     src/scanner/tokens/tokens.c \
     src/scanner/scanner.c \
+	src/assembler/registers/registers.c \
+	src/assembler/registers/reg/reg.c \
+	src/assembler/assemblerAnalyser.c \
     tools/dicwriter/main.c \
-    tools/instdebug/main.c
+	tools/instdebug/main.c \
+	src/linkedList/genericDataManipulation.c \
+	src/linkedList/linkedList.c \
+	src/linkedList/node.c \
+	src/asmError.c
 
 HEADERS += \
 	src/assembler/assembler.h \
@@ -32,7 +39,15 @@ HEADERS += \
     src/assembler/label/label.h \
     src/assembler/reg/reg.h \
     src/scanner/scanner.h \
-    src/scanner/tokens/tokens.h
+	src/scanner/tokens/tokens.h \
+	src/assembler/registers/registers.h \
+	src/assembler/registers/reg/reg.h \
+	src/assembler/assemblerAnalyser.h \
+	src/assembler/assembler_struct.h \
+	src/linkedList/genericDataManipulation.h \
+	src/linkedList/linkedList.h \
+	src/linkedList/node.h \
+	src/asmError.h
 
 OTHER_FILES += \
     Makefile

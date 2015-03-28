@@ -19,7 +19,7 @@
 
 #include "tokens.h"
 
-TOKENS *token_new(uint8_t qtd)
+TOKENS *token_new(uint32_t qtd)
 {
 	
 	TOKENS *novo = NULL;
@@ -58,17 +58,17 @@ void token_free(TOKENS *token)
 	free(token);
 }
 
-uint8_t token_getQtd(TOKENS *token)
+uint32_t token_getQtd(TOKENS *token)
 {
 	return (token->qtdUsed);
 }
 
-char *token_getToken(TOKENS *token, uint8_t pos)
+char *token_getToken(TOKENS *token, uint32_t pos)
 {
 	return (token->tokens[pos]);
 }
 
-void token_addToken(TOKENS *token, char *t){
+int token_addToken(TOKENS *token, char *t){
 	
 	if(token->qtdUsed < token->qtdMax)
 	{
@@ -77,9 +77,11 @@ void token_addToken(TOKENS *token, char *t){
 
 		token->qtdUsed++;
 	}
+
+    return -1;
 }
 
-int token_search(TOKENS *token, const char *search)
+long int token_search(TOKENS *token, const char *search)
 {
     uint8_t i;
 
