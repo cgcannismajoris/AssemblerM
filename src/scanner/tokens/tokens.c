@@ -76,6 +76,8 @@ int token_addToken(TOKENS *token, char *t){
         strncpy(token->tokens[token->qtdUsed], t, strlen(t) + 1);
 
 		token->qtdUsed++;
+
+        return 0;
 	}
 
     return -1;
