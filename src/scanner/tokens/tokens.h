@@ -109,11 +109,28 @@ char *      token_getToken(TOKENS *token, uint32_t pos);
  *      -> TOKENS *token: Estrutura a ter o token adicionado.
  *      -> char *t: Token a ser armazenado.
  *
- * - RETORNO: void.
+ * - RETORNO: Estado da operação.
+ *   	-> Se 0    - Sucesso.
+ *   	-> Se -1   - Erro.
  */
 int         token_addToken(TOKENS *token, char *t);
 
 
 long int    token_search(TOKENS *token, const char *search);
+
+/* -> int token_searchCommonTokens(TOKENS *one, TOKENS *two)
+ * 
+ * - DESCRIÇÃO: Verifica se existem tokens em comum dentro 
+ *   			das duas estruturas recebidas.
+ *
+ * - PARÂMETROS: 
+ *      -> TOKENS *one: Estrutura a ser utilizada na operação.
+ *      -> TOKENS *two: Estrutura a ser utilizada na operação.
+ *
+ * - RETORNO: Estado da operação.
+ *   	-> Se 0    - Não possuem tokens em comum.
+ *   	-> Se 1    - Possuem tokens em comum.
+ */
+int 		token_verifCommon(TOKENS *one, TOKENS *two);
 
 #endif /* TOKENS_HEADER */

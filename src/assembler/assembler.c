@@ -86,28 +86,36 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 	if((asmr->dic    = dic_new(dicFile)) == DICTIONARY_EALLOC)
         return (ASSEMBLER_FAILURE);
 
-	asmr->instCounter = 0;
+	asmr->instCounter = 1;
 
 	//------ INICIA O PROCESSAMENTO -------------------------------------
 
-
-
 	//Faz busca pelas labels declaradas no arquivo
 	if(assembler_makeLabels(asmr) != ASSEMBLER_SUCCESS){
-		printf("Declaração de label invalida encontrada na linha: %li\n", asmr->instCounter);
+		printf("Declaração de label invalida encontrada na linha: %li\n", 
+						asmr->instCounter);
 		asmError_setDesc(ASSEMBLER_EMOUNT);
         return (ASSEMBLER_FAILURE);
+	}
+
+	//Analisa a declaração da maquina
+	if(assembler_makeRegisters(asmr) != ASSEMBLER_SUCCESS)
+	{
+		printf("Definição inválida da máquina.\n");
+		return (ASSEMBLER_FAILURE);
 	}
 
 	//Carrega o dicionário
 	dic_load(asmr->dic);
 	
 	//Cria a lista de termos a serem ignorados
-	ignoreList = assembler_makeIgnoreList();
+	ignoreList = assembler_makeStrVector(ASSEMBLER_IGNORE_QTD, ASSEMBLER_IGNORE1, 
+											ASSEMBLER_IGNORE2);
+
+	//Grava no arquivo a quantidade de registradores a serem utilizados
 
 	//Enquanto for possível carregar novas instruções
 	while((actualInst = asmLoader_getNextInst(asmr->loader)) != NULL){
-
 		//Gera os tokens
 		actualTokens = scanner_scan(actualInst, ignoreList, ASSEMBLER_SEPARATOR, 
 						ASSEMBLER_IGNORE_QTD);
@@ -115,8 +123,8 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 
 		//Procura o nome da instrução no dicionário
 		actualEntry = dic_search(asmr->dic, token_getToken(actualTokens, 1));
-		
-		
+	
+
 		//Se não conseguiu encontrar a instrução referenciada no dicionário...
 		if(actualEntry == NULL){
 			printf("Instrução inválida na linha %li.\n", asmr->instCounter);
@@ -165,6 +173,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 	}
 
 	//Libera regiões de memória que não serão mais utilizadas	
+	assembler_freeStrVector(ignoreList);
 	asmLoader_free(asmr->loader);
 	asmWriter_free(asmr->writer);
 	lista_free(asmr->labels);

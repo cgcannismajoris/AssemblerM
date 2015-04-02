@@ -38,43 +38,49 @@ uint64_t assembler_searchLabel(ASSEMBLER *asmr, const char *label){
 }
 
 
-char **assembler_makeIgnoreList(){
+char **assembler_makeStrVector(int qtd, ...){
 
-    char **ignoreList;
-	uint64_t i;
+    char **strVector;
+	char *tmp;
+	uint32_t i;
+	va_list args;
 
-    if((ignoreList = (char**)malloc(sizeof(char*) * ASSEMBLER_IGNORE_QTD)) == NULL){
+	va_start(args, qtd);
+
+    if((strVector = (char**)malloc(sizeof(char*) * qtd + 1)) == NULL){
 		return (ASSEMBLER_EALLOC);
 	}
 
-	for(i = 0; i < ASSEMBLER_IGNORE_QTD; i++){
-		ignoreList[i] = (char *)malloc(sizeof(char) * strlen(ASSEMBLER_IGNORE1) + 1);
-		
-        if(ignoreList[i] == NULL){
+	for(i = 0; i < qtd; i++){
+		strVector[i] = (char *)malloc(sizeof(char) * strlen(ASSEMBLER_IGNORE1) + 1);
+
+        if(strVector[i] == NULL){
 			for(i; i != 0; i--){
-                free(ignoreList[i]);
+                free(strVector[i]);
 			}
 			
-			free(ignoreList);
+			free(strVector);
 			return (ASSEMBLER_EALLOC);
 		}
+
+		tmp = va_arg(args, char*);
+		memcpy(strVector[i], tmp, sizeof(char) * strlen(tmp));
 	}
 	
-	strcpy(ignoreList[0], ASSEMBLER_IGNORE1);
-	strcpy(ignoreList[1], ASSEMBLER_IGNORE2);
+	strVector[i] = NULL;
 
-	return(ignoreList);
+	return(strVector);
 }
 
-void assembler_freeIgnoreList(char **ignoreList){
+void assembler_freeStrVector(char **strVector){
 	
 	uint64_t counter;
 	
-	for(counter = 0; counter < ASSEMBLER_IGNORE_QTD; counter++){
-		free(ignoreList[counter]);
+	for(counter = 0; strVector[counter] != NULL; counter++){
+		free(strVector[counter]);
 	}
 
-	free(ignoreList);
+	free(strVector);
 }
 
 int assembler_labelJudge(char *label){
@@ -102,6 +108,104 @@ int assembler_labelJudge(char *label){
 	//Se achou em outra posição, é uma label inválida
 	return (ASSEMBLER_FALSE);
 }
+
+int assembler_makeRegisters(ASSEMBLER *asmr)
+{
+	
+	TOKENS  *machineTokens;
+	
+	char *header;
+
+	char *arrowStart;
+	int arrowDirection;
+
+	char **ignoreList;
+
+	TOKENS *output, *input;
+
+	int i;
+
+	asmLoader_rewind(asmr->loader);
+
+	//Carrega a descrição da máquina
+	if((header = asmLoader_getNextInst(asmr->loader)) == NULL)
+	{
+		return (ASSEMBLER_FAILURE);
+	}
+		
+	// ---------------- PRÉ-PROCESSA O HEADER ----------------
+	//Salta para a posição posterior à declaração do nome da máquina 
+	while(*(header - 1) != ':' && *header != '\0')
+	{
+		header ++;
+	}	
+
+	//Obtém a posição da seta (seta para a esquerda)
+	arrowStart = strstr(header, ASSEMBLER_MACHINEDEC_LARROW);
+	arrowDirection = 0;
+
+	//Se não achou, significa que pode estar no sentido inverso... (para a direita)
+	if(arrowStart == NULL)
+	{
+		//Procura a seta invertida
+		arrowStart = strstr(header, ASSEMBLER_MACHINEDEC_RARROW);
+		
+		//Se não achou, uma definição inválida foi escrita
+		if(arrowStart == NULL)
+ 		{
+			asmError_setDesc(ASSEMBLERANALYSER_EUSER_INVALIDMACHINE_MSG);
+			return (ASSEMBLER_FAILURE);
+		}
+
+		arrowDirection = 1;
+	}
+
+	arrowStart[0] = '\0';
+	arrowStart[1] = '\0';	
+	arrowStart += 2;
+		
+	//Separa os tokens da lista de registradores de saida
+	switch(arrowDirection){
+		case 0:
+			output = scanner_scan(header, NULL, ASSEMBLER_MACHINEDEC_SEPARATORS, 0);
+			input  = scanner_scan(arrowStart, NULL, 
+							ASSEMBLER_MACHINEDEC_SEPARATORS, 0);
+			break;
+
+		case 1:
+			output = scanner_scan(arrowStart, NULL, 
+										ASSEMBLER_MACHINEDEC_SEPARATORS, 0);
+			input  = scanner_scan(header, NULL, 
+										ASSEMBLER_MACHINEDEC_SEPARATORS, 0);
+			break;
+
+		default:
+			return (ASSEMBLER_FAILURE);
+	}
+
+	// ------------------ PROCESSA OS TOKENS ------------------
+
+	
+	//Busca por tokens em comum...
+	if(token_verifCommon(input, output) == 1)
+	{
+		asmError_setDesc(ASSEMBLERANALYSER_EUSER_DOUBLE_DECLARATION_MSG);
+		return (ASSEMBLER_FAILURE);
+	}
+	
+	//Insere nos registradores declarados
+	for(i = 0; i < token_getQtd(input); i++)
+	{
+		registers_addReg(asmr->regs, token_getToken(input, i)); 
+	}
+	for(i = 0; i < token_getQtd(output); i++)
+	{
+		registers_addReg(asmr->regs, token_getToken(output, i)); 
+	}
+	
+	return (ASSEMBLER_SUCCESS);
+}
+
 
 
 INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr, 
@@ -155,16 +259,10 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 		aux = token_getToken(input, pos + 1);
 		
 		//Obtém a posição do registrador referênciado
-		//Se não encontrar, instancia um novo
+		//Se não encontrar, indica erro
 		if((pos = registers_regSearch(asmr->regs, aux)) == -1){
-			
-			//Obtém a posição correta criando um novo registrador
-			pos = registers_addReg(asmr->regs, aux);
-
-			if(pos == - 1){ //Excedeu 32 registradores
-				//A descrição do erro já foi setada no asmError.
-				return (NULL);
-			}
+			asmError_setDesc(ASSEMBLERANALYSER_EUSER_REGNOTDEC_MSG);
+			return (NULL);
 		}
 
 		//Seta o valor:
@@ -193,7 +291,7 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 		}
 	
 		//Armazena a distância do salto
-		inst.address = (int)(pos - (long int)asmr->instCounter - 1);
+		inst.address = (int)(pos - (long int)asmr->instCounter);
 	
 		//Armazena o valor na estrutura INSTRUCTION
 		novo = (INSTRUCTION*)malloc(sizeof(INSTRUCTION));
@@ -235,16 +333,10 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 		aux = token_getToken(input, pos + 1);
 		
 		//Obtém a posição do registrador referênciado
-		//Se não encontrar, instancia um novo
+		//Se não encontrar, indica erro
 		if((pos = registers_regSearch(asmr->regs, aux)) == -1){
-			
-			//Obtém a posição correta criando um novo registrador
-			pos = registers_addReg(asmr->regs, aux);
-
-			if(pos == - 1){ //Excedeu 32 registradores
-				//A descrição do erro já foi setada no asmError.
-				return (NULL);
-			}
+			asmError_setDesc(ASSEMBLERANALYSER_EUSER_REGNOTDEC_MSG);
+			return (NULL);
 		}
 
 		//Seta o valor:
@@ -281,7 +373,7 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 //		}
 
 		//Armazena a distância do salto
-		inst.address_t = (int)(pos - (long int)asmr->instCounter - 1);
+		inst.address_t = (int)(pos - (long int)asmr->instCounter);
 
 		//--------------- Monta address_f ---------------
 		//Obtém a string que identifica a label
@@ -315,7 +407,7 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 //		}
 		
 		//Armazena a distância do salto
-		inst.address_f = (int)(pos - (long int)asmr->instCounter - 1);
+		inst.address_f = (int)(pos - (long int)asmr->instCounter);
 		
 		//Armazena o valor na estrutura INSTRUCTION
 		novo = (INSTRUCTION*)malloc(sizeof(INSTRUCTION));
@@ -344,10 +436,13 @@ int assembler_makeLabels(ASSEMBLER *asmr){
 	LABEL *tmpLabel;
 
 	//Gera a lista de itens a serem ignorados	
-	ignoreList = assembler_makeIgnoreList();
+	ignoreList = assembler_makeStrVector(2, ASSEMBLER_IGNORE1, ASSEMBLER_IGNORE2);
 
 	//Posiciona no início do arquivo
 	asmLoader_rewind(asmr->loader);
+	
+	//Ignora a primeira linha...
+	asmLoader_getNextInst(asmr->loader);
 
 	//Enquanto for possível ler...
 	while((actualInst = asmLoader_getNextInst(asmr->loader)) != NULL){
@@ -362,7 +457,7 @@ int assembler_makeLabels(ASSEMBLER *asmr){
 			//Libera regiões de memória que não serão mais utilizadas
 			lista_free(asmr->labels);
 			token_free(actualTokens);
-			assembler_freeIgnoreList(ignoreList);
+			assembler_freeStrVector(ignoreList);
 			asmr->labels = NULL;
 			
 			//Reposiciona o arquivo
@@ -390,7 +485,7 @@ int assembler_makeLabels(ASSEMBLER *asmr){
 		counter++;
 	}
 
-	assembler_freeIgnoreList(ignoreList);
+	assembler_freeStrVector(ignoreList);
 
 	//Reposiciona no início do arquivo
 	asmLoader_rewind(asmr->loader);

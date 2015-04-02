@@ -28,6 +28,8 @@
 #include "../scanner/scanner.h"             /* incluir o TAD SCANNER */
 #include "../linkedList/linkedList.h"		/* incluir o TAD LISTA */
 
+#include <stdarg.h>
+
 #define ASSEMBLER_TRUE                  1
 #define ASSEMBLER_FALSE                 0
 
@@ -53,9 +55,14 @@
 
 #define ASSEMBLER_SEPARATOR             " "
 
-#define ASSEMBLER_LABEL_TERMINATOR      ":" //Terminador da label (deve aparecer na
-									     //declaração de uma nova label)
+#define ASSEMBLER_LABEL_TERMINATOR      ":"  //Terminador da label (deve aparecer na
+										     //declaração de uma nova label)
 
+#define ASSEMBLER_MACHINEDEC_RARROW		"->"
+#define ASSEMBLER_MACHINEDEC_LARROW		"<-"
+
+#define ASSEMBLER_MACHINEDEC_SEPARATORS	",:"
+ 
 
 typedef struct _assembler
 {

@@ -95,3 +95,19 @@ long int token_search(TOKENS *token, const char *search)
 
     return -1;
 }
+
+int token_verifCommon(TOKENS *one, TOKENS *two)
+{
+	int i, j;
+
+	for(i = 0; i < one->qtdUsed; i++)
+	{
+		for(j = 0; j < two->qtdUsed; j++)
+		{
+			if(strcmp(one->tokens[i], two->tokens[j]) == 0)
+				return (1);
+		}
+	}
+
+	return (0);
+}

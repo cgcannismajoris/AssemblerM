@@ -52,7 +52,8 @@ int main(int argc, char **argv)
 		{
 			printf("Instrução inválida!\n");
 		}
-        fread(numInst, sizeof(TYPE_R), 1, file);
+        
+		fread(numInst, sizeof(TYPE_R), 1, file);
         INSTRUCTION_SETINST(tipo_r, numInst);
     }
 
