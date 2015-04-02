@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#define ASMERROR_FAILEUREDESCLENGTH     100
 
 /* -> char *asmError_new(uint32_t desc)
  * 

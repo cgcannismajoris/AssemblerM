@@ -6,8 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define ASMERROR_FAILEUREDESCLENGTH     100
-
 #include "asmError.h"
 #include "assembler/assembler.h"        /* Inclua o TAD principal */
 
