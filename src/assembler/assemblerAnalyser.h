@@ -33,6 +33,8 @@ void            assembler_freeIgnoreList(char **ignoreList);
 
 int             assembler_labelJudge(char *label);
 
+int assembler_makeRegisters(ASSEMBLER *asmr);
+
 INSTRUCTION *   assembler_makeInst(ASSEMBLER *asmr, TOKENS *input,
                                    TOKENS *pattern, TOKENS *translation);
 

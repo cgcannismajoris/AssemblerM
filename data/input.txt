@@ -1,4 +1,4 @@
-r1: faca ADD abacaxi va_para r2
-r2: faca sub abacaxi va_para r3
-r3: faca add melao va_para r4
-r4: faca beqz abacaxi va_para r1 r5
+r1: faca inc abacaxi va_para r2
+r2: faca dec abacaxi va_para r3
+r3: faca inc melao va_para r4
+r4: faca zero abacaxi va_para r1 r5

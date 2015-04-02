@@ -203,8 +203,6 @@ dicwriter_bin: mk_dir_dicwriter $(TOOL_DICWRITER_OBJ) $(LINKEDL_OBJ) $(ENTRY_OBJ
 	$(ENTRY_OBJ)
 
 dicwriter: dicwriter_bin LN_SYMBOL_TOOL_DICWRITER
-	$(COMPILER) $(LFLAG) $(BIN_INSTDEBUG_TOOL)  $(INSTRUCTION_OBJ) \
-	$(TOOL_INSTDEBUG_OBJ)
 	
 
 # Regra de compilação da ferramenta instdebug

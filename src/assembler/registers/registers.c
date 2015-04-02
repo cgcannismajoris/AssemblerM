@@ -34,7 +34,8 @@ REGISTERS *registers_new(long int maxQtd)
 		asmError_setDesc(REGISTERS_EALLOC_MSG);
 		return (REGISTERS_EALLOC);
 	}
-
+	
+	novo->qtdRegs = 0;
 	novo->maxQtd = maxQtd;
 
 	return novo;
@@ -42,11 +43,15 @@ REGISTERS *registers_new(long int maxQtd)
 
 void registers_free(REGISTERS *regs)
 {
-	for(--regs->qtdRegs; regs->qtdRegs > 0; regs->qtdRegs--)
-	{
-		reg_free(regs->regs[regs->qtdRegs]);
-	}
 
+	if(regs->qtdRegs > 0)
+	{
+		for(--regs->qtdRegs; regs->qtdRegs > 0; regs->qtdRegs--)
+		{
+			reg_free(regs->regs[regs->qtdRegs]);
+		}
+	}
+	
 	free(regs);
 }
 

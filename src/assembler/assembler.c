@@ -55,6 +55,7 @@ void assembler_free(ASSEMBLER *asmr)
 	free(asmr);
 }
 
+
 int assembler_assemble(ASSEMBLER *asmr, const char *src, 
 							const char *bin, const char *dicFile)
 {
@@ -88,7 +89,9 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 	asmr->instCounter = 0;
 
 	//------ INICIA O PROCESSAMENTO -------------------------------------
-	
+
+
+
 	//Faz busca pelas labels declaradas no arquivo
 	if(assembler_makeLabels(asmr) != ASSEMBLER_SUCCESS){
 		printf("Declaração de label invalida encontrada na linha: %li\n", asmr->instCounter);

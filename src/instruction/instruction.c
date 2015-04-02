@@ -19,7 +19,7 @@
 #include "instruction.h"
 
 
-INSTRUCTION *inst_new(uint32_t inst)
+INSTRUCTION *inst_new(uint8_t *inst)
 {
     INSTRUCTION *novo;
 
@@ -33,7 +33,8 @@ INSTRUCTION *inst_new(uint32_t inst)
         return INSTRUCTION_EALLOC;
 	}
 
-    novo->inst = inst;
+	memcpy(novo->inst, inst, INSTRUCTION_INSTLENGTH);
+//    novo->inst = inst;
 
     return novo;
 }
@@ -43,12 +44,13 @@ void inst_free(INSTRUCTION *instruction)
     free(instruction);
 }
 
-uint32_t inst_getInst(INSTRUCTION *instruction)
+uint8_t *inst_getInst(INSTRUCTION *instruction)
 {
     return (instruction->inst);
 }
 
-void inst_setInst(INSTRUCTION *instruction, uint32_t inst)
+void inst_setInst(INSTRUCTION *instruction, uint8_t *inst)
 {
-    instruction->inst = inst;
+//    instruction->inst = inst;
+	memcpy(instruction->inst, inst, INSTRUCTION_INSTLENGTH);
 }

@@ -47,6 +47,6 @@ void asmWriter_free(ASMWRITER *asmWriter)
 
 void asmWriter_writeInst(ASMWRITER *asmWriter, INSTRUCTION *instruction)
 {
-	fwrite(&(instruction->inst), sizeof(instruction->inst), 1, asmWriter->file);
+	fwrite(&(instruction->inst), INSTRUCTION_INSTLENGTH, 1, asmWriter->file);
 }
 

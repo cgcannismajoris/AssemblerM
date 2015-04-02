@@ -103,6 +103,7 @@ int assembler_labelJudge(char *label){
 	return (ASSEMBLER_FALSE);
 }
 
+
 INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr, 
 				TOKENS *input, TOKENS *pattern, TOKENS *translation){
 
@@ -128,7 +129,7 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 		 *  4 - Address
 		 */
 
-		if(token_getQtd(translation) != 5){
+		if(token_getQtd(translation) != 3){
 			asmError_setDesc(ASSEMBLER_EUSER_INVALIDDIC_MSG);
 			return (NULL);
 		}
@@ -139,18 +140,18 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 	
 		//--------------- Monta dest ---------------
 		//Obtém a string que identifica o reg
-		aux = token_getToken(translation, 1);
+		aux = token_getToken(pattern, 1);
 		//Obtém a posição correspondente na tradução
-		pos = token_search(pattern, aux);
+		pos = token_search(translation, aux);
 	
 		//Erro de processamento! DICIONÁRIO INVÁLIDO
 		if(pos == -1){
 			asmError_setDesc(ASSEMBLER_EUSER_INVALIDDIC_MSG);
 			return (NULL);
 		}
-		
+	
 		//Obtém a string correspondente na instrução
-		//O + 1 é devido ao input armazenar o label da instrução
+		//O +1 é devido ao input armazenar o label da instrução
 		aux = token_getToken(input, pos + 1);
 		
 		//Obtém a posição do registrador referênciado
@@ -167,89 +168,21 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 		}
 
 		//Seta o valor:
-		inst.dest = pos;
-
-		//--------------- Monta orig1 ---------------
-		//Obtém a string que identifica o reg
-	 	aux = token_getToken(translation, 2);
-		//Obtém a posição correspondente na tradução
-		pos = token_search(pattern, aux);
-
-		//Erro de processamento! DICIONÁRIO INVÁLIDO
-		if(pos == -1){
-			asmError_setDesc(ASSEMBLER_EUSER_INVALIDDIC_MSG);
-			return (NULL);
-		}
-
-		//Obtém a string correspondente na instrução
-		aux = token_getToken(input, pos + 1);
-		
-		//Obtém a posição do registrador referênciado
-		//Se não encontrar, instancia um novo
-		if((pos = registers_regSearch(asmr->regs, aux)) == -1){
-			//Obtém a posição correta
-			pos = registers_addReg(asmr->regs, aux);
-
-			if(pos == - 1){ //Excedeu 32 registradores
-				//A descrição do erro já foi setada no asmError.
-				return (NULL);
-			}
-		}
-
-		//Seta o valor:
-		inst.orig1 = pos;
-
-		//--------------- Monta orig2 ---------------
-		//Obtém a string que identifica o reg/num
-		aux = token_getToken(translation, 3);
-
-		switch(inst.opcode){
-			//Se opcode = 1, é um número
-			case(1):
-			case(2):
-				pos = atoi(aux);
-				break;
-
-			default:	
-				//Obtém a posição correspondente no pattern
-				pos = token_search(pattern, aux);
-				//Erro de processamento! DICIONÁRIO INVÁLIDO
-				if(pos == -1){
-					return (NULL);
-				}
-	
-				//Obtém a string correspondente na instrução
-				aux = token_getToken(input, pos + 1);
-	
-				//Obtém a posição do registrador referênciado
-				//Se não encontrar, instancia um novo
-				if((pos = registers_regSearch(asmr->regs, aux)) == -1){
-					//Obtém a posição correta
-					pos = registers_addReg(asmr->regs, aux);
-		
-					if(pos == - 1){ //Excedeu 32 registradores
-						return (NULL);
-					}
-				}
-				//Fim defalt		
-		}
-
-		//Seta o valor:
-		inst.orig2 = pos;	
+		inst.reg = pos;
 
 		//--------------- Monta address ---------------
-		//Obtém a string que identifica a label
-		aux = token_getToken(translation, 4);
+		//Obtém a string que identifica o endereço
+		aux = token_getToken(pattern, 2);
 		
 		//Obtém a posição correspondente no pattern
-		pos = token_search(pattern, aux);
+		pos = token_search(translation, aux);
 
 		//Erro de processamento! DICIONÁRIO INVÁLIDO - ENTRADA INCONSISTENTE
 		if(pos == -1){
 			asmError_setDesc(ASSEMBLER_EUSER_INVALIDDIC_MSG);
 			return (NULL);
 		}
-	 	
+ 	
 		//Busca a referência na entrada	
 		aux = token_getToken(input, pos + 1);
 		
@@ -258,32 +191,15 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 		if((pos = assembler_searchLabel(asmr, aux)) == 0){
 			pos = lista_getQuant(asmr->labels) + 1; 
 		}
-		
-		//address só pode armazenar 11bits, se o salto a ser feito é maior
-		//que isto, não é possível montar o programa
-		if((int)(pos - asmr->instCounter) > 1023 || 
-						(int)(pos - asmr->instCounter) < -1023){
-			asmError_setDesc(ASSEMBLER_EUSER_ADDRESSOVERFLOW_MSG);
-			return(NULL);
-		}
-
+	
 		//Armazena a distância do salto
 		inst.address = (int)(pos - (long int)asmr->instCounter - 1);
-		
+	
 		//Armazena o valor na estrutura INSTRUCTION
 		novo = (INSTRUCTION*)malloc(sizeof(INSTRUCTION));
 		INSTRUCTION_SETINST(novo->inst, inst);
 	}
 
-	//Tipo BRANCH
-	else if(opcode >= 23 && opcode <= 44){
-
-	}
-
-	//Tipo JUMP
-	else if(opcode >= 45 && opcode <= 55){
-
-	}
 	//Tipos especiais
 	else if(opcode == 56){
 		/* BEQZ: 
@@ -294,7 +210,6 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 		 */
 
 		if(token_getQtd(translation) != 4){
-			printf("token qtd = %i\n", token_getQtd(translation));
 			asmError_setDesc(ASSEMBLER_EUSER_INVALIDDIC_MSG);
 			return (NULL);
 		}
@@ -305,9 +220,9 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 			
 		//--------------- Monta reg ---------------
 		//Obtém a string que identifica o reg
-		aux = token_getToken(translation, 1);
+		aux = token_getToken(pattern, 1);
 		//Obtém a posição correspondente na tradução
-		pos = token_search(pattern, aux);
+		pos = token_search(translation, aux);
 	
 		//Erro de processamento! DICIONÁRIO INVÁLIDO
 		if(pos == -1){
@@ -359,11 +274,11 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 		
 		//address só pode armazenar 11bits, se o salto a ser feito é maior
 		//que isto, não é possível montar o programa
-		if((int)(pos - asmr->instCounter) > 1023 || 
-						(int)(pos - asmr->instCounter) < -1023){
-			asmError_setDesc(ASSEMBLER_EUSER_ADDRESSOVERFLOW_MSG);
-			return(NULL);
-		}
+//		if((int)(pos - asmr->instCounter) > 1023 || 
+//						(int)(pos - asmr->instCounter) < -1023){
+//			asmError_setDesc(ASSEMBLER_EUSER_ADDRESSOVERFLOW_MSG);
+//			return(NULL);
+//		}
 
 		//Armazena a distância do salto
 		inst.address_t = (int)(pos - (long int)asmr->instCounter - 1);
@@ -393,18 +308,19 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 		
 		//address só pode armazenar 11bits, se o salto a ser feito é maior
 		//que isto, não é possível montar o programa
-		if((int)(pos - asmr->instCounter) > 1023 || 
-						(int)(pos - asmr->instCounter) < -1023){
-			asmError_setDesc(ASSEMBLER_EUSER_ADDRESSOVERFLOW_MSG);
-			return(NULL);
-		}
-
+//		if((int)(pos - asmr->instCounter) > 1023 || 
+//						(int)(pos - asmr->instCounter) < -1023){
+//			asmError_setDesc(ASSEMBLER_EUSER_ADDRESSOVERFLOW_MSG);
+//			return(NULL);
+//		}
+		
 		//Armazena a distância do salto
 		inst.address_f = (int)(pos - (long int)asmr->instCounter - 1);
 		
 		//Armazena o valor na estrutura INSTRUCTION
 		novo = (INSTRUCTION*)malloc(sizeof(INSTRUCTION));
-		INSTRUCTION_SETINST(novo->inst, inst);	
+		INSTRUCTION_SETINST(novo->inst, inst);
+
 	}
 	//Tipo não definido
 	else{
