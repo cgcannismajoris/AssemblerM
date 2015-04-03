@@ -110,9 +110,16 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 	
 	//Cria a lista de termos a serem ignorados
 	ignoreList = assembler_makeStrVector(ASSEMBLER_IGNORE_QTD, ASSEMBLER_IGNORE1, 
-											ASSEMBLER_IGNORE2);
+											ASSEMBLER_IGNORE2, ASSEMBLER_IGNORE3, 
+											ASSEMBLER_IGNORE4, ASSEMBLER_IGNORE5);
 
+	
+	
 	//Grava no arquivo a quantidade de registradores a serem utilizados
+	asmWriter_writeInt(asmr->writer, registers_getQtdRegs(asmr->regs));
+	//Deve terminar de gravar o cabeçalho do programa
+	//Fazer funções especializadas para esta parte
+
 
 	//Enquanto for possível carregar novas instruções
 	while((actualInst = asmLoader_getNextInst(asmr->loader)) != NULL){

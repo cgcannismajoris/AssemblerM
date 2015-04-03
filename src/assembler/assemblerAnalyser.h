@@ -41,6 +41,8 @@ void 			assembler_freeStrVector(char **strVector);
 
 int             assembler_labelJudge(char *label);
 
+void			__assembler_makeRegisters_insert(ASSEMBLER *asmr, TOKENS *tokens, uint8_t block_type);
+
 int 			assembler_makeRegisters(ASSEMBLER *asmr);
 
 INSTRUCTION *   assembler_makeInst(ASSEMBLER *asmr, TOKENS *input,

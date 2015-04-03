@@ -31,9 +31,13 @@
 #define REG_EALLOC          NULL
 #define REG_EALLOC_MSG      "Falha ao alocar memória para REG."
 
+#define REG_TYPE_INPUT		0
+#define REG_TYPE_OUTPUT		1
+
 typedef struct _reg
 {
     char *      name;
+	uint8_t		type;
 } REG;
 
 
@@ -43,12 +47,15 @@ typedef struct _reg
  *   
  * - PARÂMETROS: 
  *      -> const char *name: Nome dado ao registrador.
+ *      -> uint8_t type: Tipo do registrador.
+ *      	- Se REG_TYPE_INPUT  - Registrador de entrada
+ *      	- Se REG_TYPE_OUTPUT - Registrador de saída
  *
  * - RETORNO: Estrutura do tipo REG instanciada.
  *   	-> Se NULL    - Erro na operação.
  *   	-> Se != NULL - Sucesso na operação.
  */
-REG *       reg_new(const char *name);
+REG *       reg_new(const char *name, uint8_t type);
 
 
 /* -> void reg_free(REG *reg)

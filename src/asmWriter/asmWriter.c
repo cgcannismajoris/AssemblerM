@@ -50,3 +50,8 @@ void asmWriter_writeInst(ASMWRITER *asmWriter, INSTRUCTION *instruction)
 	fwrite(&(instruction->inst), INSTRUCTION_INSTLENGTH, 1, asmWriter->file);
 }
 
+void asmWriter_writeInt(ASMWRITER *asmWriter, uint32_t num)
+{
+	fwrite(&(num), sizeof(uint32_t), 1, asmWriter->file);
+}
+

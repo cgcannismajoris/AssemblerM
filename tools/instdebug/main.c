@@ -11,9 +11,10 @@ extern void     asmError_setDesc(const char *failureDesc);
 int main(int argc, char **argv)
 {
     uint8_t numInst[12];
+	uint32_t regQtd;
     TYPE_R tipo_r;
 	TYPE_ESP_BEQZ tipo_esp_beqz;
-
+	
 	if(argc == 1)
 	{
 		printf("Insira um arquivo de entrada...\n");
@@ -21,6 +22,10 @@ int main(int argc, char **argv)
 	}
 
     FILE *file = fopen(argv[1], "rb+");
+
+	fread(&regQtd, sizeof(uint32_t), 1, file);
+
+	printf("qtd regs: %u\n\n", regQtd);
 
     fread(numInst, sizeof(TYPE_R), 1, file);
     INSTRUCTION_SETINST(tipo_r, numInst);

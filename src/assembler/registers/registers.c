@@ -55,7 +55,7 @@ void registers_free(REGISTERS *regs)
 	free(regs);
 }
 
-long int registers_addReg(REGISTERS *regs, char *regName)
+long int registers_addReg(REGISTERS *regs, char *regName, uint8_t type)
 {
 	REG *novo;
 
@@ -64,7 +64,7 @@ long int registers_addReg(REGISTERS *regs, char *regName)
 		return (REGISTERS_EDECOVERFLOW);
 	}
 
-	if((novo = reg_new(regName)) == REG_EALLOC)
+	if((novo = reg_new(regName, type)) == REG_EALLOC)
 	{
 		//Erro de alocação
 		asmError_setDesc(REGISTERS_EALLOC_MSG);
@@ -87,4 +87,9 @@ long int registers_regSearch(REGISTERS *regs, char *name)
 	}
 	
 	return (-1);
+}
+
+uint32_t registers_getQtdRegs(REGISTERS *regs)
+{
+	return (regs->qtdRegs);
 }

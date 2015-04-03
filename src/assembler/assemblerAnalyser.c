@@ -109,6 +109,16 @@ int assembler_labelJudge(char *label){
 	return (ASSEMBLER_FALSE);
 }
 
+void __assembler_makeRegisters_insert(ASSEMBLER *asmr, TOKENS *tokens, uint8_t block_type)
+{
+	int i;
+
+	for(i = 0; i < token_getQtd(tokens); i++)
+	{
+		registers_addReg(asmr->regs, token_getToken(tokens, i), block_type); 
+	}
+}
+
 int assembler_makeRegisters(ASSEMBLER *asmr)
 {
 	
@@ -165,27 +175,18 @@ int assembler_makeRegisters(ASSEMBLER *asmr)
 	arrowStart += 2;
 		
 	//Separa os tokens da lista de registradores de saida
-	switch(arrowDirection){
-		case 0:
-			output = scanner_scan(header, NULL, ASSEMBLER_MACHINEDEC_SEPARATORS, 0);
-			input  = scanner_scan(arrowStart, NULL, 
-							ASSEMBLER_MACHINEDEC_SEPARATORS, 0);
-			break;
-
-		case 1:
-			output = scanner_scan(arrowStart, NULL, 
-										ASSEMBLER_MACHINEDEC_SEPARATORS, 0);
-			input  = scanner_scan(header, NULL, 
-										ASSEMBLER_MACHINEDEC_SEPARATORS, 0);
-			break;
-
-		default:
-			return (ASSEMBLER_FAILURE);
+	if(arrowDirection == 0)
+	{
+		output = scanner_scan(header, NULL, ASSEMBLER_MACHINEDEC_SEPARATORS, 0);
+		input  = scanner_scan(arrowStart, NULL, ASSEMBLER_MACHINEDEC_SEPARATORS, 0);
+	}
+	else
+	{
+		output = scanner_scan(arrowStart, NULL, ASSEMBLER_MACHINEDEC_SEPARATORS, 0);
+		input  = scanner_scan(header, NULL, ASSEMBLER_MACHINEDEC_SEPARATORS, 0);
 	}
 
 	// ------------------ PROCESSA OS TOKENS ------------------
-
-	
 	//Busca por tokens em comum...
 	if(token_verifCommon(input, output) == 1)
 	{
@@ -193,14 +194,16 @@ int assembler_makeRegisters(ASSEMBLER *asmr)
 		return (ASSEMBLER_FAILURE);
 	}
 	
-	//Insere nos registradores declarados
-	for(i = 0; i < token_getQtd(input); i++)
+	//Insere nos registradores na ordem que foram declarados
+	if(arrowDirection == 0)
 	{
-		registers_addReg(asmr->regs, token_getToken(input, i)); 
+		__assembler_makeRegisters_insert(asmr, output, REG_TYPE_OUTPUT);
+		__assembler_makeRegisters_insert(asmr, input, REG_TYPE_INPUT);
 	}
-	for(i = 0; i < token_getQtd(output); i++)
+	else
 	{
-		registers_addReg(asmr->regs, token_getToken(output, i)); 
+		__assembler_makeRegisters_insert(asmr, input, REG_TYPE_INPUT);
+		__assembler_makeRegisters_insert(asmr, output, REG_TYPE_OUTPUT);
 	}
 	
 	return (ASSEMBLER_SUCCESS);
@@ -436,7 +439,9 @@ int assembler_makeLabels(ASSEMBLER *asmr){
 	LABEL *tmpLabel;
 
 	//Gera a lista de itens a serem ignorados	
-	ignoreList = assembler_makeStrVector(2, ASSEMBLER_IGNORE1, ASSEMBLER_IGNORE2);
+	ignoreList = assembler_makeStrVector(ASSEMBLER_IGNORE_QTD, ASSEMBLER_IGNORE1, 
+											ASSEMBLER_IGNORE2, ASSEMBLER_IGNORE3, 
+											ASSEMBLER_IGNORE4, ASSEMBLER_IGNORE5);
 
 	//Posiciona no início do arquivo
 	asmLoader_rewind(asmr->loader);

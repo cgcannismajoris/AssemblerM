@@ -41,7 +41,8 @@ typedef struct _registers
 
 REGISTERS *     registers_new(long int maxQtd);
 void            registers_free(REGISTERS *regs);
-long int        registers_addReg(REGISTERS *regs, char *regName);
+long int 		registers_addReg(REGISTERS *regs, char *regName, uint8_t type);
 long int        registers_regSearch(REGISTERS *regs, char *name);
+uint32_t		registers_getQtdRegs(REGISTERS *regs);
 
 #endif

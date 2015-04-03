@@ -50,8 +50,11 @@
 
 #define ASSEMBLER_IGNORE1               "faca"
 #define ASSEMBLER_IGNORE2               "va_para"
+#define ASSEMBLER_IGNORE3               "se"
+#define ASSEMBLER_IGNORE4               "entao"
+#define ASSEMBLER_IGNORE5               "senao"
 
-#define ASSEMBLER_IGNORE_QTD            2
+#define ASSEMBLER_IGNORE_QTD            5
 
 #define ASSEMBLER_SEPARATOR             " "
 

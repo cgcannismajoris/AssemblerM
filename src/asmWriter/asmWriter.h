@@ -80,4 +80,18 @@ void            asmWriter_free(ASMWRITER *asmWriter);
 void            asmWriter_writeInst(ASMWRITER *asmWriter,
                                     INSTRUCTION *instruction);
 
+
+/* -> void asmWriter_writeQtdInst(ASMWRITER *asmWriter, uint32_t qtd)
+ * 
+ * - DESCRIÇÃO: Grava no arquivo um número  de 32bits.
+ *
+ * - PARÂMETROS: 
+ *      -> ASMWRITER *asmWriter: Estrutura a ser utilizada para a escrita da 
+ *      instrução.
+ *      -> uint32_t num: Valor a ser escrita.
+ *
+ * - RETORNO: void.
+ */
+void 			asmWriter_writeInt(ASMWRITER *asmWriter, 
+										uint32_t num);
 #endif /* ASMWRITER_HEADER */

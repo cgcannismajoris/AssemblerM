@@ -19,7 +19,7 @@
 
 #include "reg.h"
 
-REG *reg_new(const char *name)
+REG *reg_new(const char *name, uint8_t type)
 {
     REG *novo;
     int c;
@@ -39,6 +39,8 @@ REG *reg_new(const char *name)
 	}
 
     strcpy(novo->name, name);
+	
+	novo->type = type;
 
     return novo;
 }
@@ -54,3 +56,7 @@ char *reg_getName(REG *reg)
     return reg->name;
 }
 
+uint8_t reg_getType(REG *reg)
+{
+	return reg->type;
+}

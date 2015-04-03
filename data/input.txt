@@ -1,5 +1,0 @@
-M:abacaxi<-melao
-r1: faca inc abacaxi va_para r2
-r2: faca dec abacaxi va_para r3
-r3: faca inc melao va_para r4
-r4: faca zero abacaxi va_para r1 r5
