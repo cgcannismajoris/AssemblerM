@@ -14,7 +14,10 @@ int main(int argc, char **argv)
 	uint32_t regQtd;
     TYPE_R tipo_r;
 	TYPE_ESP_BEQZ tipo_esp_beqz;
-	
+	int i;
+	int tmpValue;
+	uint8_t tmpType;
+
 	if(argc == 1)
 	{
 		printf("Insira um arquivo de entrada...\n");
@@ -26,6 +29,18 @@ int main(int argc, char **argv)
 	fread(&regQtd, sizeof(uint32_t), 1, file);
 
 	printf("qtd regs: %u\n\n", regQtd);
+
+	//Exibe o cabeçalho
+	for(i = 0; i < regQtd; i++)
+	{
+		printf("Reg %u:\n", i);
+
+		fread(&tmpType, sizeof(uint8_t), 1, file);
+		printf("  Type : %i\n", tmpType);
+
+		fread(&tmpValue, sizeof(int), 1, file);
+		printf("  Value: %i\n\n", tmpValue);
+	}
 
     fread(numInst, sizeof(TYPE_R), 1, file);
     INSTRUCTION_SETINST(tipo_r, numInst);

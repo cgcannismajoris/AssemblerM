@@ -66,7 +66,7 @@ ASMWRITER *     asmWriter_new(const char *filename);
 void            asmWriter_free(ASMWRITER *asmWriter);
 
 
-/* -> void asmLoader_getNextInst(ASMLOADER *asmLoader)
+/* -> void asmWriter_writeInst(ASMWRITER *asmWriter, INSTRUCTION *instruction)
  * 
  * - DESCRIÇÃO: Grava no arquivo a instrução binária recebida como parâmetro.
  *
@@ -81,17 +81,18 @@ void            asmWriter_writeInst(ASMWRITER *asmWriter,
                                     INSTRUCTION *instruction);
 
 
-/* -> void asmWriter_writeQtdInst(ASMWRITER *asmWriter, uint32_t qtd)
+/* -> void asmWriter_writeHeader(ASMWRITER *asmWriter, uint8_t *header, size_t length)
  * 
  * - DESCRIÇÃO: Grava no arquivo um número  de 32bits.
  *
  * - PARÂMETROS: 
  *      -> ASMWRITER *asmWriter: Estrutura a ser utilizada para a escrita da 
  *      instrução.
- *      -> uint32_t num: Valor a ser escrita.
+ *      -> uint8_t *header: Cabeçalho a ser escrito.
+ *      -> size_t length: Tamanho, em bytes, do cabeçalho.
  *
  * - RETORNO: void.
  */
-void 			asmWriter_writeInt(ASMWRITER *asmWriter, 
-										uint32_t num);
+void asmWriter_writeHeader(ASMWRITER *asmWriter, uint8_t *header, size_t length);
+
 #endif /* ASMWRITER_HEADER */

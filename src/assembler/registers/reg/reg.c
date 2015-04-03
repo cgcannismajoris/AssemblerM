@@ -41,8 +41,8 @@ REG *reg_new(const char *name, uint8_t type)
     strcpy(novo->name, name);
 	
 	novo->type = type;
-
-    return novo;
+    
+	return novo;
 }
 
 void reg_free(REG *reg)

@@ -27,10 +27,12 @@
 ASSEMBLER * assembler_new();
 void        assembler_free(ASSEMBLER *asmr);
 
-int         assembler_assemble(ASSEMBLER *asmr,
-                               const char *src,
-                               const char *bin,
-                               const char *dicFile);
+int 		assembler_assemble(ASSEMBLER *asmr, 
+							   const char *src, 
+							   const char *bin,
+							   const char *dicFile, 
+							   int *inputValues, 
+							   uint32_t length);
 
 static int  __assembler_assemble_makeLabels(ASSEMBLER *asmr);
 

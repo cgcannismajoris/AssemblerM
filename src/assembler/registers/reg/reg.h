@@ -81,4 +81,16 @@ void        reg_free(REG *reg);
  */
 char *      reg_getName(REG *reg);
 
+
+/* -> uint8_t reg_getType(REG *reg)
+ * 
+ * - DESCRIÇÃO: Retorna o tipo do registrador. 
+ *   
+ * - PARÂMETROS: 
+ *      -> REG *reg: Estrutura a ser utilizada na leitura.
+ *
+ * - RETORNO: Numero que identifica o tipo.
+ */
+uint8_t reg_getType(REG *reg);
+
 #endif /* REG_HEADER */

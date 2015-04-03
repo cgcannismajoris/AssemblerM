@@ -109,7 +109,8 @@ int assembler_labelJudge(char *label){
 	return (ASSEMBLER_FALSE);
 }
 
-void __assembler_makeRegisters_insert(ASSEMBLER *asmr, TOKENS *tokens, uint8_t block_type)
+static void __assembler_makeRegisters_insert(ASSEMBLER *asmr, 
+												TOKENS *tokens, uint8_t block_type)
 {
 	int i;
 
@@ -145,7 +146,7 @@ int assembler_makeRegisters(ASSEMBLER *asmr)
 		
 	// ---------------- PRÉ-PROCESSA O HEADER ----------------
 	//Salta para a posição posterior à declaração do nome da máquina 
-	while(*(header - 1) != ':' && *header != '\0')
+	while(*(header - 1) != ASSEMBLER_LABEL_TERMINATOR_CHR && *header != '\0')
 	{
 		header ++;
 	}	
@@ -163,13 +164,14 @@ int assembler_makeRegisters(ASSEMBLER *asmr)
 		//Se não achou, uma definição inválida foi escrita
 		if(arrowStart == NULL)
  		{
-			asmError_setDesc(ASSEMBLERANALYSER_EUSER_INVALIDMACHINE_MSG);
+			asmError_setDesc(ASSEMBLERANALYSER_EUSER_INVMAC_MSG);
 			return (ASSEMBLER_FAILURE);
 		}
 
 		arrowDirection = 1;
 	}
 
+	//Remove a seta do header
 	arrowStart[0] = '\0';
 	arrowStart[1] = '\0';	
 	arrowStart += 2;
@@ -187,10 +189,10 @@ int assembler_makeRegisters(ASSEMBLER *asmr)
 	}
 
 	// ------------------ PROCESSA OS TOKENS ------------------
-	//Busca por tokens em comum...
+	//Busca por tokens em comum... Se existe, uma declaração inválida foi feita
 	if(token_verifCommon(input, output) == 1)
 	{
-		asmError_setDesc(ASSEMBLERANALYSER_EUSER_DOUBLE_DECLARATION_MSG);
+		asmError_setDesc(ASSEMBLERANALYSER_EUSER_DOUBDEC_MSG);
 		return (ASSEMBLER_FAILURE);
 	}
 	
@@ -209,6 +211,77 @@ int assembler_makeRegisters(ASSEMBLER *asmr)
 	return (ASSEMBLER_SUCCESS);
 }
 
+
+int assembler_makeHeader(ASSEMBLER *asmr, int *inputList, uint32_t length)
+{
+	
+	uint8_t *header;
+	size_t headerLength, i, j, k;
+	
+	/* i -> contador do inputList
+	 * j -> contador do header
+	 * k -> contador da lista de registradores
+	 */
+
+	//Se a quantidade de argumentos exceder a quantidade de registradores
+	if(length > registers_getQtdInput(asmr->regs))
+	{
+		asmError_setDesc(ASSEMBLERANALYSER_EUSER_EXCESSARGS_MSG);
+		return ASSEMBLER_FAILURE; 
+	}
+	//Se a quantidade é inferior...
+	else if(length < registers_getQtdInput(asmr->regs))
+	{
+		asmError_setDesc(ASSEMBLERANALYSER_EUSER_LESSARGS_MSG);
+		return ASSEMBLER_FAILURE; 
+	}	
+
+	//Calcula o tamanho do header
+	headerLength = ((sizeof(uint8_t) + sizeof(int)) * 
+					registers_getQtdRegs(asmr->regs)) + (sizeof(uint32_t));
+	
+	//Aloca a memória necessária
+	if((header = (uint8_t*)malloc(headerLength)) == NULL)
+	{
+		asmError_setDesc(ASSEMBLER_EALLOC_MSG);
+		return (ASSEMBLERANALYSER_EALLOC_ID);
+	}
+    
+	//Grava a quantidade de registradores a serem utilizados
+	((uint32_t*)header)[0] = registers_getQtdRegs(asmr->regs);
+	
+ 	//Grava os valores iniciais de memória com o respectivo tipo do registrador
+	//(input ou output) 
+	for(i = 0, k = 0, j = sizeof(uint32_t); k < registers_getQtdRegs(asmr->regs); k++)
+	{
+		//Grava o tipo 
+		((uint8_t*)header)[j] = reg_getType(registers_getReg(asmr->regs, k));
+//		printf("TYPE  = %s\n", ((uint8_t*)header)[j] == 0 ? "IN" : "OUT");
+		j += sizeof(uint8_t);
+	
+		//Grava o valor inicial de memória
+		//Se o registrador atual for de input grava o valor recebido, se não grava 0
+		if(reg_getType(registers_getReg(asmr->regs, k)) == REG_TYPE_INPUT)
+		{
+			((int*)header)[j] = inputList[i];
+			i++;
+		}
+		else
+			((int*)header)[j] = 0;
+//		printf("VALUE = %i\n", ((int*)header)[j]); 
+		j += sizeof(int);
+//		printf("j = %lu, max = %lu\n", j, headerLength);getchar();
+	}
+	
+	//Grava o cabeçalho no arquivo
+ 	asmWriter_writeHeader(asmr->writer, header, headerLength);
+	
+	//Libera a memória utilizada
+//	free(header);
+	
+	//Retorna sucesso	
+	return (ASSEMBLER_SUCCESS);
+}
 
 
 INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr, 
@@ -367,14 +440,6 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 			pos = lista_getQuant(asmr->labels) + 1; 
 		}
 		
-		//address só pode armazenar 11bits, se o salto a ser feito é maior
-		//que isto, não é possível montar o programa
-//		if((int)(pos - asmr->instCounter) > 1023 || 
-//						(int)(pos - asmr->instCounter) < -1023){
-//			asmError_setDesc(ASSEMBLER_EUSER_ADDRESSOVERFLOW_MSG);
-//			return(NULL);
-//		}
-
 		//Armazena a distância do salto
 		inst.address_t = (int)(pos - (long int)asmr->instCounter);
 
@@ -400,14 +465,6 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 			//Define o salto para uma instrução posterior a última
 			pos = lista_getQuant(asmr->labels) + 1; 
 		}
-		
-		//address só pode armazenar 11bits, se o salto a ser feito é maior
-		//que isto, não é possível montar o programa
-//		if((int)(pos - asmr->instCounter) > 1023 || 
-//						(int)(pos - asmr->instCounter) < -1023){
-//			asmError_setDesc(ASSEMBLER_EUSER_ADDRESSOVERFLOW_MSG);
-//			return(NULL);
-//		}
 		
 		//Armazena a distância do salto
 		inst.address_f = (int)(pos - (long int)asmr->instCounter);
@@ -450,7 +507,8 @@ int assembler_makeLabels(ASSEMBLER *asmr){
 	asmLoader_getNextInst(asmr->loader);
 
 	//Enquanto for possível ler...
-	while((actualInst = asmLoader_getNextInst(asmr->loader)) != NULL){
+	while((actualInst = asmLoader_getNextInst(asmr->loader)) != NULL)
+	{
 
 		//Gera os tokens
 		actualTokens = scanner_scan(actualInst, ignoreList, ASSEMBLER_SEPARATOR, 
@@ -458,7 +516,8 @@ int assembler_makeLabels(ASSEMBLER *asmr){
 		
 		//Se a label não for válida
 		if(assembler_labelJudge(token_getToken(actualTokens, 0)) ==
-						ASSEMBLER_FALSE){
+						ASSEMBLER_FALSE)
+		{
 			//Libera regiões de memória que não serão mais utilizadas
 			lista_free(asmr->labels);
 			token_free(actualTokens);
@@ -468,16 +527,39 @@ int assembler_makeLabels(ASSEMBLER *asmr){
 			//Reposiciona o arquivo
 			asmLoader_rewind(asmr->loader);
 			
+			//Lança o erro
+			asmError_setDesc(ASSEMBLERANALYSER_EUSER_INVLABEL_MSG);
+
 			//Retorna
 			return (counter);
 		}
 		
-		//Se a label for válida, segue adiante.
+		//Se a label foi declarada corretamente, segue adiante.
 
 		//Constrói a label, removendo o ':' presente no final
 		actualLabel = token_getToken(actualTokens, 0);
 		actualLabel[strlen(actualLabel) - 1] = '\0';
+		
+		//Busca pela label na lista de labels já declaradas.
+		//Se existir, foi feita uma declaração duplicada.
+		if(assembler_searchLabel(asmr, actualLabel) != 0)
+		{
+			//Libera regiões de memória que não serão mais utilizadas
+			lista_free(asmr->labels);
+			token_free(actualTokens);
+			assembler_freeStrVector(ignoreList);
+			asmr->labels = NULL;
+			
+			//Reposiciona o arquivo
+			asmLoader_rewind(asmr->loader);
+	
+			//Lança o erro	
+			asmError_setDesc(ASSEMBLERANALYSER_EUSER_DUPLABEL_MSG);
 
+			//Retorna
+			return (counter);
+		}
+		
 		//Insere a label lista
 		tmpLabel = label_new(actualLabel, counter);
 		tmpNode = node_new(tmpLabel, 0, sizeof(LABEL));

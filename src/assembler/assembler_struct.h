@@ -53,18 +53,15 @@
 #define ASSEMBLER_IGNORE3               "se"
 #define ASSEMBLER_IGNORE4               "entao"
 #define ASSEMBLER_IGNORE5               "senao"
-
 #define ASSEMBLER_IGNORE_QTD            5
 
 #define ASSEMBLER_SEPARATOR             " "
-
 #define ASSEMBLER_LABEL_TERMINATOR      ":"  //Terminador da label (deve aparecer na
-										     //declaração de uma nova label)
+#define ASSEMBLER_LABEL_TERMINATOR_CHR  ':'  //declaração de uma nova label)
 
 #define ASSEMBLER_MACHINEDEC_RARROW		"->"
 #define ASSEMBLER_MACHINEDEC_LARROW		"<-"
-
-#define ASSEMBLER_MACHINEDEC_SEPARATORS	",:"
+#define ASSEMBLER_MACHINEDEC_SEPARATORS	",: "
  
 
 typedef struct _assembler

@@ -93,3 +93,25 @@ uint32_t registers_getQtdRegs(REGISTERS *regs)
 {
 	return (regs->qtdRegs);
 }
+
+REG *registers_getReg(REGISTERS *regs, uint32_t pos)
+{
+	if(pos > regs->qtdRegs)
+		return (NULL);
+
+	return (regs->regs[pos]);
+}
+
+uint32_t registers_getQtdInput(REGISTERS *regs)
+{
+	uint32_t i;
+	uint32_t qtd = 0;
+
+	for(i = 0; i < regs->qtdRegs; i++)
+	{
+		if(regs->regs[i]->type == REG_TYPE_INPUT)
+			 qtd++;
+	}
+
+	return qtd;
+}

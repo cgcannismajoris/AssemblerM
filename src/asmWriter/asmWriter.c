@@ -50,8 +50,24 @@ void asmWriter_writeInst(ASMWRITER *asmWriter, INSTRUCTION *instruction)
 	fwrite(&(instruction->inst), INSTRUCTION_INSTLENGTH, 1, asmWriter->file);
 }
 
-void asmWriter_writeInt(ASMWRITER *asmWriter, uint32_t num)
+void asmWriter_writeHeader(ASMWRITER *asmWriter, uint8_t *header, size_t length)
 {
-	fwrite(&(num), sizeof(uint32_t), 1, asmWriter->file);
+ 	size_t j;
+	
+
+//	fwrite(num, length, 1, asmWriter->file);
+// 	printf("ftell = %lu\n\n", ftell(asmWriter->file));
+
+	fwrite(&(((uint32_t*)header)[0]), sizeof(uint32_t), 1, asmWriter->file);
+	for(j = sizeof(uint32_t); j < length; j)
+	{
+//		printf("TYPE  = %s\n", ((uint8_t*)num)[j] == 0 ? "IN" : "OUT");
+		fwrite(&(((uint8_t*)header)[j]), sizeof(uint8_t), 1, asmWriter->file);
+		j += sizeof(uint8_t);
+
+//		printf("VALUE = %i\n\n", ((int*)num)[j]); 
+		fwrite(&(((int*)header)[j]), sizeof(int), 1, asmWriter->file);
+		j += sizeof(int);
+	}
 }
 

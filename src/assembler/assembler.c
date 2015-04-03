@@ -57,7 +57,8 @@ void assembler_free(ASSEMBLER *asmr)
 
 
 int assembler_assemble(ASSEMBLER *asmr, const char *src, 
-							const char *bin, const char *dicFile)
+							const char *bin, const char *dicFile, int *inputValues, 
+							uint32_t length)
 {
 	
 	char *actualInst;  //Armazena a instrução lida que está sendo processada no 
@@ -92,13 +93,12 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 
 	//Faz busca pelas labels declaradas no arquivo
 	if(assembler_makeLabels(asmr) != ASSEMBLER_SUCCESS){
-		printf("Declaração de label invalida encontrada na linha: %li\n", 
+		printf("Declaração de label invalida ou repetida encontrada na linha: %li\n", 
 						asmr->instCounter);
-		asmError_setDesc(ASSEMBLER_EMOUNT);
         return (ASSEMBLER_FAILURE);
 	}
 
-	//Analisa a declaração da maquina
+	//Analisa a declaração da maquina e cria a lista de registradores
 	if(assembler_makeRegisters(asmr) != ASSEMBLER_SUCCESS)
 	{
 		printf("Definição inválida da máquina.\n");
@@ -113,13 +113,9 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 											ASSEMBLER_IGNORE2, ASSEMBLER_IGNORE3, 
 											ASSEMBLER_IGNORE4, ASSEMBLER_IGNORE5);
 
-	
-	
-	//Grava no arquivo a quantidade de registradores a serem utilizados
-	asmWriter_writeInt(asmr->writer, registers_getQtdRegs(asmr->regs));
-	//Deve terminar de gravar o cabeçalho do programa
-	//Fazer funções especializadas para esta parte
-
+	//Grava o cabeçalho	
+	if(assembler_makeHeader(asmr, inputValues, length) != ASSEMBLER_SUCCESS)
+		return(ASSEMBLER_FAILURE);
 
 	//Enquanto for possível carregar novas instruções
 	while((actualInst = asmLoader_getNextInst(asmr->loader)) != NULL){
