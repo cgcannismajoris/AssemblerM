@@ -1,20 +1,25 @@
 /*
- * ===========================================================================
- *
  * Nome do Arquivo:  assembler_struct.h
- *
  *       Descricao:  Declaração da estrutura principal do assembler.
  *
- *          Versao:  1.0
- *       Criado em:  21/03/2015 10:38:09
- *         Revisao:  none
- *      Compilador:  gcc
+ * Exported definitions from assembler.c and assemblerAnalyser.c.
+ * Copyright (C) 2015  Cristian Costa Mello and Gustavo Freitas de Amorim
  *
- *           Autor:  Gustavo Freitas de Amorim (), gustavofreitasamorim@gmail.com
- *     Organizacao:  VY Cannis Majoris
+ * This is part of AssemblerM
+ * AssemblerM is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * ===========================================================================
+ * AssemblerM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 
 #ifndef ASSEMBLER_STRUCT_H
 #define ASSEMBLER_STRUCT_H

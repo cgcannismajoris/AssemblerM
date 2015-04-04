@@ -1,19 +1,23 @@
 /*
- * ==========================================================================
- *
  * Nome do Arquivo:  dictionary.c
- *
  *       Descricao:  Implementação do TAD DICTIONARY.
+ * 
+ * Dictionary for AssemblerM.
+ * Copyright (C) 2015  Cristian Costa Mello and Gustavo Freitas de Amorim
  *
- *          Versao:  1.0
- *       Criado em:  14/03/2015 20:28:43
- *         Revisao:  none
- *      Compilador:  gcc
+ * This is part of AssemblerM
+ * AssemblerM is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *           Autor:  Cristian Costa Mello, Gustavo Freitas de Amorim
- *     Organizacao:  VY Cannis Majoris
+ * AssemblerM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * =========================================================================
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dictionary.h"

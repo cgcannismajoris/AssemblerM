@@ -1,20 +1,24 @@
 /*
- * ==========================================================================
- *
  * Nome do Arquivo:  entry.h
- *
  *       Descricao:  TAD para armazenamento da tradução de um rótulo de
- *       			 instrução para um opcode reconhecido pela máquina.
+ *                   instrução para um opcode reconhecido pela máquina.
  *
- *          Versao:  1.0
- *       Criado em:  06/03/2015 21:24:04
- *         Revisao:  none
- *      Compilador:  gcc
+ * Exported functions from entry.c.
+ * Copyright (C) 2015  Cristian Costa Mello and Gustavo Freitas de Amorim
  *
- *           Autor:  Cristian Costa Mello, Gustavo Freitas de Amorim
- *     Organizacao:  VY Cannis Majoris
+ * This is part of AssemblerM
+ * AssemblerM is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * =========================================================================
+ * AssemblerM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef ENTRY_HEADER

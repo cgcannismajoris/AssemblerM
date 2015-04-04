@@ -1,6 +1,24 @@
-/* main.c
- * Ferramenta dicwriter para escrita do dicionário (DICTIONARY).
-*/
+/* 
+ * Nome do Arquivo:  main.c
+ *       Descrição:  Ferramenta dicwriter para escrita do dicionário (DICTIONARY).
+ * 
+ * Tool DicWriter for AssemblerM.
+ * Copyright (C) 2015  Cristian Costa Mello and Gustavo Freitas de Amorim
+ *
+ * This is part of AssemblerM
+ * AssemblerM is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AssemblerM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 	
 #include <stdio.h>
 #include <stdio_ext.h>
@@ -32,11 +50,14 @@ int main(int argc, char **argv)
 	char instPattern[STR_MAXLENGTH];
 	char instTranslation[STR_MAXLENGTH];
 
-	if(argc < 2){
+	if(argc < 2)
+	{
 		writeMsg(1);
 		return (-1);
 	}
-	if(strncmp(argv[1], "-help", 6) == 0){
+
+	if(strncmp(argv[1], "-help", 6) == 0)
+	{
 		writeMsg(6);
 		return (0);
 	}
@@ -44,8 +65,8 @@ int main(int argc, char **argv)
 	entryList = lista_new();
 	writer = dicWriter_new(argv[1]);
 
-	if(entryList == NULL || writer == NULL){
-		
+	if(entryList == NULL || writer == NULL)
+	{
 		free(entryList);
 		free(writer);
 
@@ -54,15 +75,16 @@ int main(int argc, char **argv)
 		return (-1);
 	}
 
-	while(end != 'n'){
-
+	while(end != 'n')
+	{
 		writeMsg(2);
 		scanf("\n%[^\n]", instPattern);
 
 		writeMsg(3);
 		scanf("\n%[^\n]", instTranslation);
 		
-		while(translateOpcode(instTranslation) == -1){
+		while(translateOpcode(instTranslation) == -1)
+		{
 			writeMsg(4);
 			scanf("\n%[^\n]", instTranslation);
 		}
@@ -75,7 +97,8 @@ int main(int argc, char **argv)
 		lista_insertLastNode(entryList, no);
 
 		//Se ocorreu algum problema
-		if(no == NULL || entry == NULL){
+		if(no == NULL || entry == NULL)
+		{
 			writeMsg(FATAL_ERROR_ALLOC_MSGID);
 
 			lista_free(entryList);
@@ -85,14 +108,12 @@ int main(int argc, char **argv)
 			return (-1);
 		}
 
-		//dicWriter_writeInst(writer, instPattern, instTranslation);
-		
 		writeMsg(5);
 		scanf(" %c", &end);
-		while(end != 'n' && end != 's'){
+		while(end != 'n' && end != 's')
+		{
 			scanf(" %c", &end);
 		}
-
 	}
 
 	writeMsg(7);
@@ -101,8 +122,8 @@ int main(int argc, char **argv)
 	dicWriter_writeQtdInst(writer, lista_getQuant(entryList));
 
 	//Grava os verbetes
-	while((no = lista_removeRaiz(entryList)) != NULL){
-		
+	while((no = lista_removeRaiz(entryList)) != NULL)
+	{	
 		entry = (ENTRY*)node_getData(no);
 		
 		dicWriter_writeInst(writer, entry_getPattern(entry), 
@@ -120,12 +141,13 @@ int main(int argc, char **argv)
 }
 
 
-int translateOpcode(char *str){
-
+int translateOpcode(char *str)
+{
 	int i, j;
 	char opStr[STR_OPMAXLENGTH];
 
-	for(i = 0; i < STR_OPMAXLENGTH && str[i] != ' ' && str[i] != '\0'; i++){
+	for(i = 0; i < STR_OPMAXLENGTH && str[i] != ' ' && str[i] != '\0'; i++)
+	{
 		opStr[i] = str[i];
 		str[i] = ' ';
 	}
@@ -134,12 +156,14 @@ int translateOpcode(char *str){
 	str[0] = (uint8_t)atoi(opStr);
 	
 	//Se inseriu um opcode maior do que o limite...
-	if(str[i] != ' ' || str[0] > 62){
+	if(str[i] != ' ' || str[0] > 62)
+	{
 		return (-1);
 	}
 
 	for(j = 1, i = i; i < STR_MAXLENGTH && j  < STR_MAXLENGTH && str[i] != '\0'; 
-					j++, i++){
+					j++, i++)
+	{
 		str[j] = str[i];
 	}
 
@@ -148,8 +172,10 @@ int translateOpcode(char *str){
 	return (0);
 }
 
-void writeMsg(uint8_t id){
-	switch(id){
+void writeMsg(uint8_t id)
+{
+	switch(id)
+	{
 		case 1:
 			printf("Sem arquivo de saída.\n");
 			printf("Utilize -help para obter ajuda.\n");

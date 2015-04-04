@@ -24,6 +24,7 @@ A seguir, está disposto a organização básica do projeto AssemblerM.
 		.gitignore			: arquivo gitignore
 		AssemblerM.pro 	    : árvore do projeto (Qt Creator)
 		AssemblerM.pro.user : estruturação do projeto (Qt Creator)
+		COPYING3			: arquivo de licença
 		Makefile			: arquivo Makefile
 		README.md			: arquivo LEIA-ME
 
@@ -37,15 +38,19 @@ Estando-se na pasta pai do projeto ("/AssemblerM"), realize o comando abaixo:
 ##Procedimentos de utilização via Terminal
 Através de um terminal de comando do Linux, observa-se o formato de entrada abaixo:
 
-	$ ./bin/AssemblerM <ARQUIVO_ENTRADA> <arg1> <arg2> ... <argn>
+	$ ./bin/AssemblerM <ARQUIVO_ENTRADA> <ARQUIVO_SAÍDA> <ARQUIVO_DICIONARIO> <arg1> <arg2> ... <argn>
 	
-Entrada: 
+Descrição dos argumentos: 
 
-	<ARQUIVO_ENTRADA>        : é um arquivo de texto codificado no padrão ANSI ASCII contendo o código a 
-		                       ser montado.
+	<ARQUIVO_ENTRADA>        : é um arquivo de texto codificado no padrão ANSI ASCII contendo o 
+		                       código a ser montado.
+	<ARQUIVO_SAÍDA>          : é o arquivo de saída do processo de montagem.
+	<ARQUIVO_DICIONARIO>     : é o arquivo de dicionário a ser utilizado na montagem.
 	<arg1> <arg2> ... <argn> : os valores numéricos inteiros para configurar os valores iniciais
-                               dos registradores de entrada declarados no cabeçalho do arquivo de texto
-                               de entrada.
+                               dos registradores de entrada declarados no cabeçalho do arquivo de
+                               texto de entrada.
+
+A chamada do programa sem argumentos resultará na exibição de uma descrição simplificada da lista de argumentos.
                                
 Se a execução for bem-sucedida, então será gerado o arquivo binário para a CPUM.
 
@@ -59,13 +64,13 @@ Todo código-fonte deve ter, em seu cabeçalho (primeira linha), a declaração 
 	
 Significado:
 		
-		<NOME_DA_MÁQUINA>                    : é o nome da máquina;
-		<OUTREG_1>,<OUTREG_2>,...,<OUTREG_N> : é a declaração dos registradores de saída;
-		<-                                   : seta que determina o significado dos registradores 
-											   (será tratada a seguir);
-		<INREG_1>,<INREG_2>,...,<INREG_N>    : é a declaração dos registradores de entrada. É esta lista de
-										       registradores que receberá os valores numéricos inteiros de 
-										       entrada descritos anteriormente;
+	<NOME_DA_MÁQUINA>                    : é o nome da máquina;
+	<OUTREG_1>,<OUTREG_2>,...,<OUTREG_N> : é a declaração dos registradores de saída;
+	<-                                   : seta que determina o significado dos registradores 
+										   (será tratada a seguir);
+	<INREG_1>,<INREG_2>,...,<INREG_N>    : é a declaração dos registradores de entrada. É 
+									       esta lista de registradores que receberá os valores numéricos
+									       inteiros de entrada descritos anteriormente;
 		
 A seta descrita acima (<-), pode ser invertida, ou seja, escrita como "->". Todavia, a ordem dos registradores 
 também deverá ser alterada, isto é:
@@ -109,7 +114,7 @@ Para ambos os casos, seguem os seguintes significados:
 		
 A instrução de teste pode seguir uma das possibilidades:
 
-	1. <RÓTULO>: se zero <REGISTRADOR> entao <RÓTULO_DESTINO_VERDADE> senao  <RÓTULO_DESTINO_FALSO>
+	1. <RÓTULO>: se zero <REGISTRADOR> entao <RÓTULO_DESTINO_VERDADE> senao <RÓTULO_DESTINO_FALSO>
 	2. <RÓTULO>: faca zero <REGISTRADOR> va_para <RÓTULO_DESTINO_VERDADE> <RÓTULO_DESTINO_FALSO>
 	3. <RÓTULO>: zero <REGISTRADOR> <RÓTULO_DESTINO_VERDADE> <RÓTULO_DESTINO_FALSO>
 	
@@ -123,6 +128,7 @@ Para todos os casos, há os seguintes significados:
 Com exceção dos rótulos e nomes atribuídos aos registradores, a linguagem não é case sensitive ("sensível ao caso").
 
 ####Determinando o fim do programa
+
 O fim do programa pode ser determinado referenciando um rótulo inexistente no rótulo de destino da instrução.
 
 ###Exemplo de Código
@@ -154,5 +160,6 @@ se o teste "zero b" resultar em verdade, o programa será finalizado.
 Como boa prática de programação, recomenda-se seguir um único padrão de escrita, visando uma maior facilidade de 
 entendimento humano do código.
 
-
+##Licença
+O AssemblerM é amparado pela licença [GNU General Public License V3.0](https://www.gnu.org/licenses/gpl.txt).
 

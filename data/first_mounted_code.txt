@@ -1,4 +1,0 @@
-Machine:abacaxi,bacalhau,peixe,carne,frango->melao,melancia
-r1: faca inc abacaxi va_para r2
-r2: faca dec abacaxi va_para r3
-r4: faca inc melao va_para r1
