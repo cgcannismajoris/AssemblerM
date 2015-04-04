@@ -5,6 +5,30 @@ Um montador para o Assembly M.
 Realiza a montagem, a partir de um arquivo de texto de entrada, de um arquivo binário que
 estará no formato compatível do processador conceitual CPUM.
 
+##Requisitos recomendados
+* Sistema Operacional Unix-like ou GNU/Linux mais recente;
+* GCC 4.9.1 ou superior;
+* GNU Make 4.0 ou superior.
+
+**Requisito opcional**
+* Qt Creator 5.3.0 ou superior.
+
+##Estrutura do projeto
+
+A seguir, está disposto a organização básica do projeto AssemblerM.
+
+	/AssemblerM				: pasta-pai do projeto	
+		/data				: arquivos de entrada/saída e relativos ao projeto
+		/src				: pasta de códigos-fonte
+		/tools				: pasta de ferramentas
+		.gitignore			: arquivo gitignore
+		AssemblerM.pro 	    : árvore do projeto (Qt Creator)
+		AssemblerM.pro.user : estruturação do projeto (Qt Creator)
+		Makefile			: arquivo Makefile
+		README.md			: arquivo LEIA-ME
+
+> Obs.: como cortesia da casa, é oferecido um layout simples do projeto para o Qt Creator.
+
 ##Procedimento de compilação do AssemblerM
 Estando-se na pasta pai do projeto ("/AssemblerM"), realize o comando abaixo:
 
