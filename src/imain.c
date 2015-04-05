@@ -99,14 +99,23 @@ int main(int argc, char **argv)
 	if (asmError_new(ASMERROR_FAILEUREDESCLENGTH) == NULL)
     {
         fprintf(stderr, "ASMERROR: Ocorreu uma falha na alocaçao do ASMERROR.\n");
-        return EXIT_FAILURE;
+
+		//Libera as regiões de memória que não serão mais utilizadas
+		free(inputList);
+
+		return EXIT_FAILURE;
     }
 
 	//Instancia o assembler
     if ((asmr = assembler_new()) == ASSEMBLER_EALLOC)
     {
         fprintf(stderr, "ASSEMBLER: %s\n", asmError_getDesc());
-        return EXIT_FAILURE;
+
+		//Libera as regiões de memória que não serão mais utilizadas
+		free(inputList);
+   		asmError_free();
+
+		return EXIT_FAILURE;
     }
 
 	//Monta o arquivo
@@ -115,13 +124,17 @@ int main(int argc, char **argv)
 							argc - ARG_IGNORE_QTD) == ASSEMBLER_FAILURE)
 	{
 		fprintf(stderr, "ASSEMBLER: %s\n", asmError_getDesc());
-        return EXIT_FAILURE;
+
+		//Libera as regiões de memória que não serão mais utilizadas
+		assembler_free(asmr);
+		free(inputList);
+   	 	asmError_free();
+
+		return EXIT_FAILURE;
 	}
 	//Se não, exibe sucesso
-	else
-	{
-		printf("Montagem concluída com %li linhas processadas.\n", asmr->instCounter);
-	}
+	printf("Montagem concluída com %li instruç%s processadas.\n", asmr->instCounter, 
+						asmr->instCounter == 1 ? "ão" : "ões");
 	
 	//Libera as regiões de memória que não serão mais utilizadas
 	assembler_free(asmr);
