@@ -17,16 +17,17 @@ estará no formato compatível do processador conceitual CPUM.
 
 A seguir, está disposto a organização básica do projeto AssemblerM.
 
-	/AssemblerM				: pasta-pai do projeto	
-		/data				: arquivos de entrada/saída e relativos ao projeto
-		/src				: pasta de códigos-fonte
-		/tools				: pasta de ferramentas
-		.gitignore			: arquivo gitignore
-		AssemblerM.pro 	    : árvore do projeto (Qt Creator)
-		AssemblerM.pro.user : estruturação do projeto (Qt Creator)
-		COPYING3			: arquivo de licença
-		Makefile			: arquivo Makefile
-		README.md			: arquivo LEIA-ME
+	/AssemblerM					: pasta-pai do projeto	
+		/data					: arquivos de entrada/saída e relativos ao projeto
+		/src					: pasta de códigos-fonte
+		/tools					: pasta de ferramentas
+		.gitignore				: arquivo gitignore
+		AssemblerM.pro			: árvore do projeto (Qt Creator)
+		AssemblerM.pro.user		: estruturação do projeto (Qt Creator)
+		COPYING3				: arquivo de licença
+		Diagrama - Montador.png	: diagrama de classes (adaptado) do projeto
+		Makefile				: arquivo Makefile
+		README.md				: arquivo LEIA-ME
 
 > Obs.: como cortesia da casa, é oferecido um layout simples do projeto para o Qt Creator.
 
@@ -159,6 +160,12 @@ Uma observação importante, é que o rótulo "r5", referenciado na instrução 
 se o teste "zero b" resultar em verdade, o programa será finalizado.
 Como boa prática de programação, recomenda-se seguir um único padrão de escrita, visando uma maior facilidade de 
 entendimento humano do código.
+
+##Diagrama do Projeto
+Abaixo é mostrado o diagrama de classes (adaptado) do projeto.
+
+![alt text][Diagrama]
+[Diagrama]:https://github.com/cgcannismajoris/AssemblerM/blob/alternative/Diagrama%20-%20Montador.png?raw=true "Diagrama"
 
 ##Licença
 O AssemblerM é amparado pela licença [GNU General Public License V3.0](https://www.gnu.org/licenses/gpl.txt).
