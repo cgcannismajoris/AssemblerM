@@ -39,17 +39,17 @@
 
 typedef struct _reg
 {
-    char *      name;
-	uint8_t		type;
+    char *      name; //Nome do registrador
+	uint8_t		type; //Tipo do registrador (input ou output)
 } REG;
 
 
-/* -> REG *reg_new(const char *name)
+/* -> REG *reg_new(const char *name, uint8_t type)
  * 
  * - DESCRIÇÃO: Instancia um novo registro de registrador declarado.
  *   
  * - PARÂMETROS: 
- *      -> const char *name: Nome dado ao registrador.
+ *      -> const char *name: Nome do registrador.
  *      -> uint8_t type: Tipo do registrador.
  *      	- Se REG_TYPE_INPUT  - Registrador de entrada
  *      	- Se REG_TYPE_OUTPUT - Registrador de saída
@@ -73,14 +73,14 @@ REG *       reg_new(const char *name, uint8_t type);
 void        reg_free(REG *reg);
 
 
-/* -> char *dicLoader_getNextInst(DICLOADER *dicLoader)
+/* -> char *reg_getName(REG *reg)
  * 
  * - DESCRIÇÃO: Retorna o nome dado ao registrador. 
  *   
  * - PARÂMETROS: 
  *      -> REG *reg: Estrutura a ser utilizada na leitura.
  *
- * - RETORNO: String contendo o nome dado ao registrador.
+ * - RETORNO: String contendo o nome do registrador.
  */
 char *      reg_getName(REG *reg);
 

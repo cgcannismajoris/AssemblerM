@@ -39,19 +39,19 @@
 
 typedef struct _entry
 {
-    char *  instPattern;
-	char *	instTranslation;
+    char *  instPattern; //Padrão da instrução
+	char *	instTranslation; //Tradução do padrão
 } ENTRY;
 
 
-/* -> ENTRY *entry_new(char *rotulo, int opcode)
+/* -> ENTRY *entry_new(const char *instPattern, const char *instTranslation)
  * 
  * - DESCRIÇÃO: Instancia uma nova entrada do dicionário que será utilizada na
- *              tradução dos identificadores em opcodes reconhecidos pela máquina.
+ *              tradução dos identificadores em operações reconhecidos pela máquina.
  *   
  * - PARÂMETROS: 
- *      -> char *pattern: Rótulo a ser inserido na estrutura.
- *      -> int opcode: Opcode correspondente ao rótulo recebido.
+ *      -> const char *instPattern: Padrão da instrução a ser armazenado.
+ *      -> const char *instTranslation: Tradução do padrão a ser armazenado.
  *
  * - RETORNO: Estrutura do tipo ENTRY instanciada.
  *   	-> Se NULL    - Erro na operação.
@@ -80,13 +80,11 @@ void            entry_free(ENTRY *entry);
  *      -> ENTRY *entry: Estrutura a ser utilizada na operação.
  *
  * - RETORNO: Ponteiro para o padrão armazenado.
- *   	-> Se NULL    - Erro na operação.
- *   	-> Se != NULL - Sucesso na operação. 
  */
 const char *    entry_getPattern(ENTRY *entry);
 
 
-/* -> uint8_t entry_getOpcode(ENTRY *entry)
+/* -> char *entry_getTranslation(ENTRY *entry)
  * 
  * - DESCRIÇÃO: Retorna a tradução armazenada na estrutura recebida.
  *
@@ -94,8 +92,6 @@ const char *    entry_getPattern(ENTRY *entry);
  *      -> ENTRY *entry: Estrutura a ser utilizada na operação.
  *
  * - RETORNO: Ponteiro para a tradução armazenada.
- *   	-> Se 0	      - Erro na operação.
- *   	-> Se != 0    - Sucesso na operação. 
  */
 char *          entry_getTranslation(ENTRY *entry);
 

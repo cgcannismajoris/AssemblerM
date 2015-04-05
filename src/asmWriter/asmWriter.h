@@ -39,13 +39,13 @@
 
 typedef struct _asmWriter
 {
-    FILE *file;
+    FILE *file; //Arquivo a ser utilizado
 } ASMWRITER;
 
  
 /* -> ASMWRITER *     asmWriter_new(const char *filename)
  * 
- * - DESCRIÇÃO: Instancia um novo write do assembler que será utilizado na
+ * - DESCRIÇÃO: Instancia um novo writer do assembler que será utilizado na
  *              escrita do arquivo binário.
  *   
  * - PARÂMETROS: 
@@ -87,7 +87,7 @@ void            asmWriter_writeInst(ASMWRITER *asmWriter,
 
 /* -> void asmWriter_writeHeader(ASMWRITER *asmWriter, uint8_t *header, size_t length)
  * 
- * - DESCRIÇÃO: Grava no arquivo um número  de 32bits.
+ * - DESCRIÇÃO: Grava no arquivo o cabeçãlho recebido.
  *
  * - PARÂMETROS: 
  *      -> ASMWRITER *asmWriter: Estrutura a ser utilizada para a escrita da 

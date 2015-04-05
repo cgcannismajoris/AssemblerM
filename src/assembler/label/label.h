@@ -1,20 +1,23 @@
 /*
- * ==========================================================================
- *
  * Nome do Arquivo:  label.h
+ *       Descricao:  TAD para auxiliar o assembler na indexação de labels.
  *
- *       Descricao:  TAD de lista encadeada simples de labels para auxíliar o
- *       			 assembler na indexação de labels.
+ * Exported functions from label.c.
+ * Copyright (C) 2015  Cristian Costa Mello and Gustavo Freitas de Amorim
  *
- *          Versao:  1.0
- *       Criado em:  09/03/2015 18:38:19
- *         Revisao:  none
- *      Compilador:  gcc
+ * This is part of AssemblerM
+ * AssemblerM is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *           Autor:  Cristian Costa Mello, Gustavo Freitas de Amorim 
- *     Organizacao:  VY Cannis Majoris
+ * AssemblerM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * =========================================================================
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef LABEL_HEADER
@@ -28,7 +31,7 @@
 #include "../../asmError.h"
 
 #define LABEL_EALLOC			NULL
-#define LABEL_EALLOC_MSG		"Falha na alocação de memória no TAD LABEL."
+#define LABEL_EALLOC_MSG		"Falha na alocação da estrutura LABEL."
 
 
 typedef struct _label
@@ -48,15 +51,15 @@ typedef struct _label
  *      -> uint64_t num: Número da linha onde a label foi declarada.
  *
  * - RETORNO: Estrutura do tipo LABEL instanciada.
- *   	-> Se LABEL_EALLOC     - Erro na operação.
- *   	-> Se !=  LABEL_EALLOC - Sucesso na operação.
+ *   	-> Se NULL     - Erro na operação.
+ *   	-> Se !=  NULL - Sucesso na operação.
  */
 LABEL *     label_new(const char *name, uint64_t num);
 
 
 /* -> void label_free(LABEL *label)
  *
- * - DESCRIÇÃO: Destrói uma estrutura do tipo LABEL existente em memória.
+ * - DESCRIÇÃO: Destrói uma estrutura existente em memória.
  *
  * - PARÂMETROS: 
  *      -> LABEL *label: Estrutura a ser destruída.
@@ -75,8 +78,6 @@ void        label_free(LABEL *label);
  *      -> LABEL *label: Estrutura a ser utilizada na operação. 
  *
  * - RETORNO: Nome armazenado na estrutura.
- *   	-> Se NULL       - Erro na operação.
- *   	-> Se != NULL    - Sucesso na operação.
  */
 char *      label_getName(LABEL *label);
 
@@ -89,9 +90,7 @@ char *      label_getName(LABEL *label);
  * - PARÂMETROS: 
  *      -> LABEL *label: Estrutura a ser utilizada na operação. 
  *
- * - RETORNO: Nome armazenado na estrutura.
- *   	-> Se 0       - Erro na operação.
- *   	-> Se != 0    - Sucesso na operação.
+ * - RETORNO: Numero da linha armazenado na estrutura.
  */
 uint64_t    label_getLineNum(LABEL *label);
 
@@ -101,7 +100,7 @@ uint64_t    label_getLineNum(LABEL *label);
  * - DESCRIÇÃO: Compara uma string com o nome da label recebida.
  *
  * - PARÂMETROS: 
- *      -> const void *name: String a ser utilizada na comparação.
+ *      -> const void *name: String a ser utilizada na operação.
  *      -> const void *label: Estrutura a ser utilizada na operação. 
  *
  * - RETORNO: Nome armazenado na estrutura.

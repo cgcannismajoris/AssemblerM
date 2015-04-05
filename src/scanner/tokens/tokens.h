@@ -21,8 +21,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 #ifndef TOKENS_HEADER
 #define TOKENS_HEADER
 
@@ -48,13 +46,13 @@ typedef struct _tokens
 } TOKENS;
 
 
-/* -> TOKENS *token_new(uint8_t qtd)
+/* -> TOKENS *token_new(uint32_t qtd)
  * 
  * - DESCRIÇÃO: Instancia uma nova estrutura do tipo TOKENS para armazenar os 
  *   			tokens gerados pelo scanner.   
  *
  * - PARÂMETROS: 
- *      -> uint8_t qtd: Quantidade máxima de tokens que poderão ser armazenados
+ *      -> uint32_t qtd: Quantidade máxima de tokens que poderão ser armazenados
  *      				na estrutura.
  *
  * - RETORNO: Estrutura do tipo TOKENS instanciada.
@@ -76,7 +74,7 @@ TOKENS *    token_new(uint32_t qtd);
 void        token_free(TOKENS *token);
 
 
-/* -> uint8_t token_getQtd(TOKENS *token)
+/* -> uint32_t token_getQtd(TOKENS *token)
  * 
  * - DESCRIÇÃO: Retorna a quantidade de tokens armazenados na estrutura recebida.
  *
@@ -90,13 +88,13 @@ void        token_free(TOKENS *token);
 uint32_t    token_getQtd(TOKENS *token);
 
 
-/* -> char *token_getToken(TOKENS *token, uint8_t pos)
+/* -> char *token_getToken(TOKENS *token, uint32_t pos)
  * 
  * - DESCRIÇÃO: Retorna o token armazenado na estrutura em uma determinada posição.
  *
  * - PARÂMETROS: 
  *      -> TOKENS *token: Estrutura a ser utilizada na operação.
- *      -> uint8_t pos: Posição do token desejado.
+ *      -> uint32_t pos: Posição do token desejado.
  *
  * - RETORNO: Token armazenado na posição desejada.
  *   	-> Se NULL    - Erro na operação.
@@ -105,7 +103,7 @@ uint32_t    token_getQtd(TOKENS *token);
 char *      token_getToken(TOKENS *token, uint32_t pos);
 
 
-/* -> void token_addToken(TOKENS *token, char *t)
+/* -> int token_addToken(TOKENS *token, char *t)
  * 
  * - DESCRIÇÃO: Adiciona um token na primeira posição disponível.
  *
@@ -120,9 +118,21 @@ char *      token_getToken(TOKENS *token, uint32_t pos);
 int         token_addToken(TOKENS *token, char *t);
 
 
+/* -> long int token_search(TOKENS *token, const char *search)
+ * 
+ * - DESCRIÇÃO: Procura por um token na estrura recebida.
+ *
+ * - PARÂMETROS: 
+ *      -> TOKENS *token: Estrutura a ser utilizada na operação.
+ *      -> const char *search: Chave da busca.
+ *
+ * - RETORNO: Posição do token.
+ *   	-> Se >= 0 - Encontrou.
+ *   	-> Se < 0  - Não encontrou.
+ */
 long int    token_search(TOKENS *token, const char *search);
 
-/* -> int token_searchCommonTokens(TOKENS *one, TOKENS *two)
+/* -> int token_verifCommon(TOKENS *one, TOKENS *two)
  * 
  * - DESCRIÇÃO: Verifica se existem tokens em comum dentro 
  *   			das duas estruturas recebidas.

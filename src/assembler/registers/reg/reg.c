@@ -20,8 +20,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 #include "reg.h"
 
 REG *reg_new(const char *name, uint8_t type)

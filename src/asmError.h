@@ -26,12 +26,12 @@
 
 #define ASMERROR_FAILEUREDESCLENGTH     100
 
-/* -> char *asmError_new(uint32_t desc)
+/* -> char *asmError_new(uint32_t desc_length)
  * 
  * - DESCRIÇÃO: Instancia uma nova string para armazenamento de erros.
  *
  * - PARÂMETROS: 
- *      -> uint32_t desc: Tamanho da string a ser alocada.
+ *      -> uint32_t desc_length: Tamanho da string a ser alocada.
  *
  * - RETORNO: String alocada para armazenar o erro.
  *   	-> Se NULL    - Erro na operação.

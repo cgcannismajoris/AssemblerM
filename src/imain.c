@@ -38,19 +38,22 @@ int *input_process(int argc, char **argv)
 	int i;
 	
 	int *inputList;
-
+	
+	//Aloca o vetor que irá armazenar os valores.
 	if((inputList = (int*)malloc((argc - ARG_IGNORE_QTD) * sizeof(int))) == NULL)
 		return NULL;
 
 	//Salta duas posições nos argumentos 
 	//(ignora a chamada do programa e arquivo de entrada)
 	i = ARG_IGNORE_QTD;
-
+	
+	//Armazena os valores
 	for(i; i < argc; i++)
 	{
 		inputList[i - ARG_IGNORE_QTD] = atoi(argv[i]);
 	}
-
+	
+	//Retorna
 	return (inputList);
 }
 
@@ -59,6 +62,8 @@ int main(int argc, char **argv)
     ASSEMBLER *asmr;
 	
 	int *inputList;
+
+	//Se não passou parrâmetro algum exibe a ajuda
 	if(argc < 2)
 	{
 		fprintf(stdout, "\nAssemblerM.\n");
@@ -75,44 +80,55 @@ int main(int argc, char **argv)
 		fprintf(stdout, "                              do arquivo de texto de entrada.\n\n");
 		return EXIT_SUCCESS;
 	}
-	
+
+	//Se a quantidade mínima não for atingida
 	else if(argc < MIN_QTD_ARG)
 	{
 		fprintf(stdout, "Linha de comando inválida. Invoque o programa sem argumentos para mais informações.\n");
 		return (EXIT_FAILURE);
 	}	
 
+	//Gera a lista de valores de input
 	if((inputList = input_process(argc, argv)) == NULL)
 	{
 		fprintf(stderr, "INPUT: Falha ao alocar memória.\n");
 		return EXIT_FAILURE;
 	}
 
+	//Inicializa o sistema de erros
 	if (asmError_new(ASMERROR_FAILEUREDESCLENGTH) == NULL)
     {
         fprintf(stderr, "ASMERROR: Ocorreu uma falha na alocaçao do ASMERROR.\n");
         return EXIT_FAILURE;
     }
 
+	//Instancia o assembler
     if ((asmr = assembler_new()) == ASSEMBLER_EALLOC)
     {
         fprintf(stderr, "ASSEMBLER: %s\n", asmError_getDesc());
         return EXIT_FAILURE;
     }
+
+	//Monta o arquivo
+	//Se ocorrer um erro, exibe na tela
     if(assembler_assemble(asmr, argv[INPUT_FILE], argv[OUTPUT_FILE], argv[DIC_FILE], inputList, 
 							argc - ARG_IGNORE_QTD) == ASSEMBLER_FAILURE)
 	{
 		fprintf(stderr, "ASSEMBLER: %s\n", asmError_getDesc());
         return EXIT_FAILURE;
 	}
+	//Se não, exibe sucesso
 	else
 	{
 		printf("Montagem concluída com %li linhas processadas.\n", asmr->instCounter);
 	}
 	
+	//Libera as regiões de memória que não serão mais utilizadas
+	assembler_free(asmr);
 	free(inputList);
     asmError_free();
-
+	
+	//Finaliza
     return EXIT_SUCCESS;
 }
 

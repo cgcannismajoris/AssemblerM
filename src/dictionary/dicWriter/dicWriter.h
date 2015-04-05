@@ -79,26 +79,26 @@ void            dicWriter_free(DICWRITER *dicWriter);
 
 /* -> void dicWriter_writeQtdInst(DICWRITER *dicWriter, uint64_t num)
  * 
- * - DESCRIÇÃO: Grava no arquivo a instrução binária recebida como parâmetro.
+ * - DESCRIÇÃO: Grava no arquivo o número recebido como parâmetro.
  *
  * - PARÂMETROS: 
  *      -> DICWRITER *dicWriter: Estrutura a ser utilizada para a escrita da 
  *      quantidade de instruções.
- *      -> uint64_t num: Quantidade de instruções a ser escrita.
+ *      -> uint64_t num: Número a ser escrito.
  *
  * - RETORNO: void.
  */
 void             dicWriter_writeQtdInst(DICWRITER *dicWriter, uint64_t num);
 
 
-/* -> void dicWriter_writeInst(DICWRITER *dicWriter, const char *instructionPattern, 
- *                               uint32_t opcode)
+/* -> void dicWriter_writeInst(DICWRITER *dicWriter, const char *instPattern, 
+ *    const char *instTranslation);
  * 
- * - DESCRIÇÃO: Grava no arquivo o padrão de instrução recebida como parâmetro.
+ * - DESCRIÇÃO: Grava no arquivo da entrada do dicionário recebida como parâmetro.
  *
  * - PARÂMETROS: 
- *      -> ASMWRITER *asmWriter: Estrutura a ser utilizada para a escrita da 
- *      instrução.
+ *      -> DICWRITER *dicWriter: Estrutura a ser utilizada para a escrita da
+ *      entrada.
  *      -> const char *instPattern: Padrão de instrução a ser escrito.
  *      -> const char *instTranslation: Tradução da instrução a ser escrita.
  *

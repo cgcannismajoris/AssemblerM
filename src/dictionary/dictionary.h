@@ -44,10 +44,10 @@
 
 typedef struct _dictionary
 {
-    DICLOADER * loader;
-    ENTRY **    verbetes;
-    uint64_t    qtdEntry;
-} DICTIONARY, DIC;
+    DICLOADER * loader;	  //Loader do dicionário
+    ENTRY **    verbetes; //Lista de verbetes do dicionário
+    uint64_t    qtdEntry; //Quantidade de verbetes
+} DICTIONARY;
 
 
 /* -> DICTIONARY *dic_new(const char *filename)
@@ -96,7 +96,7 @@ static int __dic_search_compar(const void *one, const void *two);
 
 /* -> ENTRY *dic_search(DICTIONARY *dic, const char *nomeOperacao)
  * 
- * - DESCRIÇÃO: Busca um nome de operação dentro dos padrões de instrução 
+ * - DESCRIÇÃO: Busca um nome da operação dentro dos padrões de instrução 
  *              cadastrados.
  *
  * - PARÂMETROS: 
@@ -110,7 +110,7 @@ static int __dic_search_compar(const void *one, const void *two);
 ENTRY *         dic_search(DICTIONARY *dic, const char *nomeOperacao);
 
 
-/* -> int dic_save(DICTIONARY *dic)
+/* -> int dic_save(DICTIONARY *dic, const char *filename)
  * 
  * - DESCRIÇÃO: Salva o dicionário em um arquivo.
  *
@@ -127,7 +127,7 @@ int             dic_save(DICTIONARY *dic, const char *filename);
 
 /* -> static int __dic_load_compar(const void *one, const void *two)
  * 
- * - DESCRIÇÃO: Método de comparação auxiliar na ordenação verbetes do dicionário.
+ * - DESCRIÇÃO: Método de comparação auxiliar na ordenação dos verbetes do dicionário.
  *
  * - PARÂMETROS: Estruturas a serem comparadas. 
  *      -> const void *one: Estrutura ENTRY a ser comparada.
@@ -152,8 +152,8 @@ static int __dic_load_compar(const void *one, const void *two);
  *      -> Se 0    - Erro na operação.
  *      -> Se != 0 - Sucesso na operação.
  *
- * - OBSERVAÇÃO: O arquivo de saída é aberto na criação do dicionário, ou seja, 
- *   na execução da função dic_new(...).
+ * - OBSERVAÇÃO: O arquivo de entrada é aberto na criação do dicionário, ou seja, 
+ *   na execução da função dic_new().
  */
 int             dic_load(DICTIONARY *dic);
 

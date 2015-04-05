@@ -26,7 +26,7 @@
 #include "reg/reg.h"
 
 #define REGISTERS_EALLOC                    NULL
-#define REGISTERS_EALLOC_MSG                "Falha ao alocar memória no TAD REGISTERS."
+#define REGISTERS_EALLOC_MSG                "Falha na alocação da estrutura REGISTERS."
 
 #define REGISTERS_EDECOVERFLOW              -1
 #define REGISTERS_EDECOVERFLOW_MSG          "Quantidade máxima de registradores atingida."
@@ -34,21 +34,108 @@
 #define ASSEMBLER_EUSER_ADDRESSOVERFLOW     -1
 #define ASSEMBLER_EUSER_ADDRESSOVERFLOW_MSG "Endereço muito grande."
 
-
 typedef struct _registers
 {
-    REG **      regs;
-    uint32_t    qtdRegs;
-    uint32_t    maxQtd;
+    REG **      regs;    //Vetor de registradores
+    uint32_t    qtdRegs; //Quantidade armazenada de registradores
+    uint32_t    maxQtd;  //Quantidade máxima de registradores
 } REGISTERS;
 
 
+/* -> REGISTERS *registers_new(long int maxQtd)
+ * 
+ * - DESCRIÇÃO: Instancia um nova estrutura em memória.
+ *   
+ * - PARÂMETROS: 
+ *      -> long int maxQtd: Quantidade máxima de registradores.
+ *
+ * - RETORNO: Estrutura do tipo REGISTERS instanciada.
+ *   	-> Se NULL    - Erro na operação.
+ *   	-> Se != NULL - Sucesso na operação.
+ */
 REGISTERS *     registers_new(long int maxQtd);
+
+
+/* -> void registers_free(REGISTERS *regs)
+ * 
+ * - DESCRIÇÃO: Destrói uma estrutura existente em memória.
+ *
+ * - PARÂMETROS: 
+ *      -> REGISTERS *regs: Estrutura a ser destruída.
+ *
+ * - RETORNO: void.
+ */
 void            registers_free(REGISTERS *regs);
+
+
+/* -> long int registers_addReg(REGISTERS *regs, char *regName, uint8_t type)
+ * 
+ * - DESCRIÇÃO: Adiciona um registrador na estrutura recebida.
+ *   
+ * - PARÂMETROS: 
+ *      -> REGISTERS *regs: Estrutura a ser utilizada na operação
+ *      -> char *regName: Nome do registrador a ser adicionado.
+ *      -> uint8_t type: Tipo do registrador.
+ *
+ * - RETORNO: Posição onde o registrador foi alocado.
+ */
 long int 		registers_addReg(REGISTERS *regs, char *regName, uint8_t type);
+
+
+/* -> long int registers_regSearch(REGISTERS *regs, char *name)
+ * 
+ * - DESCRIÇÃO: Busca por um registrador na estrutura recebida.
+ *   
+ * - PARÂMETROS: 
+ *      -> REGISTERS *regs: Estrutura a ser utilizada na operação
+ *      -> char *name: Chave da busca.
+ *
+ * - RETORNO: Posição onde o registrador foi encontrado.
+ *      -> Se >= 0 - Encontrou
+ *      -> Se < 0  - Não encontrou
+ */
 long int        registers_regSearch(REGISTERS *regs, char *name);
+
+
+/* -> uint32_t registers_getQtdRegs(REGISTERS *regs)
+ * 
+ * - DESCRIÇÃO: Retorna a quantidade de registradores alocados na 
+ *   estrutura recebida.
+ *   
+ * - PARÂMETROS: 
+ *      -> REGISTERS *regs: Estrutura a ser utilizada na operação
+ *
+ * - RETORNO: Quantidade de registradores alocados na estrutura recebida.
+ */
 uint32_t		registers_getQtdRegs(REGISTERS *regs);
+
+
+/* -> REG *registers_getReg(REGISTERS *regs, uint32_t pos)
+ * 
+ * - DESCRIÇÃO: Retorna o registrador armazenado na posição requisitada.
+ *   
+ * - PARÂMETROS: 
+ *      -> REGISTERS *regs: Estrutura a ser utilizada na operação
+ *      -> uint32_t pos: Posição a ser lida.
+ *
+ * - RETORNO: Registrador alocado na posição recebida.
+ *   	-> Se NULL    - Erro na operação.
+ *   	-> Se != NULL - Sucesso na operação.
+ */
 REG *			registers_getReg(REGISTERS *regs, uint32_t pos);
+
+
+/* -> uint32_t registers_getQtdInput(REGISTERS *regs)
+ * 
+ * - DESCRIÇÃO: Retorna a quantidade de registradores de entrada
+ *   alocados na estrutura recebida.
+ *   
+ * - PARÂMETROS: 
+ *      -> REGISTERS *regs: Estrutura a ser utilizada na operação
+ *
+ * - RETORNO: Quantidade de registradores entrada alocados na estrutura 
+ *   recebida.
+ */
 uint32_t 		registers_getQtdInput(REGISTERS *regs);
 
 #endif

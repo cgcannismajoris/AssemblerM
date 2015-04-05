@@ -64,24 +64,23 @@ typedef struct _instruction
 } INSTRUCTION;
 
 
-/* -> INSTRUCTION * inst_new(uint32_t inst)
+/* -> INSTRUCTION *inst_new(uint8_t *inst)
  * 
  * - DESCRIÇÃO: Instancia uma nova estrutura que armazena uma instrução
  *   binária.
  *
  * - PARÂMETROS: 
- *      -> uint32_t inst: Instrução a ser salva na estrutura.
+ *      -> uint8_t *inst: Instrução a ser salva na estrutura.
  *
  * - RETORNO: Estrutura do tipo INSTRUCTION instanciada.
- *   	-> Se INSTRUCTION_EALLOC    - Erro na operação.
- *   	-> Se != INSTRUCTION_EALLOC - Sucesso na operação.
+ *   	-> Se NULL    - Erro na operação.
+ *   	-> Se != NULL - Sucesso na operação.
  */
 INSTRUCTION *   inst_new(uint8_t *inst);
 
-/* -> uint32_t inst_free(INSTRUCTION *inst)
+/* -> void inst_free(INSTRUCTION *instruction)
  *
- * - DESCRIÇÃO: Destrói uma estrutura do tipo INSTRUCTION existente 
- *   em memória.
+ * - DESCRIÇÃO: Destrói uma estrutura existente em memória.
  *
  * - PARÂMETROS: 
  *      -> INSTRUCTION *inst: Estrutura a ser destruída.
@@ -91,7 +90,7 @@ INSTRUCTION *   inst_new(uint8_t *inst);
 void            inst_free(INSTRUCTION *instruction);
 
 
-/* -> uint32_t inst_getInst(INSTRUCTION *inst)
+/* -> uint8_t *inst_getInst(INSTRUCTION *inst)
  * 
  * - DESCRIÇÃO: Retorna a instrução armazenada na estrutura recebida como
  *   parâmetro.
@@ -100,20 +99,19 @@ void            inst_free(INSTRUCTION *instruction);
  *      -> INSTRUCTION *inst: Estrutura a ser utilizada na operação. 
  *
  * - RETORNO: Instrução armazenada na estrutura.
- *   	-> Se INSTRUCTION_EGETINST       - Erro na operação.
- *   	-> Se != INSTRUCTION_EGETINST    - Sucesso na operação.
+ *   	-> Se NULL       - Erro na operação.
+ *   	-> Se != NULL    - Sucesso na operação.
  */
 uint8_t *      inst_getInst(INSTRUCTION *instruction);
 
 
-/* -> void inst_setInst(INSTRUCTION *instruction, uint32_t inst)
+/* -> void inst_setInst(INSTRUCTION *instruction, uint8_t *inst)
  * 
- * - DESCRIÇÃO: Seta uma instrução em uma estrutura pré-alocada
- *   em memória.
+ * - DESCRIÇÃO: Seta uma instrução na estrutura recebida.
  *
  * - PARÂMETROS: 
  *      -> INSTRUCTION *instruction: Estrutura a ser utilizada na operação.
- *      -> uint32_t inst: Instrução a ser salva na estrutura.
+ *      -> uint8_t *inst: Instrução a ser salva na estrutura.
  *
  * - RETORNO: void.
  */

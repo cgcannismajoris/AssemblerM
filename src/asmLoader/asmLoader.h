@@ -82,7 +82,7 @@ void            asmLoader_free(ASMLOADER *asmLoader);
  * - DESCRIÇÃO: Carrega a próxima instrução escrita pelo programador presente no 
  *   arquivo.
  *   	- Se nenhuma intrução foi lida até o momento, carrega a primeira.
- *   	- Se ja leu alguma, carrega a intrução subsequênte à anteriormente carregada.
+ *   	- Se já leu alguma, carrega a intrução subsequênte à anteriormente carregada.
  *
  * - PARÂMETROS: 
  *      -> ASMLOADER *asmLoader: Estrutura a ser utilizada para a leitura da 

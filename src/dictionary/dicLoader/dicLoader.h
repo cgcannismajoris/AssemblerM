@@ -34,7 +34,7 @@
 #define DICLOADER_MAX_INST_LENGTH   256
 
 #define DICLOADER_EALLOC            NULL
-#define DICLOADER_EALLOC_MSG        "Falha ao alocar memória no TAD DICLOADER."
+#define DICLOADER_EALLOC_MSG        "Falha na alocação da estrutura DICLOADER."
 
 #define DICLOADER_EFOPEN            NULL
 #define DICLOADER_EFOPEN_MSG        "Falha ao abrir arquivo de dicionário."
@@ -42,7 +42,7 @@
 
 typedef struct _dicLoader
 {
-    FILE *file;
+    FILE *file; //Arquivo a ser utilizado pelo dicionário
 } DICLOADER;
 
 
@@ -66,7 +66,7 @@ DICLOADER *     dicLoader_new(const char *filename);
  * - DESCRIÇÃO: Destrói uma estrutura existente em memória.
  *
  * - PARÂMETROS: 
- *      -> DICWRITER *dicWriter: Estrutura a ser destruída.
+ *      -> DICWRITER *dicLoader: Estrutura a ser destruída.
  *
  * - RETORNO: void.
  */
@@ -78,7 +78,7 @@ void            dicLoader_free(DICLOADER *dicLoader);
  * - DESCRIÇÃO: Retorna os 8 próximos bytes do arquivo.
  *
  * - PARÂMETROS: 
- *      -> DICWRITER *dicWriter: Estrutura a ser utilizada para a leitura da 
+ *      -> DICLOADER *dicLoader: Estrutura a ser utilizada para a leitura da 
  *      quantidade de instruções.
  *
  * - RETORNO: Estado da operação.
@@ -93,7 +93,7 @@ uint64_t        dicLoader_getQtdInst(DICLOADER *dicLoader);
  * - DESCRIÇÃO: Carrega a próxima entrada do arquivo de configurações. 
  *   
  * - PARÂMETROS: 
- *      -> DICWRITER *dicWriter: Estrutura a ser utilizada na leitura.
+ *      -> DICLOADER *dicLoader: Estrutura a ser utilizada na leitura.
  *
  * - RETORNO: String contendo a entrada lida.
  *   	-> Se NULL    - Erro na operação.
