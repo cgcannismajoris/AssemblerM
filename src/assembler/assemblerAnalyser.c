@@ -192,13 +192,28 @@ int assembler_makeRegisters(ASSEMBLER *asmr)
 	}
 
 	// ------------------ PROCESSA OS TOKENS ------------------
+	
+	//Se um dos tokens for vazio (não foi declarado input ou output)
+	if(token_getQtd(input) == 0)
+	{
+		asmError_setDesc(ASSEMBLERANALYSER_EUSER_NOINPUT_MSG);
+		return (ASSEMBLER_FAILURE);
+	}	
+	if(token_getQtd(output) == 0)
+	{
+		asmError_setDesc(ASSEMBLERANALYSER_EUSER_NOOUTPUT_MSG);
+		return (ASSEMBLER_FAILURE);
+	}	
+
+
 	//Busca por tokens em comum... Se existe, uma declaração inválida foi feita
 	if(token_verifCommon(input, output) == 1)
 	{
 		asmError_setDesc(ASSEMBLERANALYSER_EUSER_DOUBDEC_MSG);
 		return (ASSEMBLER_FAILURE);
 	}
-	
+
+
 	//Insere nos registradores na ordem que foram declarados
 	if(arrowDirection == 0)
 	{

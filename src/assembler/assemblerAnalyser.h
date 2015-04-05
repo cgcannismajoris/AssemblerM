@@ -51,6 +51,10 @@
 #define ASSEMBLERANALYSER_EUSER_LESSARGS		ASSEMBLER_FAILURE
 #define ASSEMBLERANALYSER_EUSER_LESSARGS_MSG	"Quantidade insuficiente de argumentos."
 
+#define ASSEMBLERANALYSER_EUSER_NOINPUT_MSG		"Registradores de entrada não declarados."
+
+#define ASSEMBLERANALYSER_EUSER_NOOUTPUT_MSG	"Registradores de saída não declarados."
+
 /* -> uint64_t assembler_searchLabel(ASSEMBLER *asmr, const char *label)
  * 
  * - DESCRIÇÃO: Pesquisa uma label na estrutura recebida.

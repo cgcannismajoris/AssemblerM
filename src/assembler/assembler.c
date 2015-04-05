@@ -55,9 +55,7 @@ void assembler_close(ASSEMBLER *asmr)
 {
 	asmLoader_free(asmr->loader);
 	asmWriter_free(asmr->writer);
-	lista_free(asmr->labels);
 	dic_free(asmr->dic);
-	registers_free(asmr->regs);
 }
 
 
@@ -146,7 +144,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 		if(actualEntry == NULL){
 			printf("A %liª instrução é inválida.\n", asmr->instCounter);
 			asmError_setDesc(ASSEMBLER_EMOUNT); 
-			assembler_free(asmr);
+			assembler_close(asmr);
             return (ASSEMBLER_FAILURE);
 		}
  
@@ -163,7 +161,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 			//Mostra o erro e finaliza
 			printf("Escrita inválida na %liª instrução.\n", asmr->instCounter);
 			asmError_setDesc(ASSEMBLER_EMOUNT);
-			assembler_free(asmr);			
+			assembler_close(asmr);			
             return (ASSEMBLER_FAILURE);
 		}	
 
@@ -174,7 +172,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 		if(inst == ASSEMBLER_EALLOC){
 			printf("Erro na %liª instrução!\n", asmr->instCounter);
 			//asmError já foi setado...
-			assembler_free(asmr);
+			assembler_close(asmr);
             return (ASSEMBLER_FAILURE);
 		}
 		
