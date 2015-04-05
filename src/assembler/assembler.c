@@ -82,7 +82,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
     if ((asmr->loader = asmLoader_new(src)) == ASMLOADER_EALLOC)
         return (ASSEMBLER_FAILURE);
 
-	//Inciliza o writer
+	//Inicializa o writer
     if ((asmr->writer = asmWriter_new(bin)) == ASMWRITER_EALLOC)
         return (ASSEMBLER_FAILURE);
 	
@@ -90,16 +90,16 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 	if((asmr->dic    = dic_new(dicFile)) == DICTIONARY_EALLOC)
         return (ASSEMBLER_FAILURE);
 
-	asmr->instCounter = 1;
-
+	
 	//------ INICIA O PROCESSAMENTO -------------------------------------
 
 	//Faz busca pelas labels declaradas no arquivo
-	if(assembler_makeLabels(asmr) != ASSEMBLER_SUCCESS){
+	if((asmr->instCounter = assembler_makeLabels(asmr)) != ASSEMBLER_SUCCESS){
 		printf("Declaração de label invalida ou repetida encontrada na linha: %li\n", 
 						asmr->instCounter);
         return (ASSEMBLER_FAILURE);
 	}
+	asmr->instCounter = 1;
 
 	//Analisa a declaração da maquina e cria a lista de registradores
 	if(assembler_makeRegisters(asmr) != ASSEMBLER_SUCCESS)
