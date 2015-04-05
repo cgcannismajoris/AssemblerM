@@ -126,7 +126,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 		actualTokens = scanner_scan(actualInst, ignoreList, ASSEMBLER_SEPARATOR, 
 						ASSEMBLER_IGNORE_QTD);
 		
-
+		
 		//Procura o nome da instrução no dicionário
 		actualEntry = dic_search(asmr->dic, token_getToken(actualTokens, 1));
 	
@@ -138,7 +138,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 			assembler_free(asmr);
             return (ASSEMBLER_FAILURE);
 		}
-
+ 
 
 		//Gera os tokens da entrada encontrada
 		patternTokens = scanner_scan(entry_getPattern(actualEntry), NULL, " ", 0);

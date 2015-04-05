@@ -69,6 +69,9 @@ uint32_t token_getQtd(TOKENS *token)
 
 char *token_getToken(TOKENS *token, uint32_t pos)
 {
+	if(pos >= token->qtdUsed)
+		return (NULL);
+
 	return (token->tokens[pos]);
 }
 

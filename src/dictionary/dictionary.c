@@ -76,8 +76,13 @@ static int __dic_search_compar(const void *one, const void *two){
 
 ENTRY *dic_search(DICTIONARY *dic, const char *nomeOperacao)
 {
-	char nomeOperacao_ex[strlen(nomeOperacao) + 1];
+	char *nomeOperacao_ex;
 	
+	if(nomeOperacao == NULL)
+		 return (DICTIONARY_BSEARCH_NOTFOUND);
+
+	nomeOperacao_ex = (char*)malloc((sizeof(char) * strlen(nomeOperacao)) + 1);
+
 	strcpy(nomeOperacao_ex, nomeOperacao);
 	nomeOperacao_ex[strlen(nomeOperacao)] = ' ';
 	nomeOperacao_ex[strlen(nomeOperacao) + 1] = '\0';
