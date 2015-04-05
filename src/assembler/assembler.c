@@ -53,8 +53,12 @@ ASSEMBLER *assembler_new()
 
 void assembler_free(ASSEMBLER *asmr)
 {
+	asmLoader_free(asmr->loader);
+	asmWriter_free(asmr->writer);
 	lista_free(asmr->labels);
-	registers_free(asmr->regs);	
+	dic_free(asmr->dic);
+	registers_free(asmr->regs);
+	
 	free(asmr);
 }
 
@@ -95,7 +99,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 
 	//Faz busca pelas labels declaradas no arquivo
 	if((asmr->instCounter = assembler_makeLabels(asmr)) != ASSEMBLER_SUCCESS){
-		printf("Declaração de label invalida ou repetida encontrada na linha: %li\n", 
+		printf("Declaração de label invalida ou repetida encontrada na %liº instrução.\n", 
 						asmr->instCounter);
         return (ASSEMBLER_FAILURE);
 	}
@@ -126,14 +130,14 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 		actualTokens = scanner_scan(actualInst, ignoreList, ASSEMBLER_SEPARATOR, 
 						ASSEMBLER_IGNORE_QTD);
 		
-		
+	 	
 		//Procura o nome da instrução no dicionário
 		actualEntry = dic_search(asmr->dic, token_getToken(actualTokens, 1));
 	
 
 		//Se não conseguiu encontrar a instrução referenciada no dicionário...
 		if(actualEntry == NULL){
-			printf("Instrução inválida na linha %li.\n", asmr->instCounter);
+			printf("Instrução inválida na %liº instrução.\n", asmr->instCounter);
 			asmError_setDesc(ASSEMBLER_EMOUNT); 
 			assembler_free(asmr);
             return (ASSEMBLER_FAILURE);
@@ -150,7 +154,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 		//e o dicionário não ter este armazenado
 		if(token_getQtd(patternTokens) != token_getQtd(actualTokens) - 1){
 			//Mostra o erro e finaliza
-			printf("Escrita inválida na linha %li.\n", asmr->instCounter);
+			printf("Escrita inválida na %liº instrução.\n", asmr->instCounter);
 			asmError_setDesc(ASSEMBLER_EMOUNT);
 			assembler_free(asmr);			
             return (ASSEMBLER_FAILURE);
@@ -161,7 +165,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 		inst = assembler_makeInst(asmr, actualTokens, patternTokens, transTokens);
 		
 		if(inst == ASSEMBLER_EALLOC){
-			printf("Erro na linha %li!\n", asmr->instCounter);
+			printf("Erro na %liº instrução!\n", asmr->instCounter);
 			//asmError já foi setado...
 			assembler_free(asmr);
             return (ASSEMBLER_FAILURE);
@@ -177,14 +181,19 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 
 		asmr->instCounter++;	
 	}
+	
 
-	//Libera regiões de memória que não serão mais utilizadas	
+	//Se processou nenhuma instrução
+	if(asmr->instCounter == 1)
+	{
+		printf("Arquivo fonte vazio.\n");
+		asmError_setDesc(ASSEMBLER_EUSER_EMPTYSRC);
+		return (ASSEMBLER_FAILURE);
+	}
+
+ 	//Libera regiões de memória que não serão mais utilizadas	
 	assembler_freeStrVector(ignoreList);
-	asmLoader_free(asmr->loader);
-	asmWriter_free(asmr->writer);
-	lista_free(asmr->labels);
-	dic_free(asmr->dic);
-	registers_free(asmr->regs);
+	assembler_free(asmr);
 
     return (asmr->instCounter);
 }

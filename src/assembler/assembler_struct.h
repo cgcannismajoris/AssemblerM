@@ -51,6 +51,8 @@
 
 #define ASSEMBLER_EUSER_INVALIDDIC_MSG	"Dicionário inconsistente."
 
+#define ASSEMBLER_EUSER_EMPTYSRC		"O arquivo não possui intruções."
+
 #define ASSEMBLER_EMOUNT                "Não é possível continuar."
 
 #define ASSEMBLER_IGNORE1               "faca"
