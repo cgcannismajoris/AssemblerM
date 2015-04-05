@@ -38,7 +38,7 @@
 #define ASSEMBLER_TRUE                  1
 #define ASSEMBLER_FALSE                 0
 
-#define MACHINE_MAX_REG                 32
+#define MACHINE_MAX_REG					32
 
 #define ASSEMBLER_SUCCESS               0
 #define ASSEMBLER_FAILURE               -1

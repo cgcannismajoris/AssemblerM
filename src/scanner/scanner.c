@@ -22,7 +22,7 @@
 
 
 #include "scanner.h"
-
+#include <assert.h>
 // LISTA DE PALAVRAS PARA IGNORAR
 // SEPARADOR DOS TOKENS
 TOKENS *scanner_scan(const char *sentence, char **ignoreList, char *delims,
@@ -34,7 +34,7 @@ TOKENS *scanner_scan(const char *sentence, char **ignoreList, char *delims,
     int cont_tokens = 0;
     uint64_t i = 0;
 
-    if ((str = (char *)malloc(strlen(sentence) * sizeof(char) + 1)) == NULL)
+	if ((str = (char *)malloc((strlen(sentence) * sizeof(char)) + 1)) == NULL)
         return SCANNER_ERROR;
 
     /* Copio a referência inicial de str. */

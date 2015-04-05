@@ -119,11 +119,13 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 
 	//Carrega o dicionário
 	dic_load(asmr->dic);
-	
+
 	//Cria a lista de termos a serem ignorados
 	ignoreList = assembler_makeStrVector(ASSEMBLER_IGNORE_QTD, ASSEMBLER_IGNORE1, 
 											ASSEMBLER_IGNORE2, ASSEMBLER_IGNORE3, 
 											ASSEMBLER_IGNORE4, ASSEMBLER_IGNORE5);
+
+
 
 	//Grava o cabeçalho	
 	if(assembler_makeHeader(asmr, inputValues, length) != ASSEMBLER_SUCCESS)
@@ -131,10 +133,10 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 
 	//Enquanto for possível carregar novas instruções
 	while((actualInst = asmLoader_getNextInst(asmr->loader)) != NULL){
+		
 		//Gera os tokens
 		actualTokens = scanner_scan(actualInst, ignoreList, ASSEMBLER_SEPARATOR, 
 						ASSEMBLER_IGNORE_QTD);
-		
 	 	
 		//Procura o nome da instrução no dicionário
 		actualEntry = dic_search(asmr->dic, token_getToken(actualTokens, 1));

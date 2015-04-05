@@ -264,35 +264,37 @@ int assembler_makeHeader(ASSEMBLER *asmr, int *inputList, uint32_t length)
 		asmError_setDesc(ASSEMBLER_EALLOC_MSG);
 		return (ASSEMBLERANALYSER_EALLOC_ID);
 	}
-    
+   
 	//Grava a quantidade de registradores a serem utilizados
-	((uint32_t*)header)[0] = registers_getQtdRegs(asmr->regs);
+	*((uint32_t*)(header)) = registers_getQtdRegs(asmr->regs);
 	
  	//Grava os valores iniciais de memória com o respectivo tipo do registrador
 	//(input ou output) 
 	for(i = 0, k = 0, j = sizeof(uint32_t); k < registers_getQtdRegs(asmr->regs); k++)
 	{
 		//Grava o tipo 
-		((uint8_t*)header)[j] = reg_getType(registers_getReg(asmr->regs, k));
+		*((uint8_t*)(header + j)) = reg_getType(registers_getReg(asmr->regs, k));
 		j += sizeof(uint8_t);
 	
 		//Grava o valor inicial de memória
 		//Se o registrador atual for de input grava o valor recebido, se não grava 0
 		if(reg_getType(registers_getReg(asmr->regs, k)) == REG_TYPE_INPUT)
 		{
-			((int*)header)[j] = inputList[i];
+			*((int*)(header + j)) = inputList[i];
 			i++;
 		}
 		else
-			((int*)header)[j] = 0;
+		{
+			*((int*)(header + j)) = 0;
+		}
 		j += sizeof(int);
-	}
-	
+	} 
+
 	//Grava o cabeçalho no arquivo
  	asmWriter_writeHeader(asmr->writer, header, headerLength);
 	
 	//Libera a memória utilizada
-//	free(header);
+	free(header);
 	
 	//Retorna sucesso	
 	return (ASSEMBLER_SUCCESS);

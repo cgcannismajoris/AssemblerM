@@ -56,16 +56,6 @@ void asmWriter_writeInst(ASMWRITER *asmWriter, INSTRUCTION *instruction)
 
 void asmWriter_writeHeader(ASMWRITER *asmWriter, uint8_t *header, size_t length)
 {
- 	size_t j;
-	
-	fwrite(&(((uint32_t*)header)[0]), sizeof(uint32_t), 1, asmWriter->file);
-	for(j = sizeof(uint32_t); j < length; j)
-	{
-		fwrite(&(((uint8_t*)header)[j]), sizeof(uint8_t), 1, asmWriter->file);
-		j += sizeof(uint8_t);
-
-		fwrite(&(((int*)header)[j]), sizeof(int), 1, asmWriter->file);
-		j += sizeof(int);
-	}
+	fwrite(header, sizeof(uint8_t), length, asmWriter->file);
 }
 
