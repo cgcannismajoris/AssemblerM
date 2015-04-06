@@ -126,7 +126,7 @@ Para todos os casos, há os seguintes significados:
 	<RÓTULO_DESTINO_VERDADE> : Rótulo da próxima instrução caso o teste retornar verdade.
 	<RÓTULO_DESTINO_FALSO>   : Rótulo da próxima instrução caso o teste retornar falso.
 
-Com exceção dos rótulos e nomes atribuídos aos registradores, a linguagem não é case sensitive ("sensível ao caso").
+A linguagem é case sensitive ("sensível ao caso").
 
 ####Determinando o fim do programa
 
@@ -149,17 +149,27 @@ r1: inc a r2
 r2: dec b r3
 r3: zero b r5 r1
 ```
-Outra escrita equivalente é:
-```
-M:a<-b
-r1: INC a va_PARA r2
-r2: Faca DEC b VA_para r3
-r3: se ZERO b Va_PaRa r5 r1
-```
+
 Uma observação importante, é que o rótulo "r5", referenciado na instrução rotulada "r3", não existe. Logo, 
 se o teste "zero b" resultar em verdade, o programa será finalizado.
 Como boa prática de programação, recomenda-se seguir um único padrão de escrita, visando uma maior facilidade de 
 entendimento humano do código.
+
+###Comentários
+É possível fazer comentários no código, desde que sejam atendidas a seguinte condição:
+
+* O comentário deve **OBRIGATORIAMENTE** vir depois de uma instrução;
+
+Para fazer um comentário deve-se iniciar a escrita com ";" ou "#".
+
+Exemplo de código comentado:
+
+```
+M:a<-b
+r1: faca inc a va_para r2	; Incrementa o registrador a e vai para r2
+r2: faca dec b va_para r3	; Decrementa o registrador b e vai para r3
+r3: se zero b entao r5 senao r1 ; Se b for zero, então finaliza. Caso contrário, volta para r1
+```
 
 ##Diagrama do Projeto
 Abaixo é mostrado o diagrama de classes (adaptado) do projeto.
