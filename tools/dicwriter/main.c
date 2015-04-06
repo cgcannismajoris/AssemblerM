@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 		
 		//Instancia os novos elementos da lista
 		entry = entry_new(instPattern, instTranslation);
-		no = lista_node_new(entry, sizeof(ENTRY));
+		no = lista_node_new(entry);
 	
 		//Insere os novos elementos na lista
 		lista_insertLastNode(entryList, no);
