@@ -66,6 +66,7 @@ TOKENS *scanner_scan(const char *sentence,
 
         if ((aux_str = malloc(strlen(pch) + 1)) == NULL)
         {
+        	free(str);
 			lista_free(lista);
             return SCANNER_ERROR;
         }
@@ -74,7 +75,7 @@ TOKENS *scanner_scan(const char *sentence,
 
         if((aux = lista_node_new(aux_str, sizeof(char *))) == NULL)
 		{
-			free(aux_str);
+			free(str);
 			lista_free(lista);
 			return (SCANNER_ERROR);
 		}
@@ -85,12 +86,10 @@ TOKENS *scanner_scan(const char *sentence,
         cont_tokens++;
     }
 	
-	/* Libera memória. */
-	free(str);
-
     /* Alocar memória para toks. */
     if ((toks = token_new(cont_tokens)) == TOKENS_EALLOC)
     {
+    	free(str);
 		lista_free(lista);
         return SCANNER_ERROR;
     }
@@ -116,6 +115,9 @@ TOKENS *scanner_scan(const char *sentence,
 
 	/* Libera a memóra da lista. */
     lista_free(lista);
+    
+    /* Libera memória. */
+	free(str);
 
     return toks;
 }
