@@ -73,7 +73,7 @@ TOKENS *scanner_scan(const char *sentence,
 
         strcpy(aux_str, pch);
 
-        if((aux = lista_node_new(aux_str, sizeof(char *))) == NULL)
+        if((aux = lista_node_new(aux_str)) == NULL)
 		{
 			free(str);
 			lista_free(lista);

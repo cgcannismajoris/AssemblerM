@@ -580,7 +580,8 @@ int assembler_makeLabels(ASSEMBLER *asmr)
 		
 		//Insere a label lista
 		tmpLabel = label_new(actualLabel, counter);
-		tmpNode = node_new(tmpLabel, 0, sizeof(LABEL));
+//		tmpNode = node_new(tmpLabel, 0, sizeof(LABEL));
+		tmpNode = lista_node_new(tmpLabel);
 		lista_insertLastNode(asmr->labels, tmpNode);
 
 		//Libera a região de memória que não será mais utilizada

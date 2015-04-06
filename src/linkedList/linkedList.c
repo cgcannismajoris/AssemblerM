@@ -71,8 +71,8 @@ LIST_INT lista_clear(LISTA *this){
 	return (LIST_NULL_POINTER);
 }
 
-NODE *lista_node_new(void *data, uint32_t size){
-	return(node_new(data, 0, size));
+NODE *lista_node_new(void *data){
+	return(node_new(data, 0, NODE_REF_LENGTH));
 }
 
 /* ---- Métodos de inserção e Remoção de elemtos ---- */

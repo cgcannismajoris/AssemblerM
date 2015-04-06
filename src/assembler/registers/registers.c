@@ -61,7 +61,7 @@ long int registers_addReg(REGISTERS *regs, char *regName, uint8_t type)
 		return(-1);
 	}
 
-	regNode = lista_node_new(novo, sizeof(REG));
+	regNode = lista_node_new(novo);
 	lista_insertLastNode(regs->regs, regNode);
  
 	return (lista_getQuant(regs->regs) - 1);

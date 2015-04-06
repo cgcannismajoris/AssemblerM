@@ -35,7 +35,7 @@
 #define LIST_SUCCESS		 0
 #define LIST_NULL_POINTER 	-2
 
-#define NODE_REF_LENGHT 2
+#define NODE_REF_LENGTH 2
 #define ANTE			0
 #define PROX 			1
 
@@ -82,7 +82,14 @@ LIST_INT lista_free(LISTA *this);
  */
 LIST_INT lista_clear(LISTA *this);
 
-NODE *lista_node_new(void *data, uint32_t size);
+/* Descrição	: Instancia um novo nó de lista encadeada..
+ * Argumentos	: 
+ * 	 -> void *data: Dado a ser armazenado no nó.
+ * Retorno		: Nó instanciado.
+ * 	Se != NULL = Estrutura alocada com sucesso.
+ * 	Se == NULL = Não foi possível alocar a estrutura. 
+ */
+NODE *lista_node_new(void *data);
 
 /* ---- Métodos de inserção e Remoção de elemtos ---- */
 /* Descrição	: Insere um nó em uma lista encadeada na posição desejada.
