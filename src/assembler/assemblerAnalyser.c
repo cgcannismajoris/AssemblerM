@@ -67,7 +67,7 @@ char **assembler_makeStrVector(int qtd, ...)
 		}
 
 		tmp = va_arg(args, char*);
-		memcpy(strVector[i], tmp, sizeof(char) * strlen(tmp));
+		memcpy(strVector[i], tmp, (sizeof(char) * strlen(tmp)) + 1);
 	}
 	
 	strVector[i] = NULL;
@@ -227,6 +227,8 @@ int assembler_makeRegisters(ASSEMBLER *asmr)
 		__assembler_makeRegisters_insert(asmr, input, REG_TYPE_INPUT);
 		__assembler_makeRegisters_insert(asmr, output, REG_TYPE_OUTPUT);
 	}
+
+	asmLoader_rewind(asmr->loader);
 
 	return (ASSEMBLER_SUCCESS);
 }

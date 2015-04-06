@@ -51,8 +51,8 @@ TOKENS *scanner_scan(const char *sentence,
     /* Retiram-se as palavras a serem desprezadas. */
     for (i = 0; i < n_ignore; i++)
     {
-        while ((pch = strstr(str, ignoreList[i])) != NULL)
-           memset(pch, SCANNER_SBCLS, strlen(ignoreList[i]));
+		while ((pch = strstr(str, ignoreList[i])) != NULL)
+			memset(pch, SCANNER_SBCLS, strlen(ignoreList[i]));
     }
 
     /* Contar os tokens. */

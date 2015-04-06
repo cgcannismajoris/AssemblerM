@@ -102,15 +102,6 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 	
 	//------ INICIA O PROCESSAMENTO -------------------------------------
 
-	//Faz busca pelas labels declaradas no arquivo
-	if((asmr->instCounter = assembler_makeLabels(asmr)) != ASSEMBLER_SUCCESS){
-		printf("Declaração de label invalida ou repetida encontrada na %liª instrução.\n", 
-						asmr->instCounter);
-        return (ASSEMBLER_FAILURE);
-	}
-	asmr->instCounter = 1;
-
-
 	//Analisa a declaração da maquina e cria a lista de registradores
 	if(assembler_makeRegisters(asmr) != ASSEMBLER_SUCCESS)
 	{
@@ -118,6 +109,18 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 		return (ASSEMBLER_FAILURE);
 	}
 
+	//Grava o cabeçalho	
+	if(assembler_makeHeader(asmr, inputValues, length) != ASSEMBLER_SUCCESS)
+		return(ASSEMBLER_FAILURE);
+
+
+	//Faz busca pelas labels declaradas no arquivo
+	if((asmr->instCounter = assembler_makeLabels(asmr)) != ASSEMBLER_SUCCESS){
+		printf("Declaração de label invalida ou repetida encontrada na %liª instrução.\n", 
+						asmr->instCounter);
+        return (ASSEMBLER_FAILURE);
+	}
+	asmr->instCounter = 1;
 
 	//Carrega o dicionário
 	dic_load(asmr->dic);
@@ -128,19 +131,17 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 											ASSEMBLER_IGNORE2, ASSEMBLER_IGNORE3, 
 											ASSEMBLER_IGNORE4, ASSEMBLER_IGNORE5);
 
+	//Ignora a primeira linha do arquivo (já foi processada)
+	//Nela está o cabeçalho.
+	actualInst = asmLoader_getNextInst(asmr->loader);
 
-	//Grava o cabeçalho	
-	if(assembler_makeHeader(asmr, inputValues, length) != ASSEMBLER_SUCCESS)
-		return(ASSEMBLER_FAILURE);
-
-	
 	//Enquanto for possível carregar novas instruções
 	while((actualInst = asmLoader_getNextInst(asmr->loader)) != NULL){
-		
+	
 		//Gera os tokens
 		actualTokens = scanner_scan(actualInst, ignoreList, ASSEMBLER_SEPARATOR, 
 						ASSEMBLER_IGNORE_QTD);
-	 	
+ 
 		//Procura o nome da instrução no dicionário
 		actualEntry = dic_search(asmr->dic, token_getToken(actualTokens, 1));
 	
