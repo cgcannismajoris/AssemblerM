@@ -28,7 +28,7 @@
 #include <stdint.h>
 
 #include "tokens/tokens.h" /* incluir o TAD TOKENS (Conjunto de TOKENS) */
-
+#include "../linkedList/linkedList.h" /* incluir o TAD LIST */
 
 #define SCANNER_SBCLS               0x20        /* Space Bar */
 

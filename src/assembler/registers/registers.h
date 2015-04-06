@@ -24,6 +24,7 @@
 #define REGISTERS_H
 
 #include "reg/reg.h"
+#include "../../linkedList/linkedList.h"
 
 #define REGISTERS_EALLOC                    NULL
 #define REGISTERS_EALLOC_MSG                "Falha na alocação da estrutura REGISTERS."
@@ -36,9 +37,7 @@
 
 typedef struct _registers
 {
-    REG **      regs;    //Vetor de registradores
-    uint32_t    qtdRegs; //Quantidade armazenada de registradores
-    uint32_t    maxQtd;  //Quantidade máxima de registradores
+	LIST		*regs;	
 } REGISTERS;
 
 
@@ -46,14 +45,13 @@ typedef struct _registers
  * 
  * - DESCRIÇÃO: Instancia um nova estrutura em memória.
  *   
- * - PARÂMETROS: 
- *      -> long int maxQtd: Quantidade máxima de registradores.
+ * - PARÂMETROS: void.
  *
  * - RETORNO: Estrutura do tipo REGISTERS instanciada.
  *   	-> Se NULL    - Erro na operação.
  *   	-> Se != NULL - Sucesso na operação.
  */
-REGISTERS *     registers_new(long int maxQtd);
+REGISTERS *     registers_new();
 
 
 /* -> void registers_free(REGISTERS *regs)

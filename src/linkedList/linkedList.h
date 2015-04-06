@@ -27,6 +27,8 @@
 
 #include "node.h"
 
+#include "../assembler/registers/reg/reg.h"
+
 #define LIST_EALLOC			NULL
 #define LIST_EALLOC_MSG		"Falha ao alocar memória no TAD LIST."
 
@@ -128,6 +130,30 @@ NODE *lista_removeRaiz(LISTA *this);
  * 	 Se == NULL = Nó não encontrado.
  */
 NODE *lista_search(LISTA *this, const void *key, 
+				int (*compar)(const void *, const void *));
+
+/* Descrição	: Retorna o nó na posição desejada.
+ *
+ * Argumentos	: 
+ * 	 -> LISTA *this = Lista a ser utilizada.
+ * 	 -> uint64_t pos = Posição desejada.
+ * Retorno		: Ponteiro para o nó.
+ * 	 Se != NULL = Nó encontrado.
+ * 	 Se == NULL = Nó não encontrado.
+ */
+NODE *lista_getNode(LISTA *this, uint64_t pos);
+
+/* Descrição	: Procura um nó dentro da lista.
+ *
+ * Argumentos	: 
+ * 	 -> LISTA *this = Lista a ter a raiz removida.
+ * 	 -> const void *key = Chave a ser pesquisada.
+ * 	 -> void (*compar)(const void *, const void *) = Função de comparação.
+ * Retorno		: Posição do nó encontrado.
+ * 	 Se >= 0 = Nó encontrado.
+ * 	 Se < 0  = Nó não encontrado.
+ */
+long int lista_search_getPos(LISTA *this, const void *key, 
 				int (*compar)(const void *, const void *));
 
 

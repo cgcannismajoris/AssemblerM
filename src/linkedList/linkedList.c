@@ -207,6 +207,26 @@ NODE *lista_removeRaiz(LISTA *this){
 	return root;
 }
 
+
+NODE *lista_getNode(LISTA *this, uint64_t pos)
+{
+	
+	NODE *tmp;
+
+	if(pos >= this->quant)
+		return (NULL);
+	
+	tmp = this->root;
+
+	while(pos > 0)
+	{
+		node_getProx(tmp);
+		pos--;
+	}
+
+	return (tmp);
+}
+
 /*  ----     Exibição de Elementos      ---- */
 int lista_printLista(LISTA *this, void (*show_na_tela)(void*)){
 	
@@ -234,7 +254,6 @@ NODE *lista_search(LISTA *this, const void *key,
 	
 	NODE *result = NULL;
 	NODE *temp;
-	uint64_t counter;	
 
 	if(this == NULL || compar == NULL){
 		return (NULL);
@@ -252,6 +271,31 @@ NODE *lista_search(LISTA *this, const void *key,
 	}
 
 	return (NULL);
+}
+ 
+long int lista_search_getPos(LISTA *this, const void *key, 
+				int (*compar)(const void *, const void *)){
+	NODE *result = NULL;
+	NODE *temp;
+	uint64_t counter = 0;	
+
+	if(this == NULL || compar == NULL){
+		return (-1);
+	}
+	
+	temp = this->root;
+
+	while(temp != NULL){
+		if(compar(key, node_getData(temp)) == 0){
+			return(counter);
+		}
+		else{
+			temp = node_getProx(temp);
+		} 
+		counter++;
+	}
+
+	return (-1);
 }
 
 /*  ----        Geters e Seters         ---- */

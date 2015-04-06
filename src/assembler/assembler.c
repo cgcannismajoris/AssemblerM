@@ -38,7 +38,7 @@ ASSEMBLER *assembler_new()
 		return (ASSEMBLER_EALLOC);
 	}
 
-    if ((novo->regs = registers_new(MACHINE_MAX_REG)) == REGISTERS_EALLOC)
+    if ((novo->regs = registers_new()) == REGISTERS_EALLOC)
 	{
 		lista_free(novo->labels);
 		free(novo);
@@ -126,11 +126,10 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 											ASSEMBLER_IGNORE4, ASSEMBLER_IGNORE5);
 
 
-
 	//Grava o cabeçalho	
 	if(assembler_makeHeader(asmr, inputValues, length) != ASSEMBLER_SUCCESS)
 		return(ASSEMBLER_FAILURE);
-
+	
 	//Enquanto for possível carregar novas instruções
 	while((actualInst = asmLoader_getNextInst(asmr->loader)) != NULL){
 		

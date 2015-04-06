@@ -21,8 +21,8 @@
  */
 #include "assemblerAnalyser.h"
 
-uint64_t assembler_searchLabel(ASSEMBLER *asmr, const char *label){
-
+uint64_t assembler_searchLabel(ASSEMBLER *asmr, const char *label)
+{
 	NODE *tmpNode;
 	LABEL *tmpLabel;
 	
@@ -41,8 +41,8 @@ uint64_t assembler_searchLabel(ASSEMBLER *asmr, const char *label){
 }
 
 
-char **assembler_makeStrVector(int qtd, ...){
-
+char **assembler_makeStrVector(int qtd, ...)
+{
     char **strVector;
 	char *tmp;
 	uint32_t i;
@@ -75,8 +75,8 @@ char **assembler_makeStrVector(int qtd, ...){
 	return(strVector);
 }
 
-void assembler_freeStrVector(char **strVector){
-	
+void assembler_freeStrVector(char **strVector)
+{	
 	uint64_t counter;
 	
 	for(counter = 0; strVector[counter] != NULL; counter++){
@@ -86,8 +86,8 @@ void assembler_freeStrVector(char **strVector){
 	free(strVector);
 }
 
-int assembler_labelJudge(char *label){
-
+int assembler_labelJudge(char *label)
+{
 	char *pos;
   	
    	//Se a entrada é inválida	
@@ -302,7 +302,8 @@ int assembler_makeHeader(ASSEMBLER *asmr, int *inputList, uint32_t length)
 
 
 INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr, 
-				TOKENS *input, TOKENS *pattern, TOKENS *translation){
+				TOKENS *input, TOKENS *pattern, TOKENS *translation)
+{
 
 	INSTRUCTION *novo = NULL;
 	
@@ -499,8 +500,8 @@ INSTRUCTION *assembler_makeInst(ASSEMBLER *asmr,
 	return (novo);
 }
 
-int assembler_makeLabels(ASSEMBLER *asmr){
-	
+int assembler_makeLabels(ASSEMBLER *asmr)
+{	
 	uint64_t counter = 1;
 
 	char *actualInst;

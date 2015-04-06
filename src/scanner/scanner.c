@@ -22,23 +22,28 @@
 
 
 #include "scanner.h"
-#include <assert.h>
+
 // LISTA DE PALAVRAS PARA IGNORAR
 // SEPARADOR DOS TOKENS
-TOKENS *scanner_scan(const char *sentence, char **ignoreList, char *delims,
-                     uint64_t n_ignore)
+TOKENS *scanner_scan(const char *sentence,
+                     char **    ignoreList,
+                     char *     delims,
+                     uint64_t   n_ignore)
 {
     TOKENS *toks;
-    char *str, *ptr_str;
-    char *pch;
-    int cont_tokens = 0;
+    char *  str;
+    char *  pch;
+    int     cont_tokens = 0;
     uint64_t i = 0;
+    LINKED_LIST *lista;
+    NODE *aux;
+
+
+    if ((lista = lista_new()) == NULL)
+        return SCANNER_ERROR;
 
 	if ((str = (char *)malloc((strlen(sentence) * sizeof(char)) + 1)) == NULL)
         return SCANNER_ERROR;
-
-    /* Copio a referência inicial de str. */
-    ptr_str = str;
 
     /* str <- sentence */
     strcpy(str, sentence);
@@ -54,41 +59,63 @@ TOKENS *scanner_scan(const char *sentence, char **ignoreList, char *delims,
 
     /* Contar os tokens. */
     pch = strtok(str, delims);
-
+	
     while (pch != NULL)
     {
+        char *aux_str;
+
+        if ((aux_str = malloc(strlen(pch) + 1)) == NULL)
+        {
+			lista_free(lista);
+            return SCANNER_ERROR;
+        }
+
+        strcpy(aux_str, pch);
+
+        if((aux = lista_node_new(aux_str, sizeof(char *))) == NULL)
+		{
+			free(aux_str);
+			lista_free(lista);
+			return (SCANNER_ERROR);
+		}
+
+        lista_insertLastNode(lista, aux);
+
         pch = strtok(NULL, delims);
         cont_tokens++;
     }
+	
+	/* Libera memória. */
+	free(str);
 
     /* Alocar memória para toks. */
     if ((toks = token_new(cont_tokens)) == TOKENS_EALLOC)
     {
-        free(str);
+		lista_free(lista);
         return SCANNER_ERROR;
     }
+
+    aux = lista_getRaiz(lista);
 
     /* Guardar os tokens. */
     /* Inserir os tokens da string str na estrutura toks. */
     while (cont_tokens)
     {
-        if (token_addToken(toks, str) == TOKENS_ETOKOVERFLOW)
+
+        if (token_addToken(toks, (char *)node_getData(aux)) == TOKENS_ETOKOVERFLOW)
         {
-            free(str);
+			lista_free(lista);
+			token_free(toks);
             asmError_setDesc(SCANNER_ERROR_MSG);
             return SCANNER_ERROR;
         }
 
-        str += strlen(str);
-        while(*(++str) == SCANNER_SBCLS);
-
+		aux = node_getProx(aux);
         cont_tokens--;
     }
 
-    /* Chegado aqui, os tokens foram inseridos com sucesso. */
-
-    /* Libere a memória de str. */
-    free(ptr_str);
+	/* Libera a memóra da lista. */
+    lista_free(lista);
 
     return toks;
 }

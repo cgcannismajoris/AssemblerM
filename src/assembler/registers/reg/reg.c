@@ -63,3 +63,9 @@ uint8_t reg_getType(REG *reg)
 {
 	return reg->type;
 }
+
+int reg_compar(const void *name, const void *reg)
+{
+	return (strcmp(name, ((REG*)reg)->name));
+}
+

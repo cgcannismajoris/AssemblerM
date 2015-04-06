@@ -96,4 +96,20 @@ char *      reg_getName(REG *reg);
  */
 uint8_t reg_getType(REG *reg);
 
+
+/* -> int reg_compar(const void *name, const void *reg)
+ * 
+ * - DESCRIÇÃO: Compara uma string com o nome do reg recebido.
+ *
+ * - PARÂMETROS: 
+ *      -> const void *name: String a ser utilizada na operação.
+ *      -> const void *reg: Estrutura a ser utilizada na operação. 
+ *
+ * - RETORNO: Resultado da comparação.
+ *   	-> Se > 0 - A string deve vir depois do nome do reg. 
+ *   	-> Se = 0 - A string é igual ao nome do reg.
+ *   	-> Se < 0 - A string deve vir antes do nome do reg.
+ */
+int reg_compar(const void *name, const void *reg);
+
 #endif /* REG_HEADER */
