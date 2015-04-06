@@ -207,7 +207,9 @@ int assembler_makeRegisters(ASSEMBLER *asmr)
 
 
 	//Busca por tokens em comum... Se existe, uma declaração inválida foi feita
-	if(token_verifCommon(input, output) == 1)
+	if(token_verifCommon(input, output) == 1 || 
+					token_verifRepetitions(input) == 1 ||
+					token_verifRepetitions(output) == 1)
 	{
 		asmError_setDesc(ASSEMBLERANALYSER_EUSER_DOUBDEC_MSG);
 		return (ASSEMBLER_FAILURE);
@@ -225,7 +227,7 @@ int assembler_makeRegisters(ASSEMBLER *asmr)
 		__assembler_makeRegisters_insert(asmr, input, REG_TYPE_INPUT);
 		__assembler_makeRegisters_insert(asmr, output, REG_TYPE_OUTPUT);
 	}
-	
+
 	return (ASSEMBLER_SUCCESS);
 }
 
@@ -275,7 +277,7 @@ int assembler_makeHeader(ASSEMBLER *asmr, int *inputList, uint32_t length)
 		//Grava o tipo 
 		*((uint8_t*)(header + j)) = reg_getType(registers_getReg(asmr->regs, k));
 		j += sizeof(uint8_t);
-	
+		
 		//Grava o valor inicial de memória
 		//Se o registrador atual for de input grava o valor recebido, se não grava 0
 		if(reg_getType(registers_getReg(asmr->regs, k)) == REG_TYPE_INPUT)
@@ -287,6 +289,7 @@ int assembler_makeHeader(ASSEMBLER *asmr, int *inputList, uint32_t length)
 		{
 			*((int*)(header + j)) = 0;
 		}
+
 		j += sizeof(int);
 	} 
 

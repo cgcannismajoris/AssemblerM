@@ -210,7 +210,7 @@ NODE *lista_removeRaiz(LISTA *this){
 
 NODE *lista_getNode(LISTA *this, uint64_t pos)
 {
-	
+
 	NODE *tmp;
 
 	if(pos >= this->quant)
@@ -220,7 +220,7 @@ NODE *lista_getNode(LISTA *this, uint64_t pos)
 
 	while(pos > 0)
 	{
-		node_getProx(tmp);
+		tmp = node_getProx(tmp);
 		pos--;
 	}
 

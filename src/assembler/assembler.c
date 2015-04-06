@@ -110,6 +110,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 	}
 	asmr->instCounter = 1;
 
+
 	//Analisa a declaração da maquina e cria a lista de registradores
 	if(assembler_makeRegisters(asmr) != ASSEMBLER_SUCCESS)
 	{
@@ -117,8 +118,10 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 		return (ASSEMBLER_FAILURE);
 	}
 
+
 	//Carrega o dicionário
 	dic_load(asmr->dic);
+
 
 	//Cria a lista de termos a serem ignorados
 	ignoreList = assembler_makeStrVector(ASSEMBLER_IGNORE_QTD, ASSEMBLER_IGNORE1, 
@@ -129,6 +132,7 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 	//Grava o cabeçalho	
 	if(assembler_makeHeader(asmr, inputValues, length) != ASSEMBLER_SUCCESS)
 		return(ASSEMBLER_FAILURE);
+
 	
 	//Enquanto for possível carregar novas instruções
 	while((actualInst = asmLoader_getNextInst(asmr->loader)) != NULL){

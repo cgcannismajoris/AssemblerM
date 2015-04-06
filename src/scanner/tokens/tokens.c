@@ -118,3 +118,23 @@ int token_verifCommon(TOKENS *one, TOKENS *two)
 
 	return (0);
 }
+
+int token_verifRepetitions(TOKENS *one)
+{
+	int i, j;
+ 
+	for(i = 0; i < one->qtdUsed; i++)
+	{
+		for(j = 0; j < one->qtdUsed; j++)
+		{
+			if(strcmp(one->tokens[i], one->tokens[j]) == 0)
+			{
+				if(i != j)
+					return (1);
+			}
+		}
+	}	
+
+	return (0);
+}
+

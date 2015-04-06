@@ -147,4 +147,19 @@ long int    token_search(TOKENS *token, const char *search);
  */
 int 		token_verifCommon(TOKENS *one, TOKENS *two);
 
+
+/* -> int token_verifCommon(TOKENS *one, TOKENS *two)
+ * 
+ * - DESCRIÇÃO: Verifica se existem tokens repetidos armazenados 
+ *   			na estrutura.
+ *
+ * - PARÂMETROS: 
+ *      -> TOKENS *one: Estrutura a ser utilizada na operação.
+ *
+ * - RETORNO: Estado da operação.
+ *   	-> Se 0    - Não possuem tokens repetidos.
+ *   	-> Se 1    - Possuem tokens repetidos.
+ */
+int			token_verifRepetitions(TOKENS *one);
+
 #endif /* TOKENS_HEADER */
