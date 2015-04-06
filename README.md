@@ -45,7 +45,7 @@ Descrição dos argumentos:
 
 	<ARQUIVO_ENTRADA>        : é um arquivo de texto codificado no padrão ANSI ASCII contendo o 
 		                       código a ser montado.
-	<ARQUIVO_SAÍDA>          : é o arquivo de saída do processo de montagem.
+	<ARQUIVO_SAÍDA>          : é o arquivo de saída do processo de montagem seguido.
 	<ARQUIVO_DICIONARIO>     : é o arquivo de dicionário a ser utilizado na montagem.
 	<arg1> <arg2> ... <argn> : os valores numéricos inteiros para configurar os valores iniciais
                                dos registradores de entrada declarados no cabeçalho do arquivo de
@@ -156,11 +156,11 @@ Como boa prática de programação, recomenda-se seguir um único padrão de esc
 entendimento humano do código.
 
 ###Comentários
-É possível fazer comentários no código, desde que sejam atendidas a seguinte condição:
+É possível fazer comentários no código, desde que seja atendida a seguinte condição:
 
 * O comentário deve **OBRIGATORIAMENTE** vir depois de uma instrução;
 
-Para fazer um comentário deve-se iniciar a escrita com ";" ou "#".
+Para fazer um comentário, deve-se iniciar a escrita com ";" ou "#".
 
 Exemplo de código comentado:
 
@@ -169,6 +169,41 @@ M:a<-b
 r1: faca inc a va_para r2	; Incrementa o registrador a e vai para r2
 r2: faca dec b va_para r3	; Decrementa o registrador b e vai para r3
 r3: se zero b entao r5 senao r1 ; Se b for zero, então finaliza. Caso contrário, volta para r1
+```
+
+##Arquivo de Saída (Função Computada)
+O arquivo de saída é função computada do programa. Cada linha do arquivo conterá a configuração:
+
+(<NÚMERO_DA_PRÓXIMA_INSTRUÇÃO>, (<VALOR_REG1>, <VALOR_REG2>, ..., <VALOR_REG_N>))
+
+A ordem dos registradores é a mesma ordem da declaração da máquina realizada no código.
+
+##Exemplo de Execução
+
+Considere o código abaixo:
+```
+M:a<-b
+r1: faca inc a va_para r2
+r2: faca dec b va_para r3
+r3: se zero b entao r5 senao r1
+```
+
+Se executarmos o código acima com a seguinte linha comando:
+
+	./MachineM codigo.txt funcaoComputada.txt 3
+
+O arquivo funcaoComputada.txt conterá:
+```
+(1, (0, 3))
+(2, (1, 3))
+(3, (1, 2))
+(1, (1, 2))
+(2, (2, 2))
+(3, (2, 1))
+(1, (2, 1))
+(2, (3, 1))
+(3, (3, 0))
+(4, (3, 0))
 ```
 
 ##Diagrama do Projeto
@@ -180,3 +215,6 @@ Abaixo é mostrado o diagrama de classes (adaptado) do projeto.
 ##Licença
 O AssemblerM é amparado pela licença [GNU General Public License V3.0](https://www.gnu.org/licenses/gpl.txt).
 
+##Autores
+Cristan Costa Mello - cristianc.mello@gmail.com<br/>
+Gustavo Freitas de Amorim - gustavofreitasamorim@gmail.com
