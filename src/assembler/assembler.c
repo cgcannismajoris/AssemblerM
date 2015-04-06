@@ -138,10 +138,13 @@ int assembler_assemble(ASSEMBLER *asmr, const char *src,
 	//Enquanto for possível carregar novas instruções
 	while((actualInst = asmLoader_getNextInst(asmr->loader)) != NULL){
 	
+		//Remove possíveis comentários da instrução lida
+		assembler_removeComment(actualInst);
+
 		//Gera os tokens
 		actualTokens = scanner_scan(actualInst, ignoreList, ASSEMBLER_SEPARATOR, 
 						ASSEMBLER_IGNORE_QTD);
- 
+
 		//Procura o nome da instrução no dicionário
 		actualEntry = dic_search(asmr->dic, token_getToken(actualTokens, 1));
 	

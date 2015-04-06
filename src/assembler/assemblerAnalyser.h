@@ -112,6 +112,19 @@ void 			assembler_freeStrVector(char **strVector);
 int             assembler_labelJudge(char *label);
 
 
+/* -> void assembler_removeComment(char *inst)
+ * 
+ * - DESCRIÇÃO: Remove um comentário de uma string a partir da
+ *   definição ASSEMBLER_COMMENT_CHRS.
+ *
+ * - PARÂMETROS: 
+ *      -> char *inst: String a ser manipulada.
+ *
+ * - RETORNO: void.
+ */
+void assembler_removeComment(char *inst);
+
+
 /* -> static void 	__assembler_makeRegisters_insert(ASSEMBLER *asmr, TOKENS *tokens, 
  *    uint8_t block_type)
  * 

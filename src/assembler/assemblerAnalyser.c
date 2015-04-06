@@ -112,6 +112,33 @@ int assembler_labelJudge(char *label)
 	return (ASSEMBLER_FALSE);
 }
 
+void assembler_removeComment(char *inst)
+{
+
+	int i;
+	uint32_t chrsLength = strlen(ASSEMBLER_COMMENT_CHRS);
+	char chrs[chrsLength + 1];
+
+	//Copia os chrs para a string
+	strcpy(chrs, ASSEMBLER_COMMENT_CHRS);
+	
+	//Enquanto inst não chegar no final
+	while(*inst != '\0')
+	{
+		//Verifica se existem ocorrências dos caracteres
+		for(i = 0; i < chrsLength; i++)
+		{
+			//Se existir, coloca o terminador e retorna
+			if(*inst == chrs[i])
+			{
+				*inst = '\0';
+				return;
+			}
+		}
+		inst++;
+	}
+}
+
 static void __assembler_makeRegisters_insert(ASSEMBLER *asmr, 
 												TOKENS *tokens, uint8_t block_type)
 {
@@ -532,7 +559,9 @@ int assembler_makeLabels(ASSEMBLER *asmr)
 	//Enquanto for possível ler...
 	while((actualInst = asmLoader_getNextInst(asmr->loader)) != NULL)
 	{
-
+		//Remove possíveis comentários da instrução lida
+		assembler_removeComment(actualInst);
+	
 		//Gera os tokens
 		actualTokens = scanner_scan(actualInst, ignoreList, ASSEMBLER_SEPARATOR, 
 						ASSEMBLER_IGNORE_QTD);
